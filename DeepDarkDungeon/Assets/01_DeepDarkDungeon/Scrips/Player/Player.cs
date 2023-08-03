@@ -24,4 +24,11 @@ public class Player : MonoBehaviour
         float speed = Time.deltaTime;
 
     }
+
+    public void Walk()
+    {
+        float playerSpeed;
+        playerSpeed = speed;
+
+    }
 }
