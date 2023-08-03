@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class DungeonCreator : MonoBehaviour
 {
+    public int node = default;
     // Start is called before the first frame update
     void Start()
     {

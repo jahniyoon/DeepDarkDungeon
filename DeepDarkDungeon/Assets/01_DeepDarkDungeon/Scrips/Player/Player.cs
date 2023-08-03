@@ -17,4 +17,11 @@ public class Player : MonoBehaviour
     {
         
     }
+
+    public void Walk()
+    {
+        float playerSpeed;
+        playerSpeed = speed;
+
+    }
 }
