@@ -18,7 +18,7 @@ public class Player : MonoBehaviour
     bool wDown;
     bool jDown;
 
-    
+
     bool isDodge;
 
 
@@ -28,7 +28,7 @@ public class Player : MonoBehaviour
         PlayerRigid = GetComponent<Rigidbody>();
         animator = GetComponentInChildren<Animator>();     //자식 오브젝트에 애니메이션 넣어서 
 
-       
+
     }
 
     // Update is called once per frame
@@ -38,7 +38,7 @@ public class Player : MonoBehaviour
         Move();
         Turn();
         Dodge();
-        
+
     }
 
     void GetInput()        //Input 시스템
@@ -57,45 +57,49 @@ public class Player : MonoBehaviour
         if (isDodge)
             moveVec = dodgeVec;
 
-         
+
         transform.position += moveVec * speed * (wDown ? 0.3f : 1f) * Time.deltaTime;   //walk 속도
 
-        
+
         animator.SetBool("isRun", moveVec != Vector3.zero);
         animator.SetBool("isWalk", wDown);
     }
-    
+
     void Turn()  //캐릭터 회전시켜주는 
     {
-        
-            transform.LookAt(transform.position + moveVec);
-        
-        
+
+        transform.LookAt(transform.position + moveVec);
+
+
 
     }
 
-    
+
 
     void Dodge()
     {
-        if(jDown && moveVec != Vector3.zero && !isDodge)
+        if (jDown && moveVec != Vector3.zero && !isDodge)
         {
             dodgeVec = moveVec; //회피하면서 방향 전환 x
-            
+
             speed *= 2;
             animator.SetTrigger("doDodge");
             isDodge = true;
 
             Invoke("DodgeOut", 0.5f);
+
         }
-        
+
     }
 
     void DodgeOut()
     {
         speed *= 0.5f;
+        Invoke("DodgeStop", 1f);
+    }
+    void DodgeStop()
+    {
         isDodge = false;
     }
-
 
 }

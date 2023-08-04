@@ -20,10 +20,10 @@ public class DungeonCreator : MonoBehaviour
     public float tileSize = 1.0f; // 각 타일의 크기
 
 
-    [Range(0.0f, 0.3f)]                         
-    public float roomBottomCornerModifier;             // 방의 바닥을 형성하는데 사용되는 조정값
-    [Range(0.7f, 1.0f)]
-    public float roomTopCornerMidifier;                // 방의 천장을 형성하는데 사용되는 조정값
+    [Range(0.0f, 0.1f)]                         
+    public float roomBottomCornerModifier;             // 방의 아래쪽 코너를 형성하는데 사용되는 조정값
+    [Range(0.2f, 1.0f)]
+    public float roomTopCornerMidifier;                // 방의 위쪽 코너를 형성하는데 사용되는 조정값
     [Range(0, 2)]
     public int roomOffset;                             // 방의 간격 설정
     public GameObject wallVertical, wallHorizontal;    // 생성할 벽 오브젝트 프리펩 설정
