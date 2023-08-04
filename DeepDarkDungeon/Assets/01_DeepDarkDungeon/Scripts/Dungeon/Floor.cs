@@ -22,7 +22,7 @@ public class Floor : MonoBehaviour
             floors[i].SetActive(false);
         }
 
-        if (!floorActive && floors.Length > 0) ;
+        if (!floorActive && floors.Length > 0);
         {
             floors[Random.Range(0, floors.Length)].SetActive(true);
         }
