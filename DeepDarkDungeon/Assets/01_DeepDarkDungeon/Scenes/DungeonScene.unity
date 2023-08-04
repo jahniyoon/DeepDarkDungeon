@@ -200,7 +200,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 283966487}
   m_LocalRotation: {x: 0.5, y: 0, z: 0, w: 0.8660254}
-  m_LocalPosition: {x: 50, y: 65, z: -2}
+  m_LocalPosition: {x: 24, y: 30, z: -0.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -236,19 +236,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eaa6f125ed3ee6c498900c981f0be427, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dungeonWidth: 100
-  dungeonLength: 100
-  roomWidthMin: 25
-  roomLengthMin: 25
+  dungeonWidth: 50
+  dungeonLength: 50
+  roomWidthMin: 12
+  roomLengthMin: 12
   maxIterations: 10
-  corridorWidth: 5
+  corridorWidth: 1
   Floor: {fileID: 6782636996584472840, guid: 513646e06ac774e4eb58e1966f2f3fa2, type: 3}
   tileSize: 1
   roomBottomCornerModifier: 0.1
   roomTopCornerMidifier: 0.9
   roomOffset: 1
-  wallVertical: {fileID: 919132149155446097, guid: 9f55729ad0465b147a6f4aac6fac1633, type: 3}
-  wallHorizontal: {fileID: 919132149155446097, guid: 9f55729ad0465b147a6f4aac6fac1633, type: 3}
+  wallVertical: {fileID: 1155500167636476784, guid: d0ccdc661bf7cb842b98c0cf62b3fa2b, type: 3}
+  wallHorizontal: {fileID: 6832745773883695604, guid: f782b835c907a7241a44d1900ef57063, type: 3}
 --- !u!4 &894687947
 Transform:
   m_ObjectHideFlags: 0
