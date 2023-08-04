@@ -4,31 +4,55 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public float speed = default; // speed 를 default로 수정 : 지환
+    public float speed;
 
-    Rigidbody PlayerRigid;     //리지드 바디 넣음 : 영수
-    Animator animator;        //애니메이터 넣음 : 영수
+    float hAxis;
+    float vAxis;
+
+    Vector3 moveVec;
+
+    Rigidbody PlayerRigid;
+    Animator animator;
+
+    bool wDown;
+
 
     // Start is called before the first frame update
     void Start()
     {
-        // 지환 수정함;
+        PlayerRigid = GetComponent<Rigidbody>();
+        animator = GetComponentInChildren<Animator>();     //자식 오브젝트에 애니메이션 넣어서 
 
-        PlayerRigid = GetComponent<Rigidbody>();    //리지드 불러옴 : 진
-        animator = GetComponent<Animator>();        //애니메이터 불러옴 : 진
+       
     }
 
     // Update is called once per frame
     void Update()
     {
-        float speed = Time.deltaTime;
+        GetInput();
+        Move();
 
     }
 
-    public void Walk()
+    void GetInput()        //Input 시스템
     {
-        float playerSpeed;
-        playerSpeed = speed;
+        hAxis = Input.GetAxisRaw("Horizontal");
+        vAxis = Input.GetAxisRaw("Vertical");
 
+        wDown = Input.GetButton("Walk");       //shift 누를 때 작동
     }
+
+    void Move()     //캐릭터 움직임
+    {
+        moveVec = new Vector3(hAxis, 0, vAxis).normalized;
+
+        transform.position += moveVec * speed * (wDown ? 0.3f : 1f) * Time.deltaTime;
+
+
+        animator.SetBool("isWalk", wDown);
+    }
+
+    
+
+
 }
