@@ -19,4 +19,6 @@ public class FollowCamera : MonoBehaviour
     {
         transform.position = target.position + offset;
     }
+
+    
 }
