@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class DungeonCreator : MonoBehaviour
 {
+    public TMP_Text roomCountText;
+
+
     // 던전 관련 변수
     public int dungeonWidth, dungeonLength;            // 던전의 가로 및 세로 크기 설정
     public int roomWidthMin, roomLengthMin;            // 각 방의 최소 가로 및 세로 크기 설정
@@ -54,6 +58,15 @@ public class DungeonCreator : MonoBehaviour
         possibleDoorHorizontalPosition = new List<Vector3Int>();
         possibleWallHorizontalPosition = new List<Vector3Int>();
         possibleWallVerticalPosition = new List<Vector3Int>();
+
+        // 생성된 방 개수와 정보 출력
+        Debug.Log("Created Room Count: " + generator.CreatedRooms.Count);
+        roomCountText.text = string.Format("Room Count : {0}", generator.CreatedRooms.Count);
+        foreach (var room in generator.CreatedRooms)
+        {
+            Debug.Log("Room Position: " + room.BottomLeftAreaCorner + " - " + room.TopRightAreaCorner);
+
+        }
 
         // 각 방의 바닥 메쉬 생성
         for (int i = 0; i < listOfRooms.Count; i++)
