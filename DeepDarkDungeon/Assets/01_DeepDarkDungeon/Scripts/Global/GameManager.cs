@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
 
     public GameObject gameoverUI;
 
+
     // √ ±‚»≠
     public void Initialization()
     {

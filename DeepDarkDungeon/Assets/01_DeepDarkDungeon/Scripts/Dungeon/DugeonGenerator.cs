@@ -20,9 +20,9 @@ public class DugeonGenerator
         this.dungeonLength = dungeonLength;
     }
 
-   
 
-    //방 체크 코드 추가
+
+    //던전 생성
     public List<Node> CalculateDungeon(int maxIterations, int roomWidthMin, int roomLengthMin, float roomBottomCornerModifier, float roomTopCornerMidifier, int roomOffset, int corridorWidth)
     {
         BinarySpacePartitioner bsp = new BinarySpacePartitioner(dungeonWidth, dungeonLength);
@@ -38,21 +38,6 @@ public class DugeonGenerator
         return new List<Node>(CreatedRooms).Concat(corridorList).ToList();
     }
 
-    //기존 코드
-    //public List<Node> CalculateDungeon(int maxIterations, int roomWidthMin, int roomLengthMin, float roomBottomCornerModifier, float roomTopCornerMidifier, int roomOffset, int corridorWidth)
-    //{
-    //    BinarySpacePartitioner bsp = new BinarySpacePartitioner(dungeonWidth, dungeonLength);
-    //    allNodesCollection = bsp.PrepareNodesCollection(maxIterations, roomWidthMin, roomLengthMin);
-    //    List<Node> roomSpaces = StructureHelper.TraverseGraphToExtractLowestLeafes(bsp.RootNode);
-
-    //    RoomGenerator roomGenerator = new RoomGenerator(maxIterations, roomLengthMin, roomWidthMin);
-    //    List<RoomNode> roomList = roomGenerator.GenerateRoomsInGivenSpaces(roomSpaces, roomBottomCornerModifier, roomTopCornerMidifier, roomOffset);
-
-    //    CorridorsGenerator corridorGenerator = new CorridorsGenerator();
-    //    var corridorList = corridorGenerator.CreateCorridor(allNodesCollection, corridorWidth);
-
-    //    return new List<Node>(roomList).Concat(corridorList).ToList();
 
 
-    //}
 }

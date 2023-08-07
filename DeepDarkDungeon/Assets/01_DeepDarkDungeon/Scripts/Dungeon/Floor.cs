@@ -23,4 +23,15 @@ public class Floor : MonoBehaviour
 
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.tag.Equals("Floor"))
+        {
+            Debug.Log("바닥 중복 발생! floorOverlap = " + DungeonCreator.FloorOverlap);
+            DungeonCreator.FloorOverlap = true;
+        }
+
+    }
+
+
 }
