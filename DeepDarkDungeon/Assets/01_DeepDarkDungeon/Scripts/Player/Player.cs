@@ -7,6 +7,10 @@ public class Player : MonoBehaviour
 {
     public float speed;
 
+    public Transform playerTransform;
+
+    public GameObject followCamera;
+
     public int coin;
     public int health;
 
@@ -39,6 +43,10 @@ public class Player : MonoBehaviour
 
     bool isSwap;
 
+    bool isFireReady = true;
+
+    bool isBorder;
+
     bool isDodge;
 
     GameObject nearObject;
@@ -46,7 +54,7 @@ public class Player : MonoBehaviour
 
     int equipWeaponIndex = -1; //무기 중복 교체, 없는 무기 확인을 위한 조건
 
-
+    float fireDelay;
 
     // Start is called before the first frame update
     void Start()
@@ -94,10 +102,17 @@ public class Player : MonoBehaviour
         if (isDodge)
             moveVec = dodgeVec;
 
-         
-        transform.position += moveVec * speed * (wDown ? 0.3f : 1f) * Time.deltaTime;   //walk 속도
 
-        
+        if (isSwap)   //스왑중일때는 움직임 수 없게   //여기에 isBorder넣으면 키보드에 의한 회전 문제 생긴다
+        {
+            moveVec = Vector3.zero;
+        }
+        if (!isBorder)
+        {
+            transform.position += moveVec * speed * (wDown ? 0.3f : 1f) * Time.deltaTime;     //삼항연산자 트루면 0.3 아니면 1
+        }
+            
+
         animator.SetBool("isRun", moveVec != Vector3.zero);
         animator.SetBool("isWalk", wDown);
     }
@@ -105,14 +120,25 @@ public class Player : MonoBehaviour
     void Turn()  //캐릭터 회전시켜주는 
     {
             transform.LookAt(transform.position + moveVec);
+
+        
     }
 
     void Attack()
     {
-     
-        if(fDown)
+        if (equipWeapon == null)      //무기만 있을 때 실행되도록 현재장비 체크
         {
-            animator.SetTrigger("doSwing");
+            return;
+        }
+
+        fireDelay += Time.deltaTime;    //공격딜레이에 시간을 더해주고 공격가능 여부를 확인
+        isFireReady = equipWeapon.rate < fireDelay;
+
+        if (fDown && isFireReady && !isDodge && !isSwap)
+        {
+            equipWeapon.Use();                   //public 선언해서 다른 스크립트에 있는 거 가져올수있다
+            animator.SetTrigger(equipWeapon.type == Weapon.Type.melee ? "doSwing" : "doShot");   //무기 타입에 따라 다른 트리거 실행 
+            fireDelay = 0;  //공격 딜레이 0으로 올려서 다음 공격까지 기다리도록 작성
         }
     }
 
@@ -206,6 +232,23 @@ public class Player : MonoBehaviour
             }
 
         }
+    }
+
+    void FreezeRotation()
+    {
+        PlayerRigid.angularVelocity = Vector3.zero;
+    }
+
+    void StopToWall()
+    {
+        Debug.DrawRay(transform.position, transform.forward * 10, Color.green);
+        isBorder = Physics.Raycast(transform.position, transform.forward, 3, LayerMask.GetMask("Wall"));
+    }
+
+    void FixedUpdate()
+    {
+        FreezeRotation();
+        StopToWall();
     }
 
 
