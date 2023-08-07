@@ -39,11 +39,7 @@ public class BinarySpacePartitioner
             roomWidthMin,
             roomLengthMin);
 
-        // 던전의 중심 계산하기
-        float centerDistance1 = Vector2.Distance(GetCenter(currentNode.BottomLeftAreaCorner, currentNode.TopRightAreaCorner), GetCenter(currentNode.BottomLeftAreaCorner, line.Coordinates));
-        float centerDistance2 = Vector2.Distance(GetCenter(currentNode.BottomLeftAreaCorner, currentNode.TopRightAreaCorner), GetCenter(line.Coordinates, currentNode.TopRightAreaCorner));
-
-
+      
         RoomNode node1, node2;
 
 

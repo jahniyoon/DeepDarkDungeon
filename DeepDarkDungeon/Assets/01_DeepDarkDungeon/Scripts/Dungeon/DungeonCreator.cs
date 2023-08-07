@@ -23,6 +23,15 @@ public class DungeonCreator : MonoBehaviour
 
     public GameObject Player;
     public int roomNum = 1;
+    private Vector3Int firstRoomCenterPosition; // 첫 번째 방의 중앙 위치
+    private bool isFirstRoomCreated = false;    // 첫 번째 방 생성 여부 확인 변수
+
+    public GameObject Exit;
+    private Vector3Int lastRoomCenterPosition; // 마지막 방의 중앙 위치
+    private bool isLastRoomCreated = false;    // 마지막 방의 생성 여부 확인 변수
+    private bool isExitCreate = false;
+
+
 
 
     [Range(0.0f, 0.4f)]                         
@@ -60,11 +69,10 @@ public class DungeonCreator : MonoBehaviour
         GameObject wallParent = new GameObject("WallParent");
         wallParent.transform.parent = transform;
       
-
-        possibleDoorVerticalPosition = new List<Vector3Int>();
-        possibleDoorHorizontalPosition = new List<Vector3Int>();
         possibleWallHorizontalPosition = new List<Vector3Int>();
         possibleWallVerticalPosition = new List<Vector3Int>();
+        possibleDoorVerticalPosition = new List<Vector3Int>();
+        possibleDoorHorizontalPosition = new List<Vector3Int>();
 
         // 생성된 방 개수와 정보 출력
         Debug.Log("Created Room Count: " + generator.CreatedRooms.Count);
@@ -75,11 +83,34 @@ public class DungeonCreator : MonoBehaviour
             roomNum++;
         }
 
+        // 첫 번째 방 생성 후 중앙 포지션 기록
+        if (!isFirstRoomCreated && generator.CreatedRooms.Count > 0)
+        {
+            RoomNode firstRoom = generator.CreatedRooms[0];
+            firstRoomCenterPosition = new Vector3Int(
+                (firstRoom.BottomLeftAreaCorner.x + firstRoom.TopRightAreaCorner.x) / 2,
+                0,
+                (firstRoom.BottomLeftAreaCorner.y + firstRoom.TopRightAreaCorner.y) / 2);
+
+            isFirstRoomCreated = true;
+        }
+        // 마지막 방 생성 후 중앙 포지션 기록
+        if (!isLastRoomCreated && generator.CreatedRooms.Count > 0)
+        {
+            RoomNode lastRoom = generator.CreatedRooms[generator.CreatedRooms.Count - 1];
+            lastRoomCenterPosition = new Vector3Int(
+                (lastRoom.BottomLeftAreaCorner.x + lastRoom.TopRightAreaCorner.x) / 2,
+                0,
+                (lastRoom.BottomLeftAreaCorner.y + lastRoom.TopRightAreaCorner.y) / 2);
+
+            isLastRoomCreated = true;
+        }
+
+
         // 각 방의 바닥 메쉬 생성
         for (int i = 0; i < listOfRooms.Count; i++)
         {
             CreateMesh(listOfRooms[i].BottomLeftAreaCorner, listOfRooms[i].TopRightAreaCorner);
-
         }
 
         // 벽 생성
@@ -137,8 +168,7 @@ public class DungeonCreator : MonoBehaviour
             {
                 Vector3 tileBottomLeft = new Vector3(bottomLeftV.x + x * tileSize, 0, bottomLeftV.z + z * tileSize);
                 Vector3 tileTopRight = new Vector3(tileBottomLeft.x + tileSize, 0, tileBottomLeft.z + tileSize);
-
-                CreateTile(tileBottomLeft, tileTopRight);
+                CreateTile(tileBottomLeft, tileTopRight);  
             }
         }
 
@@ -169,10 +199,29 @@ public class DungeonCreator : MonoBehaviour
         GameObject doorParent = new GameObject("DoorParent");
         doorParent.transform.parent = transform;
         CreateDoors(doorParent);
+
+
+        // 플레이어 위치 변경 및 활성화
+        GameObject player = Player;
+        if (player != null)
+        {
+            player.transform.position = firstRoomCenterPosition; // 첫 번째 방의 중앙 위치로 설정
+            player.SetActive(true); // 플레이어 오브젝트 활성화
+        }
+       
+        // 플레이어 위치 변경 및 활성화
+        GameObject exit = Exit; 
+        if (exit != null && !isExitCreate)
+        {
+            exit.transform.position = lastRoomCenterPosition; // 마지막 방의 중앙 위치로 설정
+            Instantiate(exit, exit.transform.position, Quaternion.identity);
+            isExitCreate = true;
+        }
+      
     }
     // } CreateMesh
 
-    
+    // 복도에 문들을 생성
     private void CreateDoors(GameObject doorParent)
     {
         foreach (var doorPosition in possibleDoorVerticalPosition)
@@ -184,11 +233,13 @@ public class DungeonCreator : MonoBehaviour
             CreateDoor(doorParent, doorPosition, DoorHorizontal);
         }
     }
+    // 문 생성
     private void CreateDoor(GameObject doorParent, Vector3Int doorPosition, GameObject doorPrefab)
     {
         Instantiate(doorPrefab, doorPosition, Quaternion.identity, doorParent.transform);
     }
 
+    // 바닥 생성
     private void CreateTile(Vector3 bottomLeft, Vector3 topRight)
     {
         Vector3[] vertices = new Vector3[]
@@ -204,7 +255,22 @@ public class DungeonCreator : MonoBehaviour
         dungeonFloor.transform.localScale = new Vector3(topRight.x - bottomLeft.x, 1, topRight.z - bottomLeft.z);
         dungeonFloor.transform.parent = transform;
 
-        // 기존 코드
+    } 
+    private void CreateExit(Vector3 bottomLeft, Vector3 topRight)
+    {
+        Vector3[] vertices = new Vector3[]
+        {
+            new Vector3(bottomLeft.x, 0, topRight.z),
+            new Vector3(topRight.x, 0, topRight.z),
+            new Vector3(bottomLeft.x, 0, bottomLeft.z),
+            new Vector3(topRight.x, 0, bottomLeft.z)
+        };
+
+        GameObject dungeonExit = Instantiate(Exit);
+        dungeonExit.transform.position = new Vector3((bottomLeft.x + topRight.x) / 2, 0, (bottomLeft.z + topRight.z) / 2);
+        dungeonExit.transform.localScale = new Vector3(topRight.x - bottomLeft.x, 1, topRight.z - bottomLeft.z);
+        dungeonExit.transform.parent = transform;
+
     }
 
     // 벽 위치 리스트에 추가
@@ -225,6 +291,10 @@ public class DungeonCreator : MonoBehaviour
     private void DestroyAllChildren()
     {
         roomNum = 1;
+        isFirstRoomCreated = false;
+        isLastRoomCreated = false;
+        isExitCreate = false;
+
         while(transform.childCount != 0)
         {
             foreach(Transform item in transform)
