@@ -137,6 +137,10 @@ public class DungeonCreator : MonoBehaviour
     private void CreateWall(GameObject wallParent, Vector3Int wallPosition, GameObject wallPrefab)
     {
         Instantiate(wallPrefab, wallPosition, Quaternion.identity, wallParent.transform);
+
+        int wallLayer = LayerMask.NameToLayer("Wall"); // 원하는 레이어 이름
+        wallPrefab.layer = wallLayer;
+
     }
     // } CreateWall
 
