@@ -18,11 +18,16 @@ public class DungeonCreator : MonoBehaviour
     
     public GameObject Floor;                           // 생성된 방의 바닥에 적용할 프리펩
     public float tileSize = 1.0f; // 각 타일의 크기
+    public GameObject DoorHorizontal;
+    public GameObject DoorVertical;
+
+    public GameObject Player;
+    public int roomNum = 1;
 
 
-    [Range(0.0f, 0.1f)]                         
+    [Range(0.0f, 0.4f)]                         
     public float roomBottomCornerModifier;             // 방의 아래쪽 코너를 형성하는데 사용되는 조정값
-    [Range(0.2f, 1.0f)]
+    [Range(0.5f, 1.0f)]
     public float roomTopCornerMidifier;                // 방의 위쪽 코너를 형성하는데 사용되는 조정값
     [Range(0, 2)]
     public int roomOffset;                             // 방의 간격 설정
@@ -54,6 +59,8 @@ public class DungeonCreator : MonoBehaviour
             corridorWidth);
         GameObject wallParent = new GameObject("WallParent");
         wallParent.transform.parent = transform;
+      
+
         possibleDoorVerticalPosition = new List<Vector3Int>();
         possibleDoorHorizontalPosition = new List<Vector3Int>();
         possibleWallHorizontalPosition = new List<Vector3Int>();
@@ -64,14 +71,15 @@ public class DungeonCreator : MonoBehaviour
         roomCountText.text = string.Format("Room Count : {0}", generator.CreatedRooms.Count);
         foreach (var room in generator.CreatedRooms)
         {
-            Debug.Log("Room Position: " + room.BottomLeftAreaCorner + " - " + room.TopRightAreaCorner);
-
+            Debug.Log(roomNum +" Room Position: " + room.BottomLeftAreaCorner + " - " + room.TopRightAreaCorner);
+            roomNum++;
         }
 
         // 각 방의 바닥 메쉬 생성
         for (int i = 0; i < listOfRooms.Count; i++)
         {
             CreateMesh(listOfRooms[i].BottomLeftAreaCorner, listOfRooms[i].TopRightAreaCorner);
+
         }
 
         // 벽 생성
@@ -119,23 +127,6 @@ public class DungeonCreator : MonoBehaviour
             bottomRightV
         };
 
-        Vector2[] uvs = new Vector2[vertices.Length];
-        for (int i = 0; i < uvs.Length; i++)
-        {
-            uvs[i] = new Vector2(vertices[i].x, vertices[i].z);
-        }
-
-        // 삼각형 설정
-        int[] triangles = new int[]
-        {
-            0,
-            1,
-            2,
-            2,
-            1,
-            3
-        };
-
         // 프리팹으로 바닥 생성
         int numTilesX = Mathf.FloorToInt((topRightV.x - bottomLeftV.x) / tileSize);
         int numTilesZ = Mathf.FloorToInt((topRightV.z - bottomLeftV.z) / tileSize);
@@ -151,27 +142,6 @@ public class DungeonCreator : MonoBehaviour
             }
         }
 
-
-        //// 메쉬 생성
-        //Mesh mesh = new Mesh();
-        //mesh.vertices = vertices;
-        //mesh.uv = uvs;
-        //mesh.triangles = triangles;
-
-        //// 메쉬 오브젝트 생성
-        //GameObject dungeonFloor = Instantiate(Floor);
-        //dungeonFloor.transform.position = new Vector3(bottomLeftV.x + ((topRightV.x - bottomLeftV.x) / 2), 0, bottomLeftV.z + ((topRightV.z - bottomLeftV.z) / 2));
-        //dungeonFloor.transform.localScale = new Vector3(topRightV.x - bottomLeftV.x, 1, topRightV.z - bottomLeftV.z);
-        //dungeonFloor.transform.parent = transform;
-
-
-        //GameObject dungeonFloor = new GameObject("Mesh" + bottomLeftCorner, typeof(MeshFilter), typeof(MeshRenderer));
-
-        //dungeonFloor.transform.position = Vector3.zero;
-        //dungeonFloor.transform.localScale = Vector3.one;
-        //dungeonFloor.GetComponent<MeshFilter>().mesh = mesh;
-        //dungeonFloor.GetComponent<MeshRenderer>().material = material;
-        //dungeonFloor.transform.parent = transform;
 
         //벽 위치 계산
         for (int row = (int)bottomLeftV.x; row < (int)bottomRightV.x; row++)
@@ -194,8 +164,30 @@ public class DungeonCreator : MonoBehaviour
             var wallPosition = new Vector3(bottomRightV.x, 0, col);
             AddWallPositionToList(wallPosition, possibleWallVerticalPosition, possibleDoorVerticalPosition);
         }
+
+        // 문 생성
+        GameObject doorParent = new GameObject("DoorParent");
+        doorParent.transform.parent = transform;
+        CreateDoors(doorParent);
     }
     // } CreateMesh
+
+    
+    private void CreateDoors(GameObject doorParent)
+    {
+        foreach (var doorPosition in possibleDoorVerticalPosition)
+        {
+            CreateDoor(doorParent, doorPosition, DoorVertical);
+        }
+        foreach (var doorPosition in possibleDoorHorizontalPosition)
+        {
+            CreateDoor(doorParent, doorPosition, DoorHorizontal);
+        }
+    }
+    private void CreateDoor(GameObject doorParent, Vector3Int doorPosition, GameObject doorPrefab)
+    {
+        Instantiate(doorPrefab, doorPosition, Quaternion.identity, doorParent.transform);
+    }
 
     private void CreateTile(Vector3 bottomLeft, Vector3 topRight)
     {
@@ -206,26 +198,6 @@ public class DungeonCreator : MonoBehaviour
             new Vector3(bottomLeft.x, 0, bottomLeft.z),
             new Vector3(topRight.x, 0, bottomLeft.z)
         };
-
-        Vector2[] uvs = new Vector2[vertices.Length];
-        for (int i = 0; i < uvs.Length; i++)
-        {
-            uvs[i] = new Vector2(vertices[i].x, vertices[i].z);
-        }
-
-        int[] triangles = new int[]
-        {
-            0,
-            1,
-            2,
-            2,
-            1,
-            3
-        };
-        Mesh mesh = new Mesh();
-        mesh.vertices = vertices;
-        mesh.uv = uvs;
-        mesh.triangles = triangles;
 
         GameObject dungeonFloor = Instantiate(Floor);
         dungeonFloor.transform.position = new Vector3((bottomLeft.x + topRight.x) / 2, 0, (bottomLeft.z + topRight.z) / 2);
@@ -252,6 +224,7 @@ public class DungeonCreator : MonoBehaviour
 
     private void DestroyAllChildren()
     {
+        roomNum = 1;
         while(transform.childCount != 0)
         {
             foreach(Transform item in transform)
@@ -260,4 +233,6 @@ public class DungeonCreator : MonoBehaviour
             }
         }
     }
+
+
 }

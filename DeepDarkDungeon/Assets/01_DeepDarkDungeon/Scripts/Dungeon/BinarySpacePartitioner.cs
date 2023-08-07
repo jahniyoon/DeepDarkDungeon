@@ -38,7 +38,15 @@ public class BinarySpacePartitioner
             currentNode.TopRightAreaCorner,
             roomWidthMin,
             roomLengthMin);
+
+        // 던전의 중심 계산하기
+        float centerDistance1 = Vector2.Distance(GetCenter(currentNode.BottomLeftAreaCorner, currentNode.TopRightAreaCorner), GetCenter(currentNode.BottomLeftAreaCorner, line.Coordinates));
+        float centerDistance2 = Vector2.Distance(GetCenter(currentNode.BottomLeftAreaCorner, currentNode.TopRightAreaCorner), GetCenter(line.Coordinates, currentNode.TopRightAreaCorner));
+
+
         RoomNode node1, node2;
+
+
         if(line.Orientation == Orientation.Horizontal)
         {
             node1 = new RoomNode(currentNode.BottomLeftAreaCorner,
@@ -63,6 +71,12 @@ public class BinarySpacePartitioner
         }
         AddNewNodeToCollections(listToReturn, graph, node1);
         AddNewNodeToCollections(listToReturn, graph, node2);
+    }
+
+    private Vector2 GetCenter(Vector2Int bottomLeft, Vector2Int topRight)
+    {
+        return new Vector2(bottomLeft.x + (topRight.x - bottomLeft.x) * 0.5f, bottomLeft.y + (topRight.y - bottomLeft.y) * 0.5f);
+
     }
 
     private void AddNewNodeToCollections(List<RoomNode> listToReturn, Queue<RoomNode> graph, RoomNode node)
@@ -116,4 +130,5 @@ public class BinarySpacePartitioner
         }
         return coordinates;
     }
+
 }
