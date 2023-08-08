@@ -148,12 +148,13 @@ public class Monster_SkeletonArcherController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag.Equals("melee"))
+        if (other.tag.Equals("Melee"))
         {
             Weapon weapon = other.GetComponent<Weapon>();
             curHealth -= weapon.damage;
             Vector3 reactVec = transform.position - other.transform.position;   //넉백
 
+            Debug.Log("한대 맞았다.");
             StartCoroutine(OnDamage(reactVec, false));
         }
         //else if (other.tag.Equals("Bullet"))

@@ -54,7 +54,7 @@ public class DungeonCreator : MonoBehaviour
     private Vector3Int firstRoomCenterPosition; // 첫 번째 방의 중앙 위치
     private Vector3Int lastRoomCenterPosition; // 마지막 방의 중앙 위치
     List<Vector3Int> enemyPositions;
-    List<Vector3Int> torchPositions;
+    List<Vector3> torchPositions;
 
     void Start()
     {
@@ -103,7 +103,7 @@ public class DungeonCreator : MonoBehaviour
 
         // 적 위치 리스트
         enemyPositions = new List<Vector3Int>();
-        torchPositions = new List<Vector3Int>();
+        torchPositions = new List<Vector3>();
 
 
         RoomData(generator);
@@ -169,14 +169,14 @@ public class DungeonCreator : MonoBehaviour
             RoomNode dungeonRoom = dungeonRooms[i];
 
             // 방의 모서리
-            Vector3Int TopLeftAreaCorner = new Vector3Int(
-                dungeonRoom.BottomLeftAreaCorner.x + 1, 0, dungeonRoom.TopRightAreaCorner.y - 1);
-            Vector3Int TopRightAreaCorner = new Vector3Int(
-               dungeonRoom.TopRightAreaCorner.x - 1, 0, dungeonRoom.TopRightAreaCorner.y - 1);
-            Vector3Int BottomLeftAreaCorner = new Vector3Int(
-                dungeonRoom.BottomLeftAreaCorner.x + 1, 0, dungeonRoom.BottomLeftAreaCorner.y + 1);
-            Vector3Int BottomRightAreaCorner = new Vector3Int(
-               dungeonRoom.TopRightAreaCorner.x - 1, 0, dungeonRoom.BottomLeftAreaCorner.y + 1);
+            Vector3 TopLeftAreaCorner = new Vector3(
+                dungeonRoom.BottomLeftAreaCorner.x + 0.5f, 0, dungeonRoom.TopRightAreaCorner.y - 0.5f);
+            Vector3 TopRightAreaCorner = new Vector3(
+               dungeonRoom.TopRightAreaCorner.x - 0.5f, 0, dungeonRoom.TopRightAreaCorner.y - 0.5f);
+            Vector3 BottomLeftAreaCorner = new Vector3(
+                dungeonRoom.BottomLeftAreaCorner.x + 0.5f, 0, dungeonRoom.BottomLeftAreaCorner.y + 0.5f);
+            Vector3 BottomRightAreaCorner = new Vector3(
+               dungeonRoom.TopRightAreaCorner.x - 0.5f, 0, dungeonRoom.BottomLeftAreaCorner.y + 0.5f);
 
             // 방의 모서리에 토치 생성
             torchPositions.Add(TopLeftAreaCorner);
@@ -368,7 +368,7 @@ public class DungeonCreator : MonoBehaviour
             CreateTorch(dungeonDecorationParent, torchPosition, torchPrefabs);
         }
     }
-    public void CreateTorch(GameObject torchParent, Vector3Int torchPosition, GameObject torchPrefabs)
+    public void CreateTorch(GameObject torchParent, Vector3 torchPosition, GameObject torchPrefabs)
     {
         GameObject newTorch = Instantiate(torchPrefabs, torchPosition, Quaternion.identity, torchParent.transform);
     }

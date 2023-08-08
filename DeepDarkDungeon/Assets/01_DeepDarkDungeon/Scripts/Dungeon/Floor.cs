@@ -30,6 +30,12 @@ public class Floor : MonoBehaviour
             //Debug.Log("바닥 중복 발생! floorOverlap = " + DungeonCreator.floorOverlap);
             DungeonCreator.floorOverlap = true;
         }
+        if (other.tag.Equals("Finish"))
+        {
+            floors[0].SetActive(false);
+            floors[1].SetActive(false);
+
+        }
 
     }
 
