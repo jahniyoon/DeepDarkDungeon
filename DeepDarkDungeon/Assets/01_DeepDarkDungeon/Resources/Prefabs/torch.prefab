@@ -127,6 +127,14 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 0.059
       objectReference: {fileID: 0}
+    - target: {fileID: 6065908312485665119, guid: 8fcb9d2d43929c04f8c70c38581418d4, type: 3}
+      propertyPath: m_Range
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 6065908312485665119, guid: 8fcb9d2d43929c04f8c70c38581418d4, type: 3}
+      propertyPath: m_Intensity
+      value: 1.2
+      objectReference: {fileID: 0}
     - target: {fileID: 6360420542244127404, guid: 8fcb9d2d43929c04f8c70c38581418d4, type: 3}
       propertyPath: prewarm
       value: 1
