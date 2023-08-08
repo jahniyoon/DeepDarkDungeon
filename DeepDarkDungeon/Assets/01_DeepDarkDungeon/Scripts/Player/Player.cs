@@ -241,7 +241,7 @@ public class Player : MonoBehaviour
 
     void StopToWall()
     {
-        Debug.DrawRay(transform.position, transform.forward * 10, Color.green);
+        Debug.DrawRay(transform.position, transform.forward * 1, Color.green);
         isBorder = Physics.Raycast(transform.position, transform.forward, 3, LayerMask.GetMask("Wall"));
     }
 
