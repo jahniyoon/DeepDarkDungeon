@@ -10,7 +10,7 @@ public class Enemy : MonoBehaviour                     //중요! navmesh는 static�
 
     public int maxHealth;
     public int curHealth;
-    public Transform target;
+    //public Transform target;
     public BoxCollider meleeArea;         
     public bool isChase;
     public bool isAttack;
@@ -52,7 +52,9 @@ public class Enemy : MonoBehaviour                     //중요! navmesh는 static�
     {
         if (nav.enabled)       //navi가 활성화되어있을때만
         {
-            nav.SetDestination(target.position);     //SetDestination 도착할 목표 위치 지정 함수 
+            GameObject target = GameObject.FindGameObjectWithTag("Player");
+
+            nav.SetDestination(target.transform.position);     //SetDestination 도착할 목표 위치 지정 함수 
             nav.isStopped = !isChase;     //isStopped을 사용하여 완벽하게 멈추도록
         }
 
