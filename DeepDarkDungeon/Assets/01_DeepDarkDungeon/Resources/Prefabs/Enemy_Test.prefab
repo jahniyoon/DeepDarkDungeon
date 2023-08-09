@@ -1246,7 +1246,6 @@ MonoBehaviour:
   enemyType: 1
   maxHealth: 50
   curHealth: 50
-  target: {fileID: 0}
   meleeArea: {fileID: 7754978843876545805}
   isChase: 0
   isAttack: 0
@@ -1342,7 +1341,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7754978843876545807
 Transform:
   m_ObjectHideFlags: 0

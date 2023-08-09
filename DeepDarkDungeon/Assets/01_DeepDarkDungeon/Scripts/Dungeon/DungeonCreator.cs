@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
+using Random = UnityEngine.Random;
 
 
 public class DungeonCreator : MonoBehaviour
@@ -52,12 +53,16 @@ public class DungeonCreator : MonoBehaviour
     public GameObject Exit;
     public GameObject enemyPrefabs;
     public GameObject torchPrefabs;
+    public GameObject boxPrefabs;
+    public GameObject chestPrefabs;
 
-
+    // 룸 데코레이션 리스트
     private Vector3Int firstRoomCenterPosition; // 첫 번째 방의 중앙 위치
     private Vector3Int lastRoomCenterPosition; // 마지막 방의 중앙 위치
     List<Vector3Int> enemyPositions;
     List<Vector3> torchPositions;
+    List<Vector3> boxPositions;
+    List<Vector3> chestPositions;
 
     void Start()
     {
@@ -91,7 +96,7 @@ public class DungeonCreator : MonoBehaviour
         possibleDoorVerticalPosition = new List<Vector3Int>();
         possibleDoorHorizontalPosition = new List<Vector3Int>();
 
-        // 생성될 프리팹 관리할 게임오브젝트
+        // 생성될 프리팹 관리할 게임오브젝트 생성
         GameObject wallParent = new GameObject("WallParent");
         wallParent.transform.parent = transform;
 
@@ -104,9 +109,11 @@ public class DungeonCreator : MonoBehaviour
         GameObject dungeonDecorationParent = new GameObject("DungeonDecorationParent");
         dungeonDecorationParent.transform.parent = transform;
 
-        // 적 위치 리스트
+        // 생성할 게임 오브젝트 위치 리스트
         enemyPositions = new List<Vector3Int>();
         torchPositions = new List<Vector3>();
+        boxPositions = new List<Vector3>();
+        chestPositions = new List<Vector3>();
 
 
         RoomData(generator);
@@ -121,11 +128,13 @@ public class DungeonCreator : MonoBehaviour
         CreateDoors();                  // 문 생성
         CreateExit();                   // 출구 생성
         CreateDungeonDecorations(dungeonDecorationParent);  // 던전 장식 생성
+
+
         surface.BuildNavMesh(); // NavMesh 업데이트 [움직이지 않는 것 들을 생성한 뒤 호출해야 함]
 
 
-        CreatePlayer();                 // 플레이어 생성
         CreateEnemies(enemyParent);     // 적 생성
+        CreatePlayer();                 // 플레이어 생성
 
 
     }
@@ -133,64 +142,115 @@ public class DungeonCreator : MonoBehaviour
     public void RoomData(DugeonGenerator generator)
     {
         // 생성된 방 개수와 정보 출력
-        //Debug.Log("Created Room Count: " + generator.CreatedRooms.Count);
         roomCountText.text = string.Format("Room Count : {0}", generator.CreatedRooms.Count);
+        //Debug.Log("Created Room Count: " + generator.CreatedRooms.Count);
         //foreach (var room in generator.CreatedRooms)
         //{
         //    Debug.Log(roomNum +" Room Position: " + room.BottomLeftAreaCorner + " - " + room.TopRightAreaCorner);
         //    roomNum++;
         //}
 
-        // 첫번째로 생성된 방의 위치는?
+        // 첫번째로 생성된 방의 위치는? => 플레이어 스폰 방
         RoomNode firstRoom = generator.CreatedRooms[0];
         firstRoomCenterPosition = new Vector3Int(
         (firstRoom.BottomLeftAreaCorner.x + firstRoom.TopRightAreaCorner.x) / 2,
         0,
         (firstRoom.BottomLeftAreaCorner.y + firstRoom.TopRightAreaCorner.y) / 2);
-
-        // 마지막으로 생성된 방의 위치는?  
+        
+        // 마지막으로 생성된 방의 위치는?  => 출구 방
         RoomNode lastRoom = generator.CreatedRooms[generator.CreatedRooms.Count - 1];
         lastRoomCenterPosition = new Vector3Int(
         (lastRoom.BottomLeftAreaCorner.x + lastRoom.TopRightAreaCorner.x) / 2,
         0,
         (lastRoom.BottomLeftAreaCorner.y + lastRoom.TopRightAreaCorner.y) / 2);
 
-        // 첫번째와 마지막 방을 제외한 방들을 위한 리스트 선언
+        // 방 리스트 선언
         List<RoomNode> dungeonRooms = generator.CreatedRooms;
-        for (int i = 1; i <= dungeonRooms.Count - 2; i++)
-        {
-            RoomNode dungeonRoom = dungeonRooms[i];
-
-            // 방의 중앙
-            Vector3Int centerPosition = new Vector3Int(
-                (dungeonRoom.BottomLeftAreaCorner.x + dungeonRoom.TopRightAreaCorner.x) / 2,
-                0,
-                (dungeonRoom.BottomLeftAreaCorner.y + dungeonRoom.TopRightAreaCorner.y) / 2);
-
-            // 방의 중앙에 몬스터 생성
-            enemyPositions.Add(centerPosition);
-        }
         for (int i = 0; i <= dungeonRooms.Count - 1; i++)
         {
             RoomNode dungeonRoom = dungeonRooms[i];
 
-            // 방의 모서리
-            Vector3 TopLeftAreaCorner = new Vector3(
-                dungeonRoom.BottomLeftAreaCorner.x + 0.5f, 0, dungeonRoom.TopRightAreaCorner.y - 0.5f);
-            Vector3 TopRightAreaCorner = new Vector3(
-               dungeonRoom.TopRightAreaCorner.x - 0.5f, 0, dungeonRoom.TopRightAreaCorner.y - 0.5f);
-            Vector3 BottomLeftAreaCorner = new Vector3(
-                dungeonRoom.BottomLeftAreaCorner.x + 0.5f, 0, dungeonRoom.BottomLeftAreaCorner.y + 0.5f);
-            Vector3 BottomRightAreaCorner = new Vector3(
-               dungeonRoom.TopRightAreaCorner.x - 0.5f, 0, dungeonRoom.BottomLeftAreaCorner.y + 0.5f);
+            CreateRoomCorner(dungeonRoom);
+            CreateRoomRandom(dungeonRoom);
+            CreateRoomChest(dungeonRoom);
 
-            // 방의 모서리에 토치 생성
-            torchPositions.Add(TopLeftAreaCorner);
-            torchPositions.Add(TopRightAreaCorner);
-            torchPositions.Add(BottomLeftAreaCorner);
-            torchPositions.Add(BottomRightAreaCorner);
 
+            // 첫번째 방과 마지막 방을 제외한 방에만 생성
+            if (1 <= i && i <= dungeonRooms.Count - 2)
+            {
+                CreateRoomCenter(dungeonRoom);
+            }
         }
+
+    }
+    // 방의 랜덤한 위치에 생성
+    private void CreateRoomRandom(RoomNode dungeonRoom)
+    {
+        int value = Random.Range(0, 3);
+        // 방의 랜덤한 위치에 생성
+        for (int i = 0; i < value; i++)
+        {
+            int randomPosX = Random.Range(dungeonRoom.BottomLeftAreaCorner.x + 1, dungeonRoom.TopRightAreaCorner.x - 1);
+            int randomPosY = Random.Range(dungeonRoom.BottomLeftAreaCorner.y + 1, dungeonRoom.TopRightAreaCorner.y - 1);
+
+            Vector3 randomArea = new Vector3(randomPosX, 0, randomPosY);
+            boxPositions.Add(randomArea);
+        }
+    }
+    private void CreateRoomChest(RoomNode dungeonRoom)
+    {
+        // 보물상자 생성
+        int chestValue = Random.Range(0, 6);
+        if (chestValue == 0) // 20% 확률로 생성
+        {
+            int randomPosX = Random.Range(dungeonRoom.BottomLeftAreaCorner.x + 1, dungeonRoom.TopRightAreaCorner.x - 1);
+            int randomPosY = Random.Range(dungeonRoom.BottomLeftAreaCorner.y + 1, dungeonRoom.TopRightAreaCorner.y - 1);
+
+            Vector3 chestPosition = new Vector3(randomPosX, 0, randomPosY);
+            chestPositions.Add(chestPosition);
+
+            //foreach (var nullCheck in boxPositions)
+            //{
+            //    if (nullCheck != chestArea)
+            //    {
+            //        Debug.Log("박스와 충돌하지 않음. 보물상자 생성");
+            //    }
+            //    else
+            //        Debug.Log("보물상자 박스와 충돌함");
+            //}
+        }
+    }
+
+    // 방의 중앙에 생성
+    private void CreateRoomCenter(RoomNode dungeonRoom)
+    {
+        // 방의 중앙
+        Vector3Int centerPosition = new Vector3Int(
+            (dungeonRoom.BottomLeftAreaCorner.x + dungeonRoom.TopRightAreaCorner.x) / 2,
+            0,
+            (dungeonRoom.BottomLeftAreaCorner.y + dungeonRoom.TopRightAreaCorner.y) / 2);
+
+        // 방의 중앙에 몬스터 생성
+        enemyPositions.Add(centerPosition);
+    }
+
+    // 방의 각 모서리 관리
+    private void CreateRoomCorner(RoomNode dungeonRoom)
+    {
+        Vector3 TopLeftAreaCorner = new Vector3(
+            dungeonRoom.BottomLeftAreaCorner.x + 0.5f, 0, dungeonRoom.TopRightAreaCorner.y - 0.5f);
+        Vector3 TopRightAreaCorner = new Vector3(
+           dungeonRoom.TopRightAreaCorner.x - 0.5f, 0, dungeonRoom.TopRightAreaCorner.y - 0.5f);
+        Vector3 BottomLeftAreaCorner = new Vector3(
+            dungeonRoom.BottomLeftAreaCorner.x + 0.5f, 0, dungeonRoom.BottomLeftAreaCorner.y + 0.5f);
+        Vector3 BottomRightAreaCorner = new Vector3(
+           dungeonRoom.TopRightAreaCorner.x - 0.5f, 0, dungeonRoom.BottomLeftAreaCorner.y + 0.5f);
+
+        // 방의 모서리에 토치 생성
+        torchPositions.Add(TopLeftAreaCorner);
+        torchPositions.Add(TopRightAreaCorner);
+        torchPositions.Add(BottomLeftAreaCorner);
+        torchPositions.Add(BottomRightAreaCorner);
     }
 
     // 각 방의 메쉬 생성
@@ -245,8 +305,6 @@ public class DungeonCreator : MonoBehaviour
             var wallPosition = new Vector3(bottomRightV.x, 0, col);
             AddWallPositionToList(wallPosition, possibleWallVerticalPosition, possibleDoorVerticalPosition);
         }
-
-      
     }
 
     // 바닥 생성
@@ -301,8 +359,6 @@ public class DungeonCreator : MonoBehaviour
     private void CreateWall(GameObject wallParent, Vector3Int wallPosition, GameObject wallPrefab)
     {
         GameObject newWall = Instantiate(wallPrefab, wallPosition, Quaternion.identity, wallParent.transform);
-        //int wallLayer = LayerMask.NameToLayer("Wall");
-        //newWall.layer = wallLayer;
     }
 
     // 복도에 문 생성
@@ -351,36 +407,53 @@ public class DungeonCreator : MonoBehaviour
         }
     }
 
+    // 적 리스트 생성
     public void CreateEnemies(GameObject enemyParent)
     {
         foreach (var enemyPosition in enemyPositions)
         {
             CreateEnemy(enemyParent, enemyPosition, enemyPrefabs);
         }
-        //GameObject enemy = Enemy;
-        //if (enemy != null)
-        //{
-        //    enemy.transform.position = lastRoomCenterPosition; // 마지막 방의 중앙 위치로 설정
-        //    GameObject Enemies = Instantiate(enemy, enemy.transform.position, Quaternion.identity);
-        //    Enemies.transform.parent = transform;
-        //}
     }
+    // 적 생성
     public void CreateEnemy(GameObject enemyParent, Vector3Int enemyPosition, GameObject enemyPrefabs)
     {
         GameObject newEnemy = Instantiate(enemyPrefabs, enemyPosition, Quaternion.identity, enemyParent.transform);
     }
 
+    // 던전 데코레이션 생성
     public void CreateDungeonDecorations(GameObject dungeonDecorationParent)
     {
         foreach (var torchPosition in torchPositions)
         {
             CreateTorch(dungeonDecorationParent, torchPosition, torchPrefabs);
         }
+        foreach (var boxPosition in boxPositions)
+        {
+            CreateBox(dungeonDecorationParent, boxPosition, boxPrefabs);
+        }
+        foreach (var chestPosition in chestPositions)
+        {
+            CreateChest(dungeonDecorationParent, chestPosition, chestPrefabs);
+        }
+
     }
-    public void CreateTorch(GameObject torchParent, Vector3 torchPosition, GameObject torchPrefabs)
+    // 토치 생성
+    public void CreateTorch(GameObject dungeonDecorationParent, Vector3 torchPosition, GameObject torchPrefabs)
     {
-        GameObject newTorch = Instantiate(torchPrefabs, torchPosition, Quaternion.identity, torchParent.transform);
+        GameObject newTorch = Instantiate(torchPrefabs, torchPosition, Quaternion.identity, dungeonDecorationParent.transform);
     }
+    // 박스 생성
+    public void CreateBox(GameObject dungeonDecorationParent, Vector3 boxPosition, GameObject boxPrefabs)
+    {
+        GameObject newBox = Instantiate(boxPrefabs, boxPosition, Quaternion.identity, dungeonDecorationParent.transform);
+    }
+    // 보물상자 생성
+    public void CreateChest(GameObject dungeonDecorationParent, Vector2 chestPosition, GameObject chestPrefabs)
+    {
+        GameObject newChest = Instantiate(chestPrefabs, chestPosition, Quaternion.identity, dungeonDecorationParent.transform);
+    }
+
 
     // 던전 생성기 초기화
     private void DestroyAllChildren()

@@ -157,7 +157,7 @@ public class Enemy : MonoBehaviour                     //중요! navmesh는 static�
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag.Equals("melee"))
+        if (other.tag.Equals("Melee"))
         {
             Weapon weapon = other.GetComponent<Weapon>();
             curHealth -= weapon.damage;
@@ -205,7 +205,7 @@ public class Enemy : MonoBehaviour                     //중요! navmesh는 static�
 
             nav.enabled = false;      //사망 리액션 유지하기 위해서
 
-            anim.SetTrigger("doDie");
+            //anim.SetTrigger("doDie");
 
             if (isGrenade)
             {
