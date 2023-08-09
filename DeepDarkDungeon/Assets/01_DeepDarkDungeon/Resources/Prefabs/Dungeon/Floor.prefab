@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6782636996584472847}
   - component: {fileID: 348279610570038561}
   - component: {fileID: 3916470281256480660}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Floor
   m_TagString: Floor
   m_Icon: {fileID: 0}
@@ -88,6 +88,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 6782636996584472846}
     m_Modifications:
     - target: {fileID: 1458011744207804391, guid: 5ed4b8c33fe1f4d4a9efe1a1da662967, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1458011744207804391, guid: 5ed4b8c33fe1f4d4a9efe1a1da662967, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
@@ -138,6 +142,10 @@ PrefabInstance:
     - target: {fileID: 2901976647230440167, guid: 5ed4b8c33fe1f4d4a9efe1a1da662967, type: 3}
       propertyPath: m_Name
       value: FloorObs2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2901976647230440167, guid: 5ed4b8c33fe1f4d4a9efe1a1da662967, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 2901976647230440167, guid: 5ed4b8c33fe1f4d4a9efe1a1da662967, type: 3}
       propertyPath: m_IsActive
@@ -215,12 +223,20 @@ PrefabInstance:
       value: FloorObs1
       objectReference: {fileID: 0}
     - target: {fileID: 5744873654628243213, guid: e1c13e03a217c4748a713fb33226e61b, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5744873654628243213, guid: e1c13e03a217c4748a713fb33226e61b, type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5744873654628243213, guid: e1c13e03a217c4748a713fb33226e61b, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 8342889382174327309, guid: e1c13e03a217c4748a713fb33226e61b, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 8342889382174327309, guid: e1c13e03a217c4748a713fb33226e61b, type: 3}
       propertyPath: m_StaticEditorFlags

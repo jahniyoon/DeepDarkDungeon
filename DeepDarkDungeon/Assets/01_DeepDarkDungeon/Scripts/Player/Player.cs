@@ -17,6 +17,8 @@ public class Player : MonoBehaviour
     public int maxCoin;
     public int maxHealth;
 
+    public float distance;
+
     float hAxis;
     float vAxis;
 
@@ -241,8 +243,12 @@ public class Player : MonoBehaviour
 
     void StopToWall()
     {
-        Debug.DrawRay(transform.position, transform.forward * 1, Color.green);
-        isBorder = Physics.Raycast(transform.position, transform.forward, 3, LayerMask.GetMask("Wall"));
+        // 레이 위치 조정
+        float playerEye = 0.3f;
+        Vector3 PlayerPosition = new Vector3 (transform.position.x, playerEye, transform.position.z);
+
+        Debug.DrawRay(PlayerPosition, transform.forward * distance, Color.green);
+        isBorder = Physics.Raycast(PlayerPosition, transform.forward, distance, LayerMask.GetMask("Wall"));
     }
 
     void FixedUpdate()
