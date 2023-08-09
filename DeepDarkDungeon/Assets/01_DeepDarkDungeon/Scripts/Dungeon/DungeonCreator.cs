@@ -139,6 +139,8 @@ public class DungeonCreator : MonoBehaviour
 
     }
     // } CreateDungeon()
+
+    #region 방 구성 관리 메서드
     public void RoomData(DugeonGenerator generator)
     {
         // 생성된 방 개수와 정보 출력
@@ -253,6 +255,7 @@ public class DungeonCreator : MonoBehaviour
         torchPositions.Add(BottomRightAreaCorner);
     }
 
+#endregion
     // 각 방의 메쉬 생성
     private void CreateMesh(Vector2 bottomLeftCorner, Vector2 topRightCorner, GameObject floorParent)
     {
@@ -326,7 +329,7 @@ public class DungeonCreator : MonoBehaviour
     }
 
 
-
+    #region 벽 생성 메서드
     // 벽 위치 리스트에 추가
     private void AddWallPositionToList(Vector3 wallPosition, List<Vector3Int> wallList, List<Vector3Int> doorList)
     {
@@ -360,7 +363,9 @@ public class DungeonCreator : MonoBehaviour
     {
         GameObject newWall = Instantiate(wallPrefab, wallPosition, Quaternion.identity, wallParent.transform);
     }
+    #endregion
 
+    #region 문 생성 메서드
     // 복도에 문 생성
     private void CreateDoors()
     {
@@ -382,6 +387,7 @@ public class DungeonCreator : MonoBehaviour
         Instantiate(doorPrefab, doorPosition, Quaternion.identity, doorParent.transform);
     }
 
+    #endregion
 
     // 플레이어 생성
     public void CreatePlayer()
@@ -438,6 +444,7 @@ public class DungeonCreator : MonoBehaviour
         }
 
     }
+
     // 토치 생성
     public void CreateTorch(GameObject dungeonDecorationParent, Vector3 torchPosition, GameObject torchPrefabs)
     {
@@ -449,12 +456,13 @@ public class DungeonCreator : MonoBehaviour
         GameObject newBox = Instantiate(boxPrefabs, boxPosition, Quaternion.identity, dungeonDecorationParent.transform);
     }
     // 보물상자 생성
-    public void CreateChest(GameObject dungeonDecorationParent, Vector2 chestPosition, GameObject chestPrefabs)
+    public void CreateChest(GameObject dungeonDecorationParent, Vector3 chestPosition, GameObject chestPrefabs)
     {
         GameObject newChest = Instantiate(chestPrefabs, chestPosition, Quaternion.identity, dungeonDecorationParent.transform);
     }
 
 
+    #region 던전 생성 초기화 메서드
     // 던전 생성기 초기화
     private void DestroyAllChildren()
     {
@@ -479,5 +487,5 @@ public class DungeonCreator : MonoBehaviour
             yield return null; // 한 프레임 대기
         }
     }
-
+    #endregion
 }
