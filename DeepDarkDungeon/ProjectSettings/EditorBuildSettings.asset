@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/01_DeepDarkDungeon/Scenes/TitleScene.unity
+    guid: 71c99fe315e28254b94935caff29670c
+  - enabled: 1
     path: Assets/01_DeepDarkDungeon/Scenes/DungeonScene.unity
     guid: f44f9d62b33f9884ba7f2c9e017a8c4c
   m_configObjects: {}
