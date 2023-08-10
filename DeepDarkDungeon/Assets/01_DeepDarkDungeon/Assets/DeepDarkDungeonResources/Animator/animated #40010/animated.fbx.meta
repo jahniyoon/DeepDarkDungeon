@@ -16,7 +16,8 @@ ModelImporter:
     optimizeGameObjects: 0
     removeConstantScaleCurves: 1
     motionNodeName: 
-    rigImportErrors: 
+    rigImportErrors: "Invalid Avatar Rig Configuration. Missing or invalid transform:\n\tRequired
+      human bone 'RightLowerLeg' not found\n"
     rigImportWarnings: 
     animationImportErrors: 
     animationImportWarnings: 
@@ -24,7 +25,7 @@ ModelImporter:
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
     importConstraints: 0
-    animationCompression: 1
+    animationCompression: 3
     animationRotationError: 0.5
     animationPositionError: 0.5
     animationScaleError: 0.5
@@ -80,7 +81,72 @@ ModelImporter:
   humanDescription:
     serializedVersion: 3
     human: []
-    skeleton: []
+    skeleton:
+    - name: animated(Clone)
+      parentName: 
+      position: {x: 0.0091, y: 0.0464, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: animated
+      parentName: animated(Clone)
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: body
+      parentName: animated
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: body
+      parentName: body
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: -0.7071068, y: -0.00000005960465, z: 0.00000008940697, w: 0.7071067}
+      scale: {x: 1, y: 1, z: 1}
+    - name: huge skeleton arm (1)
+      parentName: animated
+      position: {x: -0.011000001, y: 0.001199994, z: -0.025999999}
+      rotation: {x: -0.11530114, y: -0.030271685, z: 0.048796035, w: 0.9916695}
+      scale: {x: 1, y: 1, z: 1}
+    - name: default
+      parentName: huge skeleton arm (1)
+      position: {x: -0.002, y: -0.010299986, z: 0}
+      rotation: {x: 0.000000029802322, y: -0.00000008658904, z: 0.000000063629074, w: 1}
+      scale: {x: -1, y: 1, z: 1}
+    - name: huge skeleton arm
+      parentName: animated
+      position: {x: 0.011000008, y: -0.0004999995, z: -0.025999999}
+      rotation: {x: -0.59337044, y: 0, z: -0, w: 0.80492955}
+      scale: {x: 1, y: 1, z: 1}
+    - name: huge skeleton weapon
+      parentName: huge skeleton arm
+      position: {x: 0.00000024318695, y: -0.0076999995, z: 0.0073999986}
+      rotation: {x: 0.40545785, y: -0.000000032468595, z: -0.000000010010661, w: 0.91411376}
+      scale: {x: 1, y: 1, z: 1}
+    - name: default
+      parentName: huge skeleton weapon
+      position: {x: -0, y: 0.02338, z: -0.000080000005}
+      rotation: {x: 0.50000006, y: -0.49999994, z: -0.5, w: -0.5}
+      scale: {x: 1, y: 1, z: 1}
+    - name: default
+      parentName: huge skeleton arm
+      position: {x: 0.002, y: -0.01029999, z: 0}
+      rotation: {x: 0.000000029802322, y: -0.00000008658904, z: 0.000000063629074, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: attackBox
+      parentName: animated
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: hitBox
+      parentName: animated
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: characterCollider
+      parentName: animated
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
     armTwist: 0.5
     foreArmTwist: 0.5
     upperLegTwist: 0.5
@@ -97,7 +163,7 @@ ModelImporter:
   autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 2
   humanoidOversampling: 1
-  avatarSetup: 0
+  avatarSetup: 1
   addHumanoidExtraRootOnlyWhenUsingAvatar: 1
   remapMaterialsIfMaterialImportModeIsNone: 0
   additionalBone: 0
