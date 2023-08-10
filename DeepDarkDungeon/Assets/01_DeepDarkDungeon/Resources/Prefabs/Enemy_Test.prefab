@@ -1182,7 +1182,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &7788273339516989852
 Transform:
   m_ObjectHideFlags: 0
@@ -1250,6 +1250,7 @@ MonoBehaviour:
   isChase: 0
   isAttack: 0
   jumpForce: 10
+  meshs: []
 --- !u!195 &7754978843292374893
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -1506,6 +1507,10 @@ PrefabInstance:
     - target: {fileID: 3337652539452712467, guid: 86e52ee0d7113da439145140c4a882d0, type: 3}
       propertyPath: m_Name
       value: Monster_AlphaLycan
+      objectReference: {fileID: 0}
+    - target: {fileID: 3337652539452712467, guid: 86e52ee0d7113da439145140c4a882d0, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 86e52ee0d7113da439145140c4a882d0, type: 3}

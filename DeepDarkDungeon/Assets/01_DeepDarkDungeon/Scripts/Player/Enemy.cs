@@ -20,7 +20,8 @@ public class Enemy : MonoBehaviour                     //Áß¿ä! navmesh´Â static¿
     Rigidbody rigid;
     BoxCollider boxCollider;
     //Material mat;
-    Material mat2;
+    //Material mat2;
+    public MeshRenderer[] meshs;  //
 
     NavMeshAgent nav;    //À§¿¡ ³×ÀÓ½ºÆäÀÌ½º aiÃß°¡ÇØ¾ßÇÑ´Ù
 
@@ -35,7 +36,8 @@ public class Enemy : MonoBehaviour                     //Áß¿ä! navmesh´Â static¿
         
         nav = GetComponent<NavMeshAgent>();
         anim = GetComponent<Animator>();
-        mat2 = GetComponentInChildren<SkinnedMeshRenderer>().material;
+        //mat2 = GetComponentInChildren<SkinnedMeshRenderer>().material;
+        meshs = GetComponentsInChildren<MeshRenderer>();  // MaterialÀº MeshRenderer·Î °¡Á®¿Í¾ßµÈ´Ù
 
         Invoke("ChaseStart", 2);
     }
@@ -186,20 +188,32 @@ public class Enemy : MonoBehaviour                     //Áß¿ä! navmesh´Â static¿
 
     IEnumerator OnDamage(Vector3 reactVec, bool isGrenade)
     {
-       // mat.color = Color.red;
-        mat2.color = Color.red;
+        // mat.color = Color.red;
+        //mat2.color = Color.red;
+        foreach (MeshRenderer mesh in meshs)
+        {
+            mesh.material.color = Color.red;
+        }
 
         yield return new WaitForSeconds(0.1f);
 
         if (curHealth > 0)
         {
             //mat.color = Color.white;
-            mat2.color = Color.white;
+            //mat2.color = Color.white;
+            foreach (MeshRenderer mesh in meshs)
+            {
+                mesh.material.color = Color.white;
+            }
         }
         else
         {
             //mat.color = Color.gray;
-            mat2.color = Color.gray;
+            //mat2.color = Color.gray;
+            foreach (MeshRenderer mesh in meshs)
+            {
+                mesh.material.color = Color.gray;
+            }
             gameObject.layer = 14;
             isChase = false;
 
