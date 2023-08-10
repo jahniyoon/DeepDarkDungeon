@@ -205,21 +205,24 @@ public class DungeonCreator : MonoBehaviour
         int chestValue = Random.Range(0, 6);
         if (chestValue == 0) // 20% 확률로 생성
         {
+            bool boxCheck = false;
             int randomPosX = Random.Range(dungeonRoom.BottomLeftAreaCorner.x + 1, dungeonRoom.TopRightAreaCorner.x - 1);
             int randomPosY = Random.Range(dungeonRoom.BottomLeftAreaCorner.y + 1, dungeonRoom.TopRightAreaCorner.y - 1);
 
             Vector3 chestPosition = new Vector3(randomPosX, 0, randomPosY);
-            chestPositions.Add(chestPosition);
 
-            //foreach (var nullCheck in boxPositions)
-            //{
-            //    if (nullCheck != chestArea)
-            //    {
-            //        Debug.Log("박스와 충돌하지 않음. 보물상자 생성");
-            //    }
-            //    else
-            //        Debug.Log("보물상자 박스와 충돌함");
-            //}
+            foreach (var nullCheck in boxPositions) //  박스위치와 충돌하는지 체크
+            {
+                if (nullCheck == chestPosition)
+                {
+                    Debug.Log("보물상자 박스와 충돌. 생성하지 않습니다.");
+                    boxCheck = true;
+                }
+            }
+            if (boxCheck == false)
+            {
+                chestPositions.Add(chestPosition);
+            }
         }
     }
 

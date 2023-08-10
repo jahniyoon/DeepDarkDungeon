@@ -1,0 +1,52 @@
+아이템 키,아이템 이름,아이템 설명
+potion,붉은 물약,
+throwing_dagger,투척용 단검,
+bomb,폭탄,
+key,열쇠,
+coin,동전,
+fireball_scroll,화염구 주문서,
+ice_javelin,얼음창 주문서,
+,,
+armor,구미의 갑옷,방어력 증가
+boots,인내의 신발,스태미나 증가
+wingshoe,신속의 샌들,이동속도 증가
+fire_cloak,불연성 망토,화염 피해 반감
+sweater,따듯한 스웨터,냉기 피해 반감
+headband,저주받은 힘의 머리띠,"체력 감소, 공격력 증가"
+vamp,활력을 훔치는 반지,생명력 흡수
+ironboots,쓰러지지 않는 정력의 강철부츠,스턴 저항 증가
+potionbag,회복약 가방,회복약 휴대량 +2
+bracer,신속한 공격의 손목 보호대,공격속도 증가
+glasses,잘 보이는 안경,멋져보임
+armor2,석상 전사의 무거운 갑옷,"방어력 증가, 느려짐"
+belt,엄청난 힘의 벨트,"공격력 증가, 느려짐"
+weaponbag,칼집 벨트,무기 휴대량 +1
+,,
+basicDualSword,쌍검,
+goldDualSword,금빛 쌍검,
+basicGiantSword,거대한 검,
+goldGiantSword,금빛 대검,
+basicHammer,해머와 방패,
+goldHammer,금빛 해머와 방패,
+basicJavelin,자벨린,
+goldJavelin,금빛 자벨린,
+leek,싱싱한 파,
+guitar,기타,
+elec_guitar,일렉트릭 기타,
+boxing,복싱 글러브,
+frypan,후라이팬,
+musket,머스킷,
+bow,활과 화살,
+staff,육척봉,
+lance,랜스,
+book,책,
+whip,채찍,
+switch,회초리,
+fan,부채,
+crowbar,빠루,
+tomahawk,토마호크,
+glave,언월도,
+katana,카타나,
+magical_katana,전설의 우도니지,
+bomb_weapon,불붙은 덩어리,
+flail,사슬 철퇴,

@@ -1,0 +1,103 @@
+키값,내용
+newGame,새 게임
+profile,프로필 관리
+option,설정
+credits,만든 사람들
+exit,게임 종료
+pause,- 일시정지 -
+resume,계속하기
+backToMain,메인 메뉴로
+continue,이어하기
+retry,재도전
+failed,당신은 실패했습니다.
+playerIn,"프로필 선택 <quad class=""btn_select"">
+새 프로필 만들기 <quad class=""btn_use"">
+나가기 <quad class=""btn_cancel"">"
+skills,"준비 완료 <quad class=""btn_select"">
+스킬 습득하기 <quad class=""btn_use"">
+프로필 선택창으로 <quad class=""btn_cancel"">"
+newProfile,"문자 선택 <quad class=""btn_select"">
+나가기 <quad class=""btn_cancel"">"
+ready,"준비 취소 <quad class=""btn_cancel"">"
+newProfile_normal,새 프로필의 이름을 입력해 주세요
+newProfile_repetition,이미 사용된 이름입니다
+newProfile_short,너무 짧은 이름입니다
+tutorial_evade,"<quad class=""btn_evade""> 회피
+회피 직후에는 무적"
+tutorial_atk,"<quad class=""btn_atk""> 연타해서 연속 공격"
+tutorial_smash,"<quad class=""btn_smash""> <b>누르고 있으면</b> 모으기 공격
+<b>토마호크</b>의 모으기 공격으로 레버 작동시키기"
+tutorial_getItem,"<quad class=""btn_use""> 회복약 획득
+<quad class=""btn_use""> <b>누르고 있으면</b> 회복약 사용"
+tutorial_useItem,"<quad class=""btn_use""> 무기 획득
+<quad class=""btn_swp""> 무기 교체"
+swp_keyboard,"무기 교체 <quad class=""btn_swp"">"
+swp_xbox,"<quad class=""rb""> 무기 교체"
+atk_keyboard,"연속 공격 <quad class=""btn_atk"">"
+atk_xbox,"<quad class=""x""> 연속 공격"
+use_keyboard,"아이템 획득 / 길게 눌러 체력 회복 <quad class=""btn_use"">"
+use_xbox,"<quad class=""y""> 아이템 획득 / 길게 눌러 체력 회복"
+evade_keyboard,"회피 <quad class=""btn_evade"">"
+evade_xbox,"<quad class=""a""> 회피"
+smash_keyboard,"모으기 공격 <quad class=""btn_smash"">"
+smash_xbox,"<quad class=""b""> 모으기 공격"
+killed_skeletonKnight,스켈레톤 기사를 처치
+totalKarma,총 획득 카르마
+levelClear,{0}층 클리어 보너스
+get_multi,던전에서 획득 / {0}명
+get_solo,던전에서 획득
+toNextFloor,"<quad class=""btn_use""> 다음 층으로"
+openDoor,"<quad class=""btn_use""> 문 열기"
+cannotOpenDoor,이 문을 열려면 열쇠가 필요하다.
+doorInto,"<quad class=""btn_use""> 들어가기"
+upgrade,"<quad class=""btn_use""> {0} 강화
+<quad class=""gold""> {1}"
+upgradeDisabled,"{0} 강화
+<quad class=""gold""> <color=red>{1}</color>"
+upgradeMax,"{0} 강화
+<color=red>최대로 강화되어 있다</color>"
+upgradeMaxThisFloor,"{0} 강화
+<color=red>여기서는 더이상 강화할 수 없다</color>"
+getItem,"<quad class=""btn_use""> {0} 획득"
+getItemWithInfo,"<quad class=""btn_use""> {0} 획득
+<size=18><color=silver>{1}</color></size>"
+buyItem,"<quad class=""btn_use""> {0} 구매
+<quad class=""gold""> {1}"
+buyItemWithInfo,"<quad class=""btn_use""> {0} 구매
+<size=18><color=silver>{1}</color></size>
+<quad class=""gold""> {2}"
+buyItemDisabled,"<quad class=""btn_use""> {0} 구매
+<quad class=""gold""> <color=red>{1}</color>"
+maxPotion,"{0} 획득
+<color=red>더이상 소지할 수 없다</color>"
+maxPotionBuy,"{0} 구매
+<color=red>더이상 소지할 수 없다</color>"
+continueMessage,"<quad class=""btn_select""> 키를 눌러 부활
+비용 <quad class=""karma""> {0}"
+useItem_accessory,{0} 착용
+useItem_weapon,{0}
+useItem_throw,{0} 사용
+useItem_potion,{0} 마시기
+zoneDoor,어딘가 이 문을 열 수 있는 장치가 있을 것 같다
+dialogueUnskippable,"<quad class=""btn_select""> 계속
+"
+dialogueSkippable,"<quad class=""btn_select""> 계속
+<quad class=""btn_cancel""> 넘기기"
+buyMedal,"<quad class=""btn_use""> {0} 구매
+<size=18><color=silver>{1}</color></size>
+<quad class=""karma""> 1"
+buyMedalKarma,"{0} 구매
+<quad class=""karma""> <color=red>부족</color>"
+buyMedalAlready,"{0} 구매
+<color=red>이미 가지고 있다</color>"
+knightSkeleton,리듬의 기사
+blueKnightSkeleton,블루스의 기사
+lich,이끼 낀 유령 마법사
+shieldGoblin,고블린 방패병
+ninjaGoblin,고블린 암살자
+mageGoblin,고블린 마법사
+snowman,두꺼운손 설인
+greatLavaWorm,거대 용암벌레
+dragon,불꽃 드래곤
+kingOfChess,왕
+queenOfChess,여왕

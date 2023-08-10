@@ -1,0 +1,26 @@
+무기이름,무기종류,오른손 모델,왼손 모델,기본 이펙트,작은 이펙트,구분
+basicDualSword,dualSword,dualSword_r,dualSword_l,,,box
+goldDualSword,dualSword,goldDualSword_r,goldDualSword_l,,,unfinished
+basicGiantSword,giantSword,giantSword,,,,box
+goldGiantSword,giantSword,goldGiantSword,,,,unfinished
+basicHammer,hammer,hammer,shield,,,box
+goldHammer,hammer,goldHammer,goldShield,,,unfinished
+basicJavelin,javelin,javelin,,,,box
+goldJavelin,javelin,goldJavelin,,,,unfinished
+katana,katana,katana,,,,box
+leek,leek,Leek,,,,unfinished
+guitar,guitar,Guitar,,,,unfinished
+boxing,boxing,Boxing Gloves right,Boxing Gloves left,,,unfinished
+frypan,frypan,Frypan,fried egg,,,box
+musket,musket,Musket,,,,box
+bow,bow,Bow half,Arrow,,,box
+staff,staff,Quarterstaff,,,,box
+lance,lance,Lance,shield,,,box
+book,book,Book Part,,,,unfinished
+whip,whip,Whip handle,,,,box
+switch,swtch,switch,,,,box
+fan,fan,Fan Part,Fan Part (1),,,box
+crowbar,crowbar,crowbar,,,,box
+tomahawk,tomahawk,tomahawk,tomahawk,,,box
+glave,glave,glave,,,,box
+flail,flail,Flail,,,,box

@@ -1,0 +1,86 @@
+대화,화자,대사
+tutorial0,tuna,"오, 자네가 새로온 용병이군."
+tutorial0,tuna,싸우는 법은 알고 가는건가? 내가 도와주지.
+tutorial0,tuna,"<quad class=""btn_atk""> 키를 연타하면 연속 공격을 할 수 있다네."
+tutorial0,tuna,실력 좀 보지! 이것들을 쓰러트려 보게!
+tutorial1,tuna,힘들던가? 회복약을 주지.
+tutorial2,tuna,"회복약 위에서 <quad class=""btn_use""> 키를 누르면|회복약을 얻을 수 있네."
+tutorial2,tuna,"<color=white><b><quad class=""btn_use""> 누르고 있기</b></color>로 회복약을|사용해서 체력을 회복할 수 있지."
+tutorial3,tuna,다음 레슨은 멀리 있는 레버를 작동시키는 걸세!
+tutorial3,tuna,흠… 그런데 자네 멀리있는 레버를|작동시킬 무기가 없는것 같군?
+tutorial4,tuna,이걸 쓰게.
+tutorial4,tuna,"무기 위에서 <quad class=""btn_use""> 키를 누르면 무기를 주울 수 있다네."
+tutorial4,tuna,"<quad class=""btn_swp""> 를 눌러서 사용할 무기를 바꿀 수 있네."
+tutorial5,tuna,저기 있는 레버를 작동시키면|던전으로 들어갈 길이 열리지.
+tutorial5,tuna,내가 방금 준 토마호크는|모으기 공격으로 도끼를 던질 수 있다네.
+tutorial6,tuna,모으기 공격으로 레버를 맞춰 보게.
+tutorial6,tuna,"모으기 공격은 <color=white><b><quad class=""btn_smash""> 누르고 있기</b></color>로 할 수 있다네."
+tutorial6,tuna,무기에 따라 모으던 중간에 떼면|다른 공격이 나가기도 하지.
+tutorial7,tuna,이제 이 복도를 지나 계단으로 내려가면 된다네.
+tutorial7,tuna,"아, 저 불덩어리들은 별거 아니야.|불덩어리에 맞기 직전에 <quad class=""btn_evade""> 키를 눌러서 피하면 돼."
+tutorial7,tuna,"사용하는 무기마다 동작은 달라도,|<quad class=""btn_evade""> 키로 회피를 사용한 직후에는 피해를 받지 않는다네."
+tutorial8,tuna,이제 싸우는건 자신있나?
+tutorial8,tuna,메뉴 버튼을 눌러서 언제든 조작법을 확인해 보게.
+tutorial8,tuna,그럼 안녕일세!|금화를 아주 많이 벌어오게나!
+rnb0,red,대단하군.
+rnb0,red,이곳까지 다다를 줄이야.
+rnb0,blue,첫 방에 발을 디딜 인간부터 흔치 않은데 말이야.
+rnb1,blue,하지만 탐욕스러움도 여기까지다.
+rnb1,red,여기서 다른 시체들과 함께 썩어라!!
+lich,lich,… 내꺼야…
+lich,lich,내 금… 내 돈… 
+lich,lich,다 내꺼야…
+lich,lich,영원히 이곳을 지켜야만 내것으로 남는다면…
+lich,lich,그렇게 하면 돼!!
+dragon,dragon,드디어 왔군.
+dragon,dragon,이 순간만을 기다려왔다.
+dragon,dragon,아무것도 아닌 한낱 인간이!
+dragon,dragon,"내 군대를 전멸시키고, |내 백성들을 몰살시키다니…!"
+dragon,dragon,하지만 나와 내 부하들은 살아남았다.
+dragon,dragon,그리고 우린 복수를 할것이다!!
+goblins0,shield,멈춰랏! 여긴 우리 영역이다!
+goblins0,ninja,너희 인간들 때문에 우리 고블린들은|항상 두려움에 떨고 있지!
+goblins0,magician,우리는 너희를 용서하지 않는다!!
+goblins1,magician,사랑!
+goblins1,shield,용기!
+goblins1,ninja,희망의 이름으로!
+goblins2,ninja,죽어라!
+snow,snowman,으아아아아아아아아ㅏ아아아아ㅏ
+snow,snowman,꺼져!!!!
+snow,snowman,여긴!!! 내 집이야!!!
+snow,snowman,인간이고 고블린이고 나발이고 다 필요없어!!
+snow,snowman,다 꺼져버려!!!!!!
+knq,queen,…
+knq,king,인간이여…
+knq,king,욕심이 그대를 여기까지 인도했군.
+knq,king,그러나 짐은 이 문이 쉽게 열리게 둘 수 없다.
+knq,king,…. 체스게임에서 짐을 이길 수 있다면 생각해보도록 하지!
+knq2,queen,…왕이 죽었군.
+knq2,queen,체스 게임은 끝났다.
+totem,totem,못 지나간다.
+totem,totem,못 지나간다.
+totem,totem,못 지나간다.
+totem,totem,이 문은 금지되었다. 이 문은 금지되었다. 이 문은 금지되었다.
+totem,totem,죽어라. 죽어라. 죽어라.
+mino,minotaur,…..?
+mino,minotaur,이 냄새는?
+mino,minotaur,… 인간… 살아있는 고기의 냄새로군..!
+mino,minotaur,다 먹어치우겠어!!! 후후후… 하하하하하하!!!!!
+,,
+intro,intro1,"먼 옛날,
+나름 이름을 알린 강인한 용병들이 있었다."
+intro,intro1,"어떤 무기도 손발처럼 다루는 이들은
+굉장한 보수를 받아선 전부 도박판에 쏟아붓곤 했다."
+intro,intro2,어둡고 폭풍우치는 밤.
+intro,intro2,"단 하룻밤의 실수로 그들은 모든 돈을 잃고
+엄청난 빚을 지게 되고 말았다."
+intro,intro3,이 빚을 갚을 방법은 하나뿐이었다.
+intro,intro3,"깊고 어두운 던전
+가장 깊은 곳에 숨겨져 있다는
+보물을 찾아내는 것."
+ending,,"깊고 어두운 던전 깊숙한 곳에서
+그들은 엄청난 보물을 찾아냈다."
+ending,,"그들에게 보물을 넘겨받고
+사채업자는 큰 부자가 되었다."
+ending,,"그리고 그들은…
+자유를 되찾았다."

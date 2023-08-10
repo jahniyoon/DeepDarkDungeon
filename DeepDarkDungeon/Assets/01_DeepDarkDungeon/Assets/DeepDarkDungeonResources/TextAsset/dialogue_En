@@ -1,0 +1,90 @@
+대화,화자,대사
+tutorial0,tuna,"Oh, a new face! Let me guess, Mercenary?"
+tutorial0,tuna,Do you even know how to fight?|I can teach you.
+tutorial0,tuna,"Tap <quad class=""btn_atk""> key to do short, quick series of attacks."
+tutorial0,tuna,Let’s see how you fare against these!
+tutorial1,tuna,Feeling down? Here’s a potion.
+tutorial2,tuna,"Press <quad class=""btn_use""> to get the potion."
+tutorial2,tuna," <color=white><b> Hold down </b></color> the <quad class=""btn_use""> key |to use the potion and heal yourself."
+tutorial3,tuna,Now let's see about getting you something less… unweildy.
+tutorial3,tuna,"Here, use this."
+tutorial4,tuna,"Press <quad class=""btn_use""> to get the new weapon."
+tutorial4,tuna,"Now press <quad class=""btn_swp""> to change your weapon."
+tutorial5,tuna,"Good, good. Let's move on."
+tutorial5,tuna,"Ah, now see that lever over there?"
+tutorial6,tuna,Pulling that lever will pull the bridge down for you.
+tutorial6,tuna,"Now the tomahawk I’ve given you,|you can throw it as a charged attack."
+tutorial6,tuna,Why don’t you try it on the lever?
+tutorial6,tuna,"<color=white><b>Hold down</b></color> the <quad class=""btn_smash""> key to do a charged attack."
+tutorial6,tuna,"Depending on which weapon you wield,|releasing the key sooner will make a different sort of attack."
+tutorial7,tuna,Just past this corridor you will find a staircase|that lets you down into the dungeon.
+tutorial7,tuna,"Don’t you worry yourself too much on those fireballs.|Press <quad class=""btn_evade""> key to evade them."
+tutorial7,tuna,"While the motions may differ - depending on your weapon of choice - |you will not get hurt a short while after you evade with <quad class=""btn_evade"">."
+tutorial8,tuna,Are you ready now?
+tutorial8,tuna,"If not, you can always check again later in the Menu."
+tutorial8,tuna,Well then! Hope you can get all the gold you came here for!
+rnb0,red,Impressive.
+rnb0,red,that you have come thus far.
+rnb0,blue,When few are even brave enough to open the gates.
+rnb1,blue,But your thievery will not continue farther.
+rnb1,red,THIS IS WHERE YOU WILL DIE AND JOIN THE UNDEAD ARMY!!
+lich,lich,Tis my gold…
+lich,lich,"Mine,"
+lich,lich,MINE!!
+lich,lich,If I have to stand guard for an eternity..!
+lich,lich,So be it.
+dragon,dragon,Finally you arrive.
+dragon,dragon,I have been waiting for this moment
+dragon,dragon,"My army, decimated. My people, MURDERED."
+dragon,dragon,By MERE HUMANS.
+dragon,dragon,But I remain.
+dragon,dragon,AND I WILL HAVE MY REVENGE!!
+goblins0,shield,Halt! You have invaded our territory!
+goblins0,ninja,"and you’ve been wreaking havoc, terrorizing our people!"
+goblins0,magician,We will defeat you and bring peace to our lands!
+goblins1,magician,for Love!
+goblins1,shield,for Courage!
+goblins1,ninja,and for Hope!
+goblins2,ninja,Prepare to Die!
+snow,snowman,RRRRRAAAAAAAAAAAAAAAAAAH!!!!!
+snow,snowman,GO AWAY!!
+snow,snowman,THIS IS MY HOME!!
+snow,snowman,YOU ARE NOT WELCOME HERE!!!
+snow,snowman,LEAVE!!
+knq,queen,…
+knq,king,You humans…
+knq,king,"always, always so greedy."
+knq,king,You wish to get to the ultimate horde beyond these doors?
+knq,king,Yet I cannot let anyone pass.
+knq,king,This can only be resolved with a game.
+knq,king,… A game of chess!
+knq2,queen,… The King’s game is over.
+knq2,queen,But I do not play.
+totem,totem,You will not pass.
+totem,totem,You will not pass.
+totem,totem,You will not pass.
+totem,totem,The door beyond is forbidden.|The door beyond is forbidden.|The door beyond is forbidden.
+totem,totem,DIE. DIE. DIE.
+mino,minotaur,…..?
+mino,minotaur,That.. That smell.
+mino,minotaur,Humans? Life! After so long without meat…
+mino,minotaur,I hunger… I starve!!|RRRRRRROOOOOOAAAAAARRRRRR!!!!! 
+,,
+intro,intro1,"A long time ago,
+there were some mercenaries that had made a name
+for their bravery and skill."
+intro,intro1,"They who knew how to use any weapon that passed their hands,
+would oft gamble all of their hard-earned money away."
+intro,intro2,One dark and stormy night.
+intro,intro2,"With one night’s mistake, they have lost everything,
+and acquired an unimaginable sum of debt."
+intro,intro3,There was only one way to pay it all back.
+intro,intro3,"To find, and procure, the legendary treasures
+that is said to be hidden in the deepest, darkest hall
+of the deepest, darkest dungeons."
+ending,,"And in the deep, dark dungeon,
+they had found the treasure trove, filled to the brim with endless gold and riches."
+ending,,"And from all the treasure they brought back,
+the loan shark became very, very rich."
+ending,,"And the mercenaries……
+finally found freedom again."

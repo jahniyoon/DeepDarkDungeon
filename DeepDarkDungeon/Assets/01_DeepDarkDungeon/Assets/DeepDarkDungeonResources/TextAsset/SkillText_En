@@ -1,0 +1,35 @@
+key,name,text,floor
+hp1,Medal of Will 1,+10% Max HP,1
+hp2,Medal of Will 2,+10% Max HP,1
+hp3,Medal of Will 3,+10% Max HP,1
+hp4,Medal of Will 4,+10% Max HP,2
+hp5,Medal of Will 5,+10% Max HP,2
+hp6,Medal of Will 6,+10% Max HP,2
+hp7,Medal of Will 7,+10% Max HP,3
+hp8,Medal of Will 8,+10% Max HP,3
+hp9,Medal of Will 9,+10% Max HP,3
+karma1,Medal of Wisdom 1,"+30% <quad class=""karma"">",1
+karma2,Medal of Wisdom 2,"+30% <quad class=""karma"">",2
+karma3,Medal of Wisdom 3,"+30% <quad class=""karma"">",3
+atk1,Medal of Power 1,+5% Attack,1
+atk2,Medal of Power 2,+5% Attack,1
+atk3,Medal of Power 3,+5% Attack,2
+atk4,Medal of Power 4,+5% Attack,2
+atk5,Medal of Power 5,+5% Attack,3
+atk6,Medal of Power 6,+5% Attack,3
+gold1,Medal of Greed 1,"+30% <quad class=""gold"">",1
+gold2,Medal of Greed 2,"+30% <quad class=""gold"">",2
+gold3,Medal of Greed 3,"+30% <quad class=""gold"">",3
+aspd1,Medal of Swiftness 1,+5% Attack Speed,1
+aspd2,Medal of Swiftness 2,+5% Attack Speed,2
+aspd3,Medal of Swiftness 3,+5% Attack Speed,3
+musket_medal,Permit to Carry Firearm,Get Common Musket from Chests,1
+potion_medal,First Aid Healer’s Certification,+50% Heal by Potions,1
+katana_medal,Shinobi Contract,Get Ninja Weapons from Chests,1
+,,,
+,,,
+strongWill,Medal of Determination,Low Chance to Survive Critical Hits,2
+fire_cloak_medal,Medal of Best Fire Fighter,Get Fireproof Cloak from Chests,2
+,,,
+magic_medal,Brooch of Magi,Able to use Magic using Needlessly Heavy Book,3
+sweater_medal,Christmas Button,Get Warm Sweater of Excessive Warmth from Chests,3

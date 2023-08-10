@@ -1,0 +1,100 @@
+key,value
+newGame,Yeni Oyun
+profile,Profiller
+option,Tercih
+credits,Emeği Geçenler
+exit,Oyundan Çık
+pause,Durdur
+resume,Devam Et
+backToMain,Ana Menü
+continue,Devam Et
+retry,Tekrar Başlat
+failed,Başarısız Oldun.
+playerIn,"Profil Seçiniz <quad class=""btn_select"">
+Yeni Profil Yap <quad class=""btn_use"">
+Çıkış <quad class=""btn_cancel"">"
+skills,"Hazır <quad class=""btn_select"">
+Yeni Beceri Öğren <quad class=""btn_use"">
+Geri <quad class=""btn_cancel"">"
+newProfile,"İsim Seç <quad class=""btn_select"">
+Çık <quad class=""btn_cancel"">"
+ready,"İptal <quad class=""btn_cancel"">"
+newProfile_normal,Yeni Profil ismi
+newProfile_repetition,Bu isim zaten kullanılıyor!
+newProfile_short,Bu isim çok kısa!
+tutorial_evade,"<quad class=""btn_evade""> Kaçınmak"
+tutorial_atk,"<quad class=""btn_atk""> Kombo saldırı"
+tutorial_smash,"<quad class=""btn_smash""> Şarj saldırısı"
+tutorial_getItem,"<quad class=""btn_use""> Öğe alın
+Sağlık İksiri kullanmak için <quad class=""btn_use""> düğmeyi basılı tutun"
+tutorial_useItem,"<quad class=""btn_swp""> Silah Seç"
+swp_keyboard,"Silah Seç <quad class=""btn_swp"">"
+swp_xbox,"<quad class=""rb""> Silah Seç"
+atk_keyboard,"Kombo saldırı <quad class=""btn_atk"">"
+atk_xbox,"<quad class=""x""> Kombo saldırı"
+use_keyboard,"Öğe alın / Sağlık İksiri'ni kullanmaya devam edin <quad class=""btn_use"">"
+use_xbox,"<quad class=""y""> Öğe alın / Sağlık İksiri'ni kullanmaya devam edin"
+evade_keyboard,"Kaçınmak <quad class=""btn_evade"">"
+evade_xbox,"<quad class=""a""> Kaçınmak"
+smash_keyboard,"Şarj Saldırısı <quad class=""btn_smash"">"
+smash_xbox,"<quad class=""b""> Şarj Saldırısı"
+killed_skeletonKnight,Mağlup İskelet Şövalye
+totalKarma,Toplam Karma Kazanç
+levelClear,Zemin numarasını temizleme bonusu {0}
+get_multi,Zindan / {0} insanlardan toplandı
+get_solo,Zindandan toplandı
+toNextFloor,"<quad class=""btn_use""> Bir sonraki katta"
+openDoor,"<quad class=""btn_use""> Açık kapı"
+cannotOpenDoor,Bu kapıyı açmak için bir anahtara ihtiyacın var.
+doorInto,"<quad class=""btn_use""> Gir"
+upgrade,"<quad class=""btn_use""> Yükselt {0}
+<quad class=""gold""> {1}"
+upgradeDisabled,"{0} Yükselt
+<quad class=""gold""> <color=red>{1}</color>"
+upgradeMax,"{0} Yükselt
+<color=red>Tamamı Yükseltildi</color>"
+upgradeMaxThisFloor,"{0} Yükselt
+<color=red>Burada Yükseltemezsiniz</color>"
+getItem,"<quad class=""btn_use""> Al {0}"
+getItemWithInfo,"<quad class=""btn_use""> Al {0}
+<size=18><color=silver>{1}</color></size>"
+buyItem,"<quad class=""btn_use""> Satın Al {0}
+<quad class=""gold""> {1}"
+buyItemWithInfo,"<quad class=""btn_use""> Satın Al {0}
+<size=18><color=silver>{1}</color></size>
+<quad class=""gold""> {2}"
+buyItemDisabled,"<quad class=""btn_use""> Satın Al {0}
+<quad class=""gold""> <color=red>{1}</color>"
+maxPotion,"Al {0}
+<color=red>Daha fazla taşıyamıyorum</color>"
+maxPotionBuy,"Satın Al {0}
+<color=red>Daha fazla taşıyamıyorum</color>"
+continueMessage,"<quad class=""btn_evade""> Canlandırmak için tuşa basın
+Maliyet: <quad class=""karma""> {0}"
+useItem_accessory,Aşınma {0}
+useItem_weapon,{0}
+useItem_throw,Dağıt {0}
+useItem_potion,İç {0}
+zoneDoor,Bir yerde bu kapıyı açabilecek bir mekanizma olacağını düşünüyorum.
+dialogueUnskippable,"<quad class=""btn_select""> Devam Et
+"
+dialogueSkippable,"<quad class=""btn_select""> Devam Et
+<quad class=""btn_cancel""> Atla"
+buyMedal,"<quad class=""btn_use""> Satın Al {0}
+<size=18><color=silver>{1}</color></size>
+<quad class=""karma""> 1"
+buyMedalKarma,"Satın Al {0}
+<color=red>Yeterli değil</color> <quad class=""karma"">"
+buyMedalAlready,"Satın al {0}
+<color=red>Zaten Bulundu</color>"
+knightSkeleton,Ritim şövalyesi
+blueKnightSkeleton,Mavi Şövalye
+lich,Güç Liken Lich
+shieldGoblin,Kalkan Goblin
+ninjaGoblin,Ninja Goblin
+mageGoblin,Büyücü Goblin
+snowman,Yeti
+greatLavaWorm,Büyük Lav Solucanı
+dragon,Ejderha
+kingOfChess,Kral
+queenOfChess,Kraliçe

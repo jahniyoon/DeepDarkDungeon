@@ -1,0 +1,8 @@
+name,maxStack,useTime,projectile,useEffect,stamina,reusable,type
+potion,40,2,,,0,FALSE,Potion
+throwing_dagger,10,0.1,throwingDagger,,30,FALSE,Throwable
+bomb,10,0.1,bomb,,30,FALSE,Throwable
+key,1,0,,,0,TRUE,NoUse
+coin,10,0,,,0,FALSE,NoUse
+fireball_scroll,0,0.1,fireball_player,,30,FALSE,Throwable
+ice_javelin,0,0.1,javelin_charged,,30,FALSE,Throwable

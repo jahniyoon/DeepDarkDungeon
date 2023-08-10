@@ -1,0 +1,52 @@
+아이템 키,아이템 이름,아이템 설명
+potion,Health Potion,
+throwing_dagger,Throwing Daggers,
+bomb,Bomb,
+key,Key,
+coin,Gold Piece,
+fireball_scroll,Scroll for Balls of Fire,
+ice_javelin,Scroll for Spears of Ice,
+,,
+armor,Gumi's Lost Chestplate,Add Defense
+boots,Boots of Endurance,Add Stamina
+wingshoe,Sandals of Speed,Add Speed
+fire_cloak,Fireproof Cloak,Half Burn Damage
+sweater,Warm Sweater of Excessive Warmth,Half Frostbite Damage
+headband,Cursed Headband of Power,"Diminish Health, Add Attack"
+vamp,Ring of Stolen Vigor,Steal Health
+ironboots,Iron Boots of Unyielding Vim,Add Resistance to Stun
+potionbag,Potions Bag,+2 Potions Slot
+bracer,Bracers of Swift Strikes,Add Attack Speed
+glasses,Frames of Clear Sight,Very Cool
+armor2,Stone Warrior's Heavy Armor,"Add Defense, Slow"
+belt,Belt of Incredible Strength,"Add Attack, Slow"
+weaponbag,Scabbard Belt,+1 Weapons Slot
+,,
+basicDualSword,Common Thief's Dual Swords,
+goldDualSword,Enchanted Golden Twin Swords,
+basicGiantSword,Common Broadsword,
+goldGiantSword,Enchanted Golden Broadsword,
+basicHammer,Stalwart Set of Hammer and Shield,
+goldHammer,Enchanted Hammer and Shield,
+basicJavelin,Lightweight Javelin,
+goldJavelin,Golden Javelin of Sephir,
+leek,Fresh Leek,
+guitar,Acoustic Guitar,
+elec_guitar,Electric Guitar,
+boxing,Red Boxing Gloves,
+frypan,Cast Iron Frying Pan,
+musket,Common Musket,
+bow,Dead Ranger's Bow and Arrow,
+staff,Basic Quaterstaff,
+lance,Dead Knight's Lance and Shield,
+book,Needlessly Heavy Book,
+whip,Whip,
+switch,Switch,
+fan,Fan of Hidden Blades,
+crowbar,Familiar Crowbar,
+tomahawk,Dual Wielding Tomahawk,
+glave,Heavy Glave,
+katana,Uncommon Katana,
+magical_katana,Legendary Udoniji,
+bomb_weapon,Incendiary Projectiles,
+flail,Gigantic Flail,

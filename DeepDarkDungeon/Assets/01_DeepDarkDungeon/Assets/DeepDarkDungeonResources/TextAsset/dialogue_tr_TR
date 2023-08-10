@@ -1,0 +1,86 @@
+dialogue,character,dialogue
+tutorial0,tuna,"Oh, yeni bir yüz! Tahmin edeyim, paralı asker?"
+tutorial0,tuna,Nasıl savaşacağını biliyor musun? Sana yardım edeyim.
+tutorial0,tuna,"Kısa, hızlı bir dizi saldırı yapmak için <quad class=""btn_atk""> düğmesine basın."
+tutorial0,tuna,Bakalım buna karşı ne yapacaksınız!
+tutorial1,tuna,Moralin mi bozuk? İşte bir iksir.
+tutorial2,tuna,"İksiri almak için|<quad class=""btn_use""> düğmesine basın."
+tutorial2,tuna,"İksiri kullanmak ve kendinizi iyileştirmek için|<color=white><b><quad class=""btn_use""> tuşunu basılı tutun.</b></color>"
+tutorial3,tuna,Bir sonraki ders uzaktaki kolları nasıl çekeceğiniz üzerine olacak!
+tutorial3,tuna,Hmm... görünüşe göre sahip olduğunuz|silahla iyi geçinemiyorsunuz.
+tutorial4,tuna,"Al, bunu kullan."
+tutorial4,tuna,"Yeni silahı almak için <quad class=""btn_use""> düğmesine basın."
+tutorial4,tuna,"Şimdi silahınızı değiştirmek için <quad class=""btn_swp""> tuşuna basın."
+tutorial5,tuna,Bu kolu çektiğinizde|zindan yolu açılacaktır.
+tutorial5,tuna,Şimdi sana verdiğim tomahawk hakkında|Onu yüklü bir saldırı olarak atabilirsiniz.
+tutorial6,tuna,Neden kolu denemiyorsun?
+tutorial6,tuna,"Yüklü bir saldırı yapmak için <color=white><b><quad class=""btn_smash""> tuşunu basılı tutun.</b></color>"
+tutorial6,tuna,"Hangi silahı kullandığınıza bağlı olarak,|anahtarı daha önce serbest bırakmak farklı bir saldırı türü yapacaktır."
+tutorial7,tuna,Bu koridorun hemen aşağısında sizi zindana götüren bir merdiven bulacaksınız.
+tutorial7,tuna,"Bu ateş topları hakkında çok fazla endişelenme!|Onlardan kaçmak için <quad class=""btn_evade""> tuşuna basmanız yeterlidir."
+tutorial7,tuna,"Hareketler farklılık gösterebilir - seçtiğiniz silaha bağlı olarak -|<quad class=""btn_evade""> ile kaçtıktan kısa bir süre sonra incinmezsiniz."
+tutorial8,tuna,Şimdi hazır mısın?
+tutorial8,tuna,"Değilse, menüdeki kontrolleri her zaman kontrol edebilirsiniz."
+tutorial8,tuna,"Peki, tamam! Buraya kadar geldiğin için|tüm altınları alabilirsin! Elveda!"
+rnb0,red,Etkileyici.
+rnb0,red,Buraya gelmek kolay bir iş değil.
+rnb0,blue,Çoğu kapıları bile açmaya cesaret edemez.
+rnb1,blue,ama senin hırsızlığın daha fazla devam etmeyecek.
+rnb1,red,YOK OLACAKSIN!!
+lich,lich,Bu benim altınım...
+lich,lich,"Mayın,"
+lich,lich,Mayın!
+lich,lich,Sonsuza dek korunmak zorunda kalırsam...
+lich,lich,Öyle olsun!
+dragon,dragon,"Yani, sonunda geldin."
+dragon,dragon,Bu anı bekliyordum
+dragon,dragon,"Ordum, yok. Halkım, ÖLDÜRÜLDÜ."
+dragon,dragon,İNSANLAR TARAFINDAN.
+dragon,dragon,Fakat ben ve ailem sağ kurtulduk.
+dragon,dragon,VE İNTİKAMIMIZI ALACAĞIZ!
+goblins0,shield,Dur! Toprağımı işgal ettin.
+goblins0,ninja,İnsanlar halkımızı terörize ederek|tahribata maruz bıraktınız!
+goblins0,magician,Seni yenip ülkemize barış getireceğiz!
+goblins1,magician,Aşk için!
+goblins1,shield,Cesaret için!
+goblins1,ninja,Ve umut için!
+goblins2,ninja,Ölmeye hazırlan!
+snow,snowman,RRRRRAAAAAAAAAAAAAAAAAAH!!!!!
+snow,snowman,DEFOL GİT!!
+snow,snowman,BU BENİM EVİM!!
+snow,snowman,BURADA İSTENMİYORSUN!!!
+snow,snowman,ÇIK!!
+knq,queen,...
+knq,king,SEN...
+knq,king,Açgözlülüğün seni buraya getirdi.
+knq,king,Ancak bu kapının o kadar kolay açılmasına izin veremem.
+knq,king,Bu sadece bir oyunla çözülebilir... Satranç oyunu!
+knq2,queen,...Kral düştü.
+knq2,queen,Bu oyun bitti.
+totem,totem,Geçemezsin
+totem,totem,Geçemezsin
+totem,totem,Geçemezsin
+totem,totem,Diğer kapıyı yasak. Diğer kapıyı yasak. Diğer kapıyı yasak.
+totem,totem,ÖL. ÖL. ÖL
+mino,minotaur,......?
+mino,minotaur,Bu... Bu koku.
+mino,minotaur,...Taze et... İnsanlar...!
+mino,minotaur,Açım... Açım!!  RRRRRRROOOOOOAAAAAARRRRRR!!!!! 
+,,
+intro,intro1,"Çok uzun zaman önce,
+güçlerinden ötürü bir miktar şöhret kazanmış bir grup paralı asker vardı."
+intro,intro1,"Her silahla son derece becerikli oldukları için inanılmaz ödüller kazandılar,
+ancak hepsini kumar oynarken kaybettiler."
+intro,intro2,Karanlık ve fırtınalı bir gece.
+intro,intro2,"Tek bir hata, paralı askerlerin kendilerini derin borç içinde bulmalarına,
+servetlerinin hepsinin gitmesine yol açtı."
+intro,intro3,Tek seçenek kalmıştı:
+intro,intro3,"En derin, en karanlık zindanın derinliklerinde
+gizlenen hazineyi bulmak."
+,,
+ending,,"En derin ve en karanlık zindanın derinliklerinde,
+paralı askerler aradığı müthiş hazineleri buldular."
+ending,,"Ödeme olarak hazineyi alarak
+alacaklı onla büyük zenginlik elde etti."
+ending,,"Ve paralı askerler...
+özgürlüklerine kavuştu."

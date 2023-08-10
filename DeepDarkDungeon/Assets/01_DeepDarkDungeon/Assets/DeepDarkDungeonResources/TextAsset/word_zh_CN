@@ -1,0 +1,103 @@
+키값,내용
+newGame,新游戏
+profile,配置文件管理
+option,设置
+credits,制作人
+exit,退出游戏
+pause,暂停
+resume,继续
+backToMain,向主菜单
+continue,连续
+retry,重新挑战
+failed,您失败了！
+playerIn,"选择配置文件 <quad class=""btn_select"">
+配置新文件 <quad class=""btn_use"">
+退出 <quad class=""btn_cancel"">"
+skills,"准备完毕 <quad class=""btn_select"">
+学技能 <quad class=""btn_use"">
+往配置文件选择窗 <quad class=""btn_cancel"">"
+newProfile,"文字选择 <quad class=""btn_select"">
+退出 <quad class=""btn_cancel"">"
+ready,"取消准备 <quad class=""btn_cancel"">"
+newProfile_normal,请输入新的配置文件名称。
+newProfile_repetition,是已使用的名称。
+newProfile_short,名称太短。
+tutorial_evade,"<quad class=""btn_evade""> 躲开
+躲开后是无敌"
+tutorial_atk,"<quad class=""btn_atk""> 双击键可连续攻击"
+tutorial_smash,"按住 <quad class=""btn_smash""> 就可以使用聚拢攻击，
+用钺的聚拢攻击来运转杠杆"
+tutorial_getItem,"<quad class=""btn_use""> 获得复药剂
+按住 <quad class=""btn_use""> 就可以使用恢复药剂"
+tutorial_useItem,"<quad class=""btn_use""> 获得武器
+<quad class=""btn_swp""> 更换武器"
+swp_keyboard,"更换武器 <quad class=""btn_swp"">"
+swp_xbox,"<quad class=""rb""> 更换武器"
+atk_keyboard,"连续攻击 <quad class=""btn_atk"">"
+atk_xbox,"<quad class=""x""> 连续攻击"
+use_keyboard,"获取项目 / 长按可恢复体力 <quad class=""btn_use"">"
+use_xbox,"<quad class=""y""> 获取项目 / 长按可恢复体力"
+evade_keyboard,"躲开 <quad class=""btn_evade"">"
+evade_xbox,"<quad class=""a""> 躲开"
+smash_keyboard,"聚拢攻击 <quad class=""btn_smash"">"
+smash_xbox,"<quad class=""b""> 聚拢攻击"
+killed_skeletonKnight,治愈骷髅骑士
+totalKarma,获取枪的条件
+levelClear,{0}层 明确的奖金
+get_multi,在地下层获取 / {0}名
+get_solo,在地下层获取
+toNextFloor,"<quad class=""btn_use""> 通往下一层"
+openDoor,"<quad class=""btn_use""> 开门"
+cannotOpenDoor,要打开这扇门需要钥匙。
+doorInto,"<quad class=""btn_use""> 进入"
+upgrade,"<quad class=""btn_use""> 强化: {0}
+<quad class=""gold""> {1}"
+upgradeDisabled,"强化: {0}
+<quad class=""gold""> <color=red>{1}</color>"
+upgradeMax,"强化: {0}
+<color=red>强化到极致。</color>"
+upgradeMaxThisFloor,"强化: {0}
+<color=red>在这里无法继续强化。</color>"
+getItem,"<quad class=""btn_use""> 获得: {0}"
+getItemWithInfo,"<quad class=""btn_use""> 获得: {0}
+<size=18><color=silver>{1}</color></size>"
+buyItem,"<quad class=""btn_use""> 购买: {0}
+<quad class=""gold""> {1}"
+buyItemWithInfo,"<quad class=""btn_use""> 购买: {0}
+<size=18><color=silver>{1}</color></size>
+<quad class=""gold""> {2}"
+buyItemDisabled,"<quad class=""btn_use""> 购买: {0}
+<quad class=""gold""> <color=red>{1}</color>"
+maxPotion,"获得: {0}
+<color=red>已无法继续拥有。</color>"
+maxPotionBuy,"购买: {0}
+<color=red>已无法继续拥有。</color>"
+continueMessage,"按<quad class=""btn_select"">键复活
+费用 <quad class=""karma""> {0}"
+useItem_accessory,穿戴　{0}
+useItem_weapon,{0}
+useItem_throw,使用　{0}
+useItem_potion,按摩　{0}
+zoneDoor,能开启这扇门的设备肯定会在哪里。
+dialogueUnskippable,"<quad class=""btn_select""> 继续
+"
+dialogueSkippable,"<quad class=""btn_select""> 继续
+<quad class=""btn_cancel""> 跳过"
+buyMedal,"<quad class=""btn_use""> 购买: {0}
+<size=18><color=silver>{1}</color></size>
+<quad class=""karma""> 1"
+buyMedalKarma,"购买: {0}
+<quad class=""karma""> <color=red>不足</color>"
+buyMedalAlready,"购买: {0}
+<color=red>已拥有。</color>"
+knightSkeleton,韵律的稿子
+blueKnightSkeleton,蓝调的稿子
+lich,长苔藓的幽灵魔法师
+shieldGoblin,哥布林 盾战士
+ninjaGoblin,哥布林 刺客
+mageGoblin,哥布林 魔术师
+snowman,雪人宽厚的手
+greatLavaWorm,巨大的熔岩昆虫
+dragon,喷火花的龙
+kingOfChess,王
+queenOfChess,女王

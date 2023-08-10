@@ -1,0 +1,17 @@
+{
+    "1":[
+        {"key":"potion", "price":100, "rate":20},
+        {"key":"throwing_dagger", "price":100, "rate":20},
+        {"key":"boots", "price":100, "rate":10},
+        {"key":"armor", "price":100, "rate":10},
+        {"key":"bomb", "price":100, "rate":20},
+        {"key":"basicGiantSword", "price":100, "rate":5},
+        {"key":"basicDualSword", "price":100, "rate":5},
+        {"key":"basicJavelin", "price":100, "rate":5},
+        {"key":"basicHammer", "price":100, "rate":5}
+    ],
+    "2":[
+        {"key":"basicGiantSword", "price":100},
+        {"key":"potion", "price":100}
+    ]
+}

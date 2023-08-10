@@ -1,0 +1,35 @@
+key,name,text,floor
+hp1,Will Madalyası 1,+10% Max HP,1
+hp2,Will Madalyası 2,+10% Max HP,1
+hp3,Will Madalyası 3,+10% Max HP,1
+hp4,Will Madalyası 4,+10% Max HP,2
+hp5,Will Madalyası 5,+10% Max HP,2
+hp6,Will Madalyası 6,+10% Max HP,2
+hp7,Will Madalyası 7,+10% Max HP,3
+hp8,Will Madalyası 8,+10% Max HP,3
+hp9,Will Madalyası 9,+10% Max HP,3
+karma1,Bilgelik Madalyası 1,"+30% <quad class=""karma"">",1
+karma2,Bilgelik Madalyası 2,"+30% <quad class=""karma"">",2
+karma3,Bilgelik Madalyası 2,"+30% <quad class=""karma"">",3
+atk1,Güç Madalyası 1,+5% Saldırı,1
+atk2,Güç Madalyası 2,+5% Saldırı,1
+atk3,Güç Madalyası 3,+5% Saldırı,2
+atk4,Güç Madalyası 4,+5% Saldırı,2
+atk5,Güç Madalyası 5,+5% Saldırı,3
+atk6,Güç Madalyası 6,+5% Saldırı,3
+gold1,Açgözlülük Madalyası 1,"+30% <quad class=""gold"">",1
+gold2,Açgözlülük Madalyası 2,"+30% <quad class=""gold"">",2
+gold3,Açgözlülük Madalyası 3,"+30% <quad class=""gold"">",3
+aspd1,Hızlılık Madalyası 1,+5% Saldırı Hızı,1
+aspd2,Hızlılık Madalyası 2,+5% Saldırı Hızı,2
+aspd3,Hızlılık Madalyası 3,+5%Saldırı Hızı,3
+musket_medal,Ateşli Silah Taşımacılığına İzin Verin,Sandıktan silah alın,1
+potion_medal,İlk Yardım Şifacı Sertifikası,+50% İksir iyileştirdi,1
+katana_medal,Shinobi Sözleşmesi,Sandıklardan ninja silahlarını al,1
+,,,
+,,,
+strongWill,Belirleme Madalyası,Kritik vuruş ile hayatta kalma şansı düşük,2
+fire_cloak_medal,En İyi İtfaiyecinin Madalyası,Sandıklardan ateşe dayanıklı pelerin al,2
+,,,
+magic_medal,Magi'nin Broşu,Gereksiz yere kalın bir Kitap kullanarak Büyü kullanabilirsin,3
+sweater_medal,Noel Düğmesi,Sandıktan aşırı sıcaklığa sahip triko alın,3

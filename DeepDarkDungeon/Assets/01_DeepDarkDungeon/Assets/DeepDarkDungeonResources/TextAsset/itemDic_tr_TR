@@ -1,0 +1,52 @@
+key,name,description
+potion,Can İksiri,
+throwing_dagger,Atılan Hançer,
+bomb,Bomba,
+key,Anahtar,
+coin,Altın Parçası,
+fireball_scroll,Ateş Topları için Kaydırma,
+ice_javelin,Buz Mızrak için Kaydırma,
+,,
+armor,Gumi'nin Kayıp Zırhı,Savunma Artırır
+boots,Dayanıklılık Botları,Direnç Arttırır
+wingshoe,Hızın Sandaletleri,Hızını Artırır
+fire_cloak,Ateşe Dayanıklı Pelerin,Yanma hasarı yarıya düşer
+sweater,Aşırı Sıcaklığa Sahip Sıcak Triko,Donma Hasarı Yarıya düşer
+headband,Güç laneti Bandı,"Sağlığı Azaltır, Saldırıyı arttırır"
+vamp,Çalıntının Gücü yüzüğü,Sağlık çalar
+ironboots,Kusursuz Vim'in Demir Çizmeleri,Şok Direncini Artırır
+potionbag,İksir Çantası,+2 İksir Yuvasını arttırır
+bracer,Hızlı İçki,Saldırı Hızını Artırır
+glasses,Açık Görüş çerçevesi,Çok Güzel görünüyor
+armor2,Taş Savaşçısının Ağır Zırhı,"Savunma Arttırır, Kullanıcıyı Yavaşlatır"
+belt,İnanılmaz Mukavemet Kemeri,"Saldırıyı Arttırır, Kullanıcıyı Yavaşlatır"
+weaponbag,Kundakçı Kemer,+1 Silah Yuvasını arttırır
+,,
+basicDualSword,Ortak Hırsızın Çift Kılıcı,
+goldDualSword,Büyülü Altın Çift Kılıç,
+basicGiantSword,Ortak Pala,
+goldGiantSword,Büyülü Altın Kılıç,
+basicHammer,Sağlam Çekiç ve Kalkan Seti,
+goldHammer,Büyülü Çekiç ve Kalkan,
+basicJavelin,Hafif cirit,
+goldJavelin,Sefir Altın Cirit,
+leek,Taze pırasa,
+guitar,Akustik Gitar,
+elec_guitar,Elektrikli gitar,
+boxing,Kırmızı Box eldivenleri,
+frypan,Dökme Demir Tava,
+musket,Ortak Musket,
+bow,Ölü Ranger'ın Yay ve Oku,
+staff,Temel çeyrek personel,
+lance,Ölü Şövalyenin Mızrak ve Kalkanı,
+book,Gereksiz Yere Kalın Bir Kitap,
+whip,Kırbaç,
+switch,Şalter,
+fan,Gizli Bıçak Vantilatörleri,
+crowbar,Tanınmış Toplama Çubuğu,
+tomahawk,Çift Kullanımlı Tomahawk,
+glave,Ağır Kılıç,
+katana,Nadir Katana,
+magical_katana,Efsanevi Udoniji,
+bomb_weapon,Yangın Mermisi,
+flail,Dev Yelken,

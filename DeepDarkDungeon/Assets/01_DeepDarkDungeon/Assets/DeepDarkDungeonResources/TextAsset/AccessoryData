@@ -1,0 +1,3 @@
+name,name,spec,tags
+armor," _, ",StatStruct,System.String[]
+boots,_  _,StatStruct,System.String[]

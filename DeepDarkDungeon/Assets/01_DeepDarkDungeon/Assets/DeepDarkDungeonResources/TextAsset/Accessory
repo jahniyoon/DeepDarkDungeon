@@ -1,0 +1,63 @@
+{
+    "armor": {
+        "tag":"box",
+        "spec": {
+            "defense": 30
+        }
+    },
+    "boots": {
+        "tag":"box",
+        "spec": {
+            "maxStamina": 100
+        }
+    },
+    "wingshoe":{
+        "tag":"box",
+        "spec": {
+            "moveSpeed": 2
+        }
+    },
+    "fire_cloak":{
+        "tag":"locked",
+        "spec": {
+            "fireRes": 0.5
+        }
+    },
+    "sweater":{
+        "tag":"locked",
+        "spec": {
+            "iceRes": 0.5
+        }
+    },
+    "headband":{
+        "tag":"box",
+        "spec": {
+            "maxStun": -5
+        }
+    },
+    "vamp":{"tag":"box"},
+    "ironboots":{
+        "tag":"box",
+        "spec": {
+            "maxStun": 15
+        }
+    },
+    "potionbag":{"tag":"box"},
+    "bracer":{
+        "tag":"box",
+        "spec": {
+            "atkSpeed": 0.1
+        }
+    },
+    "glasses":{"tag":"box"},
+    "armor2":{
+        "tag":"box",
+        "spec": {
+            "defense": 45,
+            "moveSpeed": -2,
+            "atkSpeed": -0.15
+        }
+    },
+    "belt":{"tag":"box"},
+    "weaponbag":{"tag":"box"}
+}

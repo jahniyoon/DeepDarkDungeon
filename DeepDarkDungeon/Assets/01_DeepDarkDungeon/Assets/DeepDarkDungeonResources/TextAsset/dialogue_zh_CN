@@ -1,0 +1,85 @@
+대화,화자,대사
+tutorial0,tuna,哦，你就是新来的佣兵！
+tutorial0,tuna,知道怎么战斗么？我可以帮你。
+tutorial0,tuna,"<quad class=""btn_atk""> 双击键就可以连续攻击。"
+tutorial0,tuna,看看你的实力！打倒这些！
+tutorial1,tuna,累么？给你恢复药剂。
+tutorial2,tuna,"按恢复药剂上面的 <quad class=""btn_use""> 键就|可以拿到恢复药剂"
+tutorial2,tuna,"<color=white><quad class=""btn_use""> 按着键就</color>可以使用|恢复药剂恢复体力。"
+tutorial3,tuna,下一个辅导是运转远处的杠杆！
+tutorial3,tuna,唔。。。但是你没有可以|运转远处杠杆的武器呢。
+tutorial4,tuna,用这个。 
+tutorial4,tuna,"按武器上面的 <quad class=""btn_use""> 键，就可以拿到武器。"
+tutorial4,tuna,"按下 <quad class=""btn_swp""> 键，可以换要使用的武器。"
+tutorial5,tuna,只要运作远处的杠杆，|进入地下城的路就开了
+tutorial5,tuna,我刚给的斧子用于|聚拢攻击扔出去。
+tutorial6,tuna,用聚拢攻击砸像杠杆！
+tutorial6,tuna,"<color=white>按住 <quad class=""btn_smash""> </color>就可以用聚拢攻击。"
+tutorial6,tuna,根据武器按住的时候在中间拿开|可以成为不同的攻击
+tutorial7,tuna,现在，通过这个走廊走下楼梯就可以了。
+tutorial7,tuna,"啊，那些火球没什么大不了的，|在被火球砸到之前按 <quad class=""btn_evade""> 键躲开就行。"
+tutorial7,tuna,"即使使用的动作都不一样，|但在使用躲开的 <quad class=""btn_evade""> 健之后不会受伤。"
+tutorial8,tuna,现在，对战斗有信心么？
+tutorial8,tuna,随时可以按菜单的键确认操作方法。
+tutorial8,tuna,那么，再见！|赚一大笔金币回来！
+rnb0,red,太棒了！
+rnb0,red,没想到可以到达这个地方
+rnb0,blue,到第一个房间的人应该也不多吧。
+rnb1,blue,但是你的欲望也只能到此为止了。
+rnb1,red,在这里和其他尸体一起腐烂吧!
+lich,lich,…是我的 … 
+lich,lich,我的金币… 我的钱… 
+lich,lich,都是我的… 
+lich,lich,永远守着这里这些才可以成为我的，那么… 
+lich,lich,愿那么做！
+dragon,dragon,终于来了。
+dragon,dragon,这瞬间已经等了很久了。
+dragon,dragon,什么都不是的一个人！
+dragon,dragon,全歼了我的军队，|杀光了我的百姓…！
+dragon,dragon,但是我和我的手下还活着。
+dragon,dragon,我们会复仇的！！
+goblins0,shield,站住！这边是我们的地盘！
+goblins0,ninja,因为你们人类，我们哥布林|一直生活在恐惧中！
+goblins0,magician,我们不会原谅你们的！！
+goblins1,magician,以 爱！
+goblins1,shield,勇气！
+goblins1,ninja,希望的名义！
+goblins2,ninja,去死吧！
+snow,snowman,啊啊啊啊啊啊啊啊啊………………
+snow,snowman,滚！！！
+snow,snowman,这里，是我家！！
+snow,snowman,不管是人，哥布林 还是其他什么都不需要！
+snow,snowman,都滚开！！！
+knq,queen,…
+knq,king,人啊…
+knq,king,欲望引导你来到这里，
+knq,king,但是朕不会由着你这么轻易地就打开这扇门
+knq,king,…在国际象棋游戏中赢了朕，朕会考虑一下！
+knq2,queen,…王死了。
+knq2,queen,象棋游戏结束了。
+totem,totem,不能过去。
+totem,totem,不能过去。
+totem,totem,不能过去。
+totem,totem,这扇门已被禁。这扇门已被禁。这扇门已被禁。
+totem,totem,去死吧！去死吧！去死吧！
+mino,minotaur,…?
+mino,minotaur,这个味道是？
+mino,minotaur,…人…新鲜的的肉香…！
+mino,minotaur,都要吃掉！！呵呵呵…哈哈哈哈哈哈！！！
+,,
+intro,intro1,"很久以前，
+有一群扬名于世的强大佣兵。"
+intro,intro1,"使用任何武器都像是用自己手脚一样，
+他们拿着惊人的收入但全部都用于赌博。"
+intro,intro2,暴风雨来袭的黑夜
+intro,intro2,"仅仅一晚的失误他们不仅失去了所有的钱
+还欠下了巨额的债"
+intro,intro3,偿还这笔债务的方法仅有一个
+intro,intro3,"在又黑又深的地下城，
+找到藏在最深的处宝藏"
+,,
+ending,,"在又黑又深的地下城，
+他们找到了藏在最深处的宝藏。"
+ending,,他们找到了宝藏从欠债人变成了富翁。
+ending,,"还有他们…
+找回了自由。"
