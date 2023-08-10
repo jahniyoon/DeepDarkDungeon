@@ -50,12 +50,14 @@ public class DungeonCreator : MonoBehaviour
 
     [Header("Prefabs")]
     public GameObject Player;
+    public GameObject bossPrefabs;
     public GameObject Exit;
     public GameObject enemyPrefabs;
+
     public GameObject torchPrefabs;
     public GameObject boxPrefabs;
     public GameObject chestPrefabs;
-    public GameObject bossPrefabs;
+    public GameObject tablePrefabs;
 
     // 룸 데코레이션 리스트
     private Vector3Int spawnRoomCenterPosition; // 스폰 방의 중앙 위치
@@ -65,6 +67,7 @@ public class DungeonCreator : MonoBehaviour
     List<Vector3> torchPositions;
     List<Vector3> boxPositions;
     List<Vector3> chestPositions;
+    List<Vector3> tablePositions;
 
     void Start()
     {
@@ -88,7 +91,7 @@ public class DungeonCreator : MonoBehaviour
 
         if (6 >= generator.CreatedRooms.Count)
         {
-            DungeonCreator.floorOverlap = true;
+            //DungeonCreator.floorOverlap = true;
             Debug.Log("방 개수 미충족. 던전을 다시 생성합니다.");
         }
         // 벽 생성 가능 리스트
@@ -116,6 +119,7 @@ public class DungeonCreator : MonoBehaviour
         torchPositions = new List<Vector3>();
         boxPositions = new List<Vector3>();
         chestPositions = new List<Vector3>();
+        tablePositions = new List<Vector3>();
 
         RoomData(generator);
 
@@ -182,13 +186,14 @@ public class DungeonCreator : MonoBehaviour
             RoomNode dungeonRoom = dungeonRooms[i];
 
             CreateRoomCorner(dungeonRoom);
-            CreateRoomRandom(dungeonRoom);
-            CreateRoomChest(dungeonRoom);
 
 
             // 첫번째 방과 마지막 방을 제외한 방에만 생성
             if (1 <= i && i <= dungeonRooms.Count - 3)
             {
+                CreateRoomChest(dungeonRoom);
+                CreateRoomRandom(dungeonRoom);
+
                 CreateRoomCenter(dungeonRoom);
             }
         }
@@ -197,15 +202,26 @@ public class DungeonCreator : MonoBehaviour
     // 방의 랜덤한 위치에 생성
     private void CreateRoomRandom(RoomNode dungeonRoom)
     {
-        int value = Random.Range(0, 3);
+        int boxValue = Random.Range(0, 3);
         // 방의 랜덤한 위치에 생성
-        for (int i = 0; i < value; i++)
+        for (int i = 0; i < boxValue; i++)
         {
             int randomPosX = Random.Range(dungeonRoom.BottomLeftAreaCorner.x + 1, dungeonRoom.TopRightAreaCorner.x - 1);
             int randomPosY = Random.Range(dungeonRoom.BottomLeftAreaCorner.y + 1, dungeonRoom.TopRightAreaCorner.y - 1);
 
             Vector3 randomArea = new Vector3(randomPosX, 0, randomPosY);
             boxPositions.Add(randomArea);
+        }
+
+        int tableValue = Random.Range(0, 1);
+        // 방의 랜덤한 위치에 생성
+        for (int i = 0; i <= tableValue; i++)
+        {
+            int randomPosX = Random.Range(dungeonRoom.BottomLeftAreaCorner.x + 1, dungeonRoom.TopRightAreaCorner.x - 1);
+            int randomPosY = Random.Range(dungeonRoom.BottomLeftAreaCorner.y + 1, dungeonRoom.TopRightAreaCorner.y - 1);
+
+            Vector3 randomArea = new Vector3(randomPosX, 0, randomPosY);
+            tablePositions.Add(randomArea);
         }
     }
     private void CreateRoomChest(RoomNode dungeonRoom)
@@ -456,6 +472,10 @@ public class DungeonCreator : MonoBehaviour
         {
             CreateBox(dungeonDecorationParent, boxPosition, boxPrefabs);
         }
+        foreach (var tablePosition in tablePositions)
+        {
+            CreateTable(dungeonDecorationParent, tablePosition, tablePrefabs);
+        }
         foreach (var chestPosition in chestPositions)
         {
             CreateChest(dungeonDecorationParent, chestPosition, chestPrefabs);
@@ -472,6 +492,11 @@ public class DungeonCreator : MonoBehaviour
     public void CreateBox(GameObject dungeonDecorationParent, Vector3 boxPosition, GameObject boxPrefabs)
     {
         GameObject newBox = Instantiate(boxPrefabs, boxPosition, Quaternion.identity, dungeonDecorationParent.transform);
+    }
+    // 테이블 생성
+    public void CreateTable(GameObject dungeonDecorationParent, Vector3 tablePosition, GameObject tablePrefabs)
+    {
+        GameObject newBox = Instantiate(tablePrefabs, tablePosition, Quaternion.identity, dungeonDecorationParent.transform);
     }
     // 보물상자 생성
     public void CreateChest(GameObject dungeonDecorationParent, Vector3 chestPosition, GameObject chestPrefabs)

@@ -3,11 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Box : MonoBehaviour
+public class DungeonObject : MonoBehaviour
 {
     public int health;
-    public GameObject[] box;
-    public GameObject boxPrefab;
+    public GameObject[] dungeonObject;
+    public GameObject brokePrefab;
 
 
 
@@ -29,9 +29,9 @@ public class Box : MonoBehaviour
 
         if (health <= 0)
         {
-            Vector3 originalPosition = transform.position; // 원래 박스의 위치 저장
-            GameObject newBox = Instantiate(boxPrefab, originalPosition, Quaternion.identity);
-            Destroy(gameObject); // 원래 박스 파괴
+            Vector3 originalPosition = transform.position; // 기존 박스의 위치 저장
+            GameObject newObject = Instantiate(brokePrefab, originalPosition, Quaternion.identity);
+            Destroy(gameObject); // 기존 오브젝트 파괴
 
         }
 
