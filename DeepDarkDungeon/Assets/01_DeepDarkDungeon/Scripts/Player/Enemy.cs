@@ -1,63 +1,66 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.AI;
 
 public class Enemy : MonoBehaviour                     //Áß¿ä! navmesh´Â static¿ÀºêÁ§Æ®¸¸ bake °¡´ÉÇÏ´Ù!
 {
-    public enum Type { A, B, C };       //enum Å¸ÀÔ ³ª´©°í 
+    public enum Type { A, B, C, D };       //enum Å¸ÀÔ ³ª´©°í
     public Type enemyType;              //±×°ÍÀ» ÁöÁ¤ÇÒ º¯¼ö
 
     public int maxHealth;
     public int curHealth;
-    //public Transform target;
-    public BoxCollider meleeArea;         
+    public Transform target;
+    public BoxCollider meleeArea;          //±ÙÁ¢ °ø°Ý ¹üÀ§
+    public GameObject bullet;
     public bool isChase;
-    public bool isAttack;
+    public bool isAttack;                 //ÀÏ¹ÝÇü ¸ó½ºÅÍ º¯¼ö
 
-    public float jumpForce = 10f;
-
-    Rigidbody rigid;
-    BoxCollider boxCollider;
+    public Rigidbody rigid;
+    public BoxCollider boxCollider;
     //Material mat;
-    //Material mat2;
-    public MeshRenderer[] meshs;  //
+    public MeshRenderer[] meshs;  //ÇÇ°Ý ÀÌÆåÆ®¸¦ ¸ðµç ¸ÞÅ×¸®¾ó·Î
 
-    NavMeshAgent nav;    //À§¿¡ ³×ÀÓ½ºÆäÀÌ½º aiÃß°¡ÇØ¾ßÇÑ´Ù
+    public NavMeshAgent nav;    //À§¿¡ ³×ÀÓ½ºÆäÀÌ½º aiÃß°¡ÇØ¾ßÇÑ´Ù
 
-    Animator anim;
+    public Animator anim;
 
+    public bool doLook;
+
+    Vector3 doLookVec;
 
     void Awake()
     {
         rigid = GetComponent<Rigidbody>();
         boxCollider = GetComponent<BoxCollider>();
-        //mat = GetComponentInChildren<MeshRenderer>().material;   // MaterialÀº MeshRenderer·Î °¡Á®¿Í¾ßµÈ´Ù
-        
-        nav = GetComponent<NavMeshAgent>();
-        anim = GetComponent<Animator>();
-        //mat2 = GetComponentInChildren<SkinnedMeshRenderer>().material;
         meshs = GetComponentsInChildren<MeshRenderer>();  // MaterialÀº MeshRenderer·Î °¡Á®¿Í¾ßµÈ´Ù
+        nav = GetComponent<NavMeshAgent>();
+        anim = GetComponentInChildren<Animator>();
 
-        Invoke("ChaseStart", 2);
+        if (enemyType != Type.D)
+            Invoke("ChaseStart", 2);
     }
 
     void ChaseStart()
     {
         isChase = true;
         anim.SetBool("isWalk", true);
-
-      
     }
 
     void Update()
     {
-        if (nav.enabled)       //navi°¡ È°¼ºÈ­µÇ¾îÀÖÀ»¶§¸¸
+        if (nav.enabled && enemyType != Type.D)       //navi°¡ È°¼ºÈ­µÇ¾îÀÖÀ»¶§¸¸
         {
-            GameObject target = GameObject.FindGameObjectWithTag("Player");
-
-            nav.SetDestination(target.transform.position);     //SetDestination µµÂøÇÒ ¸ñÇ¥ À§Ä¡ ÁöÁ¤ ÇÔ¼ö 
+            nav.SetDestination(target.position);     //SetDestination µµÂøÇÒ ¸ñÇ¥ À§Ä¡ ÁöÁ¤ ÇÔ¼ö 
             nav.isStopped = !isChase;     //isStoppedÀ» »ç¿ëÇÏ¿© ¿Ïº®ÇÏ°Ô ¸ØÃßµµ·Ï
+        }
+        if (doLook)
+        {
+            float h = Input.GetAxisRaw("Horizontal");
+            float v = Input.GetAxisRaw("Vertical");
+            doLookVec = new Vector3(h, 0, v) * 5f;   //ÇÃ·¹ÀÌ¾î ÀÔ·Â°ªÀ¸·Î ¿¹Ãø ¹éÅÍ°ª »ý¼º
+            transform.LookAt(target.position + doLookVec);
         }
 
 
@@ -83,30 +86,37 @@ public class Enemy : MonoBehaviour                     //Áß¿ä! navmesh´Â static¿
     //ÀÏ¹ÝÇü ¸ó½ºÅÍ
     void Targeting()
     {
-        float targetRadius = 0;
-        float targetRange = 0;                   //sphererCastÀÇ ¹ÝÁö¸§, ±æÀÌ¸¦ Á¶Á¤ º¯¼ö
-
-        switch (enemyType)
+        if (enemyType != Type.D)
         {
-            case Type.A:
-                targetRadius = 1.5f;
-                targetRange = 3f;
-                break;
-            case Type.B:                //µ¹°ÝÇü ¸ó½ºÅÍ
-                targetRadius = 1f;
-                targetRange = 12f;
-                break;
-          
+            float targetRadius = 0;
+            float targetRange = 0;                   //sphererCastÀÇ ¹ÝÁö¸§, ±æÀÌ¸¦ Á¶Á¤ º¯¼ö
+
+            switch (enemyType)
+            {
+                case Type.A:
+                    targetRadius = 1.5f;
+                    targetRange = 3f;
+                    break;
+                case Type.B:                //µ¹°ÝÇü ¸ó½ºÅÍ
+                    targetRadius = 1f;
+                    targetRange = 12f;
+                    break;
+                case Type.C:
+                    targetRadius = 0.5f;   //µÎ²²
+                    targetRange = 25f;     //¹üÀ§
+                    break;
+            }
+
+            RaycastHit[] rayHits = Physics.SphereCastAll(transform.position,
+            targetRadius, transform.forward, targetRange, LayerMask.GetMask("Player"));    //ÀÚ½ÅÀÇ À§Ä¡, ¹ÝÁö¸§, ½î´Â ¹æÇâ, ·¹ÀÌ ½î´Â °Å¸®      
+
+            //rayHit º¯¼ö¿¡ µ¥ÀÌÅÍ°¡ µé¾î¿À¸é °ø°Ý ÄÚ·çÆ¾ ½ÇÇàÇÑ´Ù
+            if (rayHits.Length > 0 && !isAttack)  //¹üÀ§ ¾ÈÀÌ°í °ø°ÝÁßÀÌ¸é °ø°ÝÇÏÁö ¾Ê´Â´Ù
+            {
+                StartCoroutine(Attack());
+            }
         }
 
-        RaycastHit[] rayHits = Physics.SphereCastAll(transform.position,
-        targetRadius, transform.forward, targetRange, LayerMask.GetMask("Player"));    //ÀÚ½ÅÀÇ À§Ä¡, ¹ÝÁö¸§, ½î´Â ¹æÇâ, ·¹ÀÌ ½î´Â °Å¸®      
-
-        //rayHit º¯¼ö¿¡ µ¥ÀÌÅÍ°¡ µé¾î¿À¸é °ø°Ý ÄÚ·çÆ¾ ½ÇÇàÇÑ´Ù
-        if (rayHits.Length > 0 && !isAttack)  //¹üÀ§ ¾ÈÀÌ°í °ø°ÝÁßÀÌ¸é °ø°ÝÇÏÁö ¾Ê´Â´Ù
-        {
-            StartCoroutine(Attack());
-        }
     }
 
     IEnumerator Attack()
@@ -115,7 +125,9 @@ public class Enemy : MonoBehaviour                     //Áß¿ä! navmesh´Â static¿
         isChase = false;
         isAttack = true;
         anim.SetBool("isAttack", true);
-        
+
+
+
 
         switch (enemyType)
         {
@@ -139,7 +151,14 @@ public class Enemy : MonoBehaviour                     //Áß¿ä! navmesh´Â static¿
 
                 yield return new WaitForSeconds(2f);  //µ¹°ÝÇßÀ¸´Ï 2ÃÊ°£ ½®´Ù
                 break;
-           
+            case Type.C:
+                yield return new WaitForSeconds(0.5f);
+                GameObject instantBullet = Instantiate(bullet, transform.position, transform.rotation);
+                Rigidbody rigidBullet = instantBullet.GetComponent<Rigidbody>();
+                rigidBullet.velocity = transform.forward * 20;
+
+                yield return new WaitForSeconds(2f);
+                break;
         }
 
 
@@ -159,7 +178,7 @@ public class Enemy : MonoBehaviour                     //Áß¿ä! navmesh´Â static¿
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag.Equals("Melee"))
+        if (other.tag.Equals("melee"))
         {
             Weapon weapon = other.GetComponent<Weapon>();
             curHealth -= weapon.damage;
@@ -169,7 +188,7 @@ public class Enemy : MonoBehaviour                     //Áß¿ä! navmesh´Â static¿
         }
         else if (other.tag.Equals("Bullet"))
         {
-            Bullet bullet = other.GetComponent<Bullet>(); 
+            Bullet bullet = other.GetComponent<Bullet>();
             curHealth -= bullet.damage;
             Vector3 reactVec = transform.position - other.transform.position;
             Destroy(other.gameObject);
@@ -188,8 +207,6 @@ public class Enemy : MonoBehaviour                     //Áß¿ä! navmesh´Â static¿
 
     IEnumerator OnDamage(Vector3 reactVec, bool isGrenade)
     {
-        // mat.color = Color.red;
-        //mat2.color = Color.red;
         foreach (MeshRenderer mesh in meshs)
         {
             mesh.material.color = Color.red;
@@ -199,8 +216,6 @@ public class Enemy : MonoBehaviour                     //Áß¿ä! navmesh´Â static¿
 
         if (curHealth > 0)
         {
-            //mat.color = Color.white;
-            //mat2.color = Color.white;
             foreach (MeshRenderer mesh in meshs)
             {
                 mesh.material.color = Color.white;
@@ -208,8 +223,6 @@ public class Enemy : MonoBehaviour                     //Áß¿ä! navmesh´Â static¿
         }
         else
         {
-            //mat.color = Color.gray;
-            //mat2.color = Color.gray;
             foreach (MeshRenderer mesh in meshs)
             {
                 mesh.material.color = Color.gray;
@@ -219,7 +232,7 @@ public class Enemy : MonoBehaviour                     //Áß¿ä! navmesh´Â static¿
 
             nav.enabled = false;      //»ç¸Á ¸®¾×¼Ç À¯ÁöÇÏ±â À§ÇØ¼­
 
-            //anim.SetTrigger("doDie");
+            anim.SetTrigger("doDie");
 
             if (isGrenade)
             {
@@ -238,9 +251,8 @@ public class Enemy : MonoBehaviour                     //Áß¿ä! navmesh´Â static¿
                 rigid.AddForce(reactVec * 5, ForceMode.Impulse);    //¹Ý´ë¹æÇâÀ¸·Î ÈûÀÌ °¡ÇØÁø´Ù
             }
 
-
-            Destroy(gameObject, 4);
+            if (enemyType != Type.D)
+                Destroy(gameObject, 4);
         }
     }
 }
-
