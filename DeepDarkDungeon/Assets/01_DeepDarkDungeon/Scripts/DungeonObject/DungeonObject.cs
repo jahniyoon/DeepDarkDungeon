@@ -6,7 +6,6 @@ using UnityEngine;
 public class DungeonObject : MonoBehaviour
 {
     public int health;
-    public GameObject[] dungeonObject;
     public GameObject brokePrefab;
     public GameObject goldPrefab;
     public int goldValue;

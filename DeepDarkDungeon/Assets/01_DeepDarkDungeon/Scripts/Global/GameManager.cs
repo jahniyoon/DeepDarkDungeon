@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour
     [Header("Debug instance")]
 
     public bool isGameOver = false;
+    public bool isDoorOpen = false;
     public GameObject gameoverUI;
 
 

@@ -240,8 +240,15 @@ MonoBehaviour:
   curHealth: 50
   target: {fileID: 0}
   meleeArea: {fileID: 244214027762714596}
+  bullet: {fileID: 0}
   isChase: 0
   isAttack: 0
+  rigid: {fileID: 0}
+  boxCollider: {fileID: 0}
+  meshs: []
+  nav: {fileID: 0}
+  anim: {fileID: 0}
+  doLook: 0
 --- !u!195 &244214028250121604
 NavMeshAgent:
   m_ObjectHideFlags: 0

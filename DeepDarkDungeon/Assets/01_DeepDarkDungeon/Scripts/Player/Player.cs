@@ -292,6 +292,14 @@ public class Player : MonoBehaviour
                         health += item.value;
                     }
                     break;
+
+                case Item.Type.Key:
+                    if (!GameManager.instance.isGameOver)
+                    {
+                        GameManager.instance.isDoorOpen = true;
+                        Debug.Log("πÆ¿Ã ø≠∑»¥Ÿ.");
+                    }
+                    break;
             }
             Destroy(other.gameObject);
         }
