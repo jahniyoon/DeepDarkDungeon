@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.XR;
 
 public class Player : MonoBehaviour
 {
@@ -11,11 +12,12 @@ public class Player : MonoBehaviour
 
     public GameObject followCamera;
 
-    public int coin;
-    public int health;
 
-    public int maxCoin;
+    public int gold;
+    public int maxGold;
+
     public int maxHealth;
+    public int health;
 
     public float distance;
 
@@ -31,6 +33,8 @@ public class Player : MonoBehaviour
     Rigidbody PlayerRigid;
     Animator animator;
 
+    MeshRenderer[] meshs;
+
     bool wDown;
     bool jDown;
 
@@ -44,10 +48,11 @@ public class Player : MonoBehaviour
     bool sDown3;
 
     bool isSwap;
-
     bool isFireReady = true;
 
     bool isBorder;
+
+    bool isDamage;
 
     bool isDodge;
 
@@ -63,21 +68,25 @@ public class Player : MonoBehaviour
     {
         PlayerRigid = GetComponent<Rigidbody>();
         animator = GetComponentInChildren<Animator>();     //자식 오브젝트에 애니메이션 넣어서 
+        meshs = GetComponentsInChildren<MeshRenderer>();
 
-       
+        GameManager.instance.SetMaxHealth(maxHealth); // 체력 초기화
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        GetInput();
-        Move();
-        Turn();
-        Attack();
-        Dodge();
-        Swap();
-        Interation();
-
+        if (!GameManager.instance.isGameOver)
+        {
+            GetInput();
+            Move();
+            Turn();
+            Attack();
+            Dodge();
+            Swap();
+            Interation();
+        }
     }
 
     void GetInput()        //Input 시스템
@@ -266,19 +275,55 @@ public class Player : MonoBehaviour
             switch(item.type)
             {
                 case Item.Type.Coin:
-                    coin += item.value;
-                    if (coin > maxCoin)
-                        coin = maxCoin;
+                    if (!GameManager.instance.isGameOver)
+                    {
+                        gold += item.value;
+                        if (maxGold < gold)
+                        {
+                            gold = maxGold;
+                        }
+                        GameManager.instance.goldText.text = string.Format("{0}", gold);
+                    }
                     break;
+
                 case Item.Type.Heart:
-                    health += item.value;
-                    if (health > maxHealth)
-                        health = maxHealth;
+                    if (!GameManager.instance.isGameOver)
+                    {
+                        health += item.value;
+                    }
                     break;
             }
             Destroy(other.gameObject);
         }
-      
+
+        if (other.tag.Equals("EnemyBullet"))
+        {
+            if (!isDamage)
+            {
+                Bullet enemyBullet = other.GetComponent<Bullet>();
+                health -= enemyBullet.damage;
+                GameManager.instance.SetHealth(health);
+
+                if (health <= 0)
+                {
+                    GameManager.instance.OnGameOver();
+                }
+
+                //맞은 후 1초 무적? 때문에 작동이 안됨
+                //if(other.GetComponent<Bullet>() != null)       //리지드바디 유무를 조건으로 하여 
+                //{
+                //    Destroy(other.gameObject);
+                //}
+
+                bool isBossAtk = other.name == "Boss Melee Area";
+                StartCoroutine(OnDamage());
+            }
+            if (other.GetComponent<Bullet>() != null)       //리지드바디 유무를 조건으로 하여 
+            {
+                Destroy(other.gameObject);
+            }
+
+        }
     }
 
     void OnTriggerStay(Collider other)
@@ -289,6 +334,7 @@ public class Player : MonoBehaviour
 
             //Debug.Log(nearObject.name);
         }
+
     }
 
     void OnTriggerExit(Collider other)
@@ -300,6 +346,32 @@ public class Player : MonoBehaviour
 
     }
 
+    IEnumerator OnDamage()
+    {
+        isDamage = true;
+        foreach (MeshRenderer mesh in meshs)         //반복문을 사용하여 모든 재질의 색상 변경
+        {
+            mesh.material.color = Color.red;
+        }
+
+        //if (isBossAtk)
+        //{
+        //    rigid.AddForce(transform.forward * -25, ForceMode.Impulse);      //보스 taunt공격 맞은 후에 넉백
+        //}
+        yield return new WaitForSeconds(0.5f);  //무적 타임
+
+        isDamage = false;
+        foreach (MeshRenderer mesh in meshs)
+        {
+            mesh.material.color = Color.white;       //원래대로 돌림
+        }
+
+        //if (isBossAtk)
+        //{
+        //    rigid.velocity = Vector3.zero;     //1초 후 원래대로 돌아옴
+        //}
+
+    }
 }
 
 

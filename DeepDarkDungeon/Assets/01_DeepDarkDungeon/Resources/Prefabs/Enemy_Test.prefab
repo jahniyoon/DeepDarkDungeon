@@ -1243,7 +1243,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a192251bf84f754dab766f0614efb82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyType: 1
+  enemyType: 0
   maxHealth: 50
   curHealth: 50
   meleeArea: {fileID: 7754978843876545805}
@@ -1336,13 +1336,13 @@ GameObject:
   - component: {fileID: 7754978843876545807}
   - component: {fileID: 7754978843876545805}
   - component: {fileID: 7754978843876545806}
-  m_Layer: 13
+  m_Layer: 11
   m_Name: EnemyBullet
   m_TagString: EnemyBullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &7754978843876545807
 Transform:
   m_ObjectHideFlags: 0

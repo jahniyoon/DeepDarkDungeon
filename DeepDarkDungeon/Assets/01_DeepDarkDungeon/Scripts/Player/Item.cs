@@ -14,7 +14,7 @@ public class Item : MonoBehaviour
     void Awake()
     {
         rigid = GetComponent<Rigidbody>();
-        sphereCollider = GetComponent<SphereCollider>();
+        //sphereCollider = GetComponent<SphereCollider>();
     }
 
     // Update is called once per frame
@@ -26,10 +26,10 @@ public class Item : MonoBehaviour
     void OnCollisionEnter(Collision collision)
     {
      
-        if(collision.gameObject.tag.Equals("Floor"))
-        {
-            rigid.isKinematic = true;
-            sphereCollider.enabled = false;
-        }
+        //if(collision.gameObject.tag.Equals("Floor"))
+        //{
+        //    rigid.isKinematic = true;
+        //    sphereCollider.enabled = false;
+        //}
     }
 }

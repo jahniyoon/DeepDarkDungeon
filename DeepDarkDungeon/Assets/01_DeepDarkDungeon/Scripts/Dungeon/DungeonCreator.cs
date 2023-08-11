@@ -10,7 +10,6 @@ using Random = UnityEngine.Random;
 public class DungeonCreator : MonoBehaviour
 {
     [Header("Debug")]
-    public TMP_Text roomCountText;
     public static bool floorOverlap = true; // 던전 적합도 체크
     private int roomNum = 1;
     public NavMeshSurface surface;
@@ -149,7 +148,7 @@ public class DungeonCreator : MonoBehaviour
     public void RoomData(DugeonGenerator generator)
     {
         // 생성된 방 개수와 정보 출력
-        roomCountText.text = string.Format("Room Count : {0}", generator.CreatedRooms.Count);
+        //roomCountText.text = string.Format("Room Count : {0}", generator.CreatedRooms.Count);
         //Debug.Log("Created Room Count: " + generator.CreatedRooms.Count);
         //foreach (var room in generator.CreatedRooms)
         //{

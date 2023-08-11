@@ -777,6 +777,9 @@ MonoBehaviour:
   health: 1
   dungeonObject: []
   brokePrefab: {fileID: 6209177521451110745, guid: 59570c5bb77f6b64eb17dd7f7e18d723, type: 3}
+  goldPrefab: {fileID: 82943549552955422, guid: d92c79644cd1a8e479a9ac764a15249d, type: 3}
+  goldValue: 3
+  type: 1
 --- !u!54 &8435404152100631149
 Rigidbody:
   m_ObjectHideFlags: 0

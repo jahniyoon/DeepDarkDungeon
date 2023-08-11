@@ -15,5 +15,8 @@ public class SceneManagement : MonoBehaviour
     {
         Application.Quit();
     }
-
+    public void ChangeGameTitleScene()
+    {
+        SceneManager.LoadScene("TitleScene");
+    }
 }
