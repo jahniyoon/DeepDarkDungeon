@@ -70,8 +70,15 @@ public class DungeonCreator : MonoBehaviour
     List<Vector3> tablePositions;
     List<Vector3> jarPositions;
 
+    private void Awake()
+    {
+        floorOverlap = true;
+
+    }
     void Start()
     {
+        Random.InitState(System.DateTime.Now.Millisecond); // 현재 시간의 밀리초를 랜덤 시드로 사용
+
         StartCoroutine(CheckFloorOverlapAndGenerateDungeon());
     }
 

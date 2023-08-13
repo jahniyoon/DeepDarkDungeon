@@ -3,27 +3,33 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using static UnityEditor.Progress;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
-    public TMP_Text goldText;
+    [HideInInspector] public bool isGameOver = false; // 게임오버 확인
+    [HideInInspector] public bool isPause = false; // 포즈 확인
+    [HideInInspector] public bool isDoorOpen = false; // 문 열림 확인
 
-    public Slider playerHealth;
-    Player player;
+    [Header("UI instance")]
 
-    [Header("Debug instance")]
-
-    public bool isGameOver = false;
-    public bool isDoorOpen = false;
-    public GameObject gameoverUI;
+    public GameObject gameoverUI;   // 게임 오버 UI
+    public GameObject gamePauseUI;   // 게임 포즈 UI
+    public GameObject keyUI;   // 게임 포즈 UI
+    public Slider playerHealth; // 체력 바
+    public TMP_Text goldText;   // 골드 텍스트
+    public Image[] itemSlot1;
+    public Image[] itemSlot2;
+    public Image[] itemSlot3;
 
 
     // 초기화
     public void Initialization()
     {
         isGameOver = false;
+        isPause = false;
+        Time.timeScale = 1;
+
     }   // } Initialization // } Initialization
 
     private void Awake()
@@ -70,5 +76,29 @@ public class GameManager : MonoBehaviour
         //Audio audio = FindObjectOfType<Audio>();
         //audio.RetrySound();
     }
+
+    public void OnGamePause()
+    {
+        if (!isPause && !isGameOver)
+        {
+            isPause = true; 
+            Time.timeScale = 0;
+            gamePauseUI.SetActive(true);
+        }
+
+        else if(isPause && !isGameOver)
+        {
+            isPause = false;
+            Time.timeScale = 1;
+            gamePauseUI.SetActive(false);
+        }
+    }
+    public void DoorOpen()
+    {
+        isDoorOpen = true;
+        keyUI.SetActive(true);
+
+    }
+
 
 }

@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class SceneManagement : MonoBehaviour
 {
+    public static SceneManagement instance;
 
     public void ChangeGameStartScene()
     {
@@ -18,5 +19,11 @@ public class SceneManagement : MonoBehaviour
     public void ChangeGameTitleScene()
     {
         SceneManager.LoadScene("TitleScene");
+    }
+
+    // 디버그용 테스트 던전
+    public void ChangeGameTestDungeonScene()
+    {
+        SceneManager.LoadScene("TestDungeonScene");
     }
 }

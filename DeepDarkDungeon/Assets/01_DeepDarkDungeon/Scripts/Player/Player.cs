@@ -2,14 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.XR;
+using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
     public float speed;
 
     public Transform playerTransform;
-
     public GameObject followCamera;
 
 
@@ -56,8 +56,19 @@ public class Player : MonoBehaviour
 
     bool isDodge;
 
+    bool pauseDown; // 포즈 버튼 확인
+
+
     GameObject nearObject;
+    GameObject exit;
+    GameObject exitUI;
+    GameObject chest;
+    GameObject chestUI;
     Weapon equipWeapon;      //기존에 장착된 무기를 저장하는 변수를 선언
+
+    bool hasSlot1 = false;
+    bool hasSlot2 = false;
+    bool hasSlot3 = false;
 
     int equipWeaponIndex = -1; //무기 중복 교체, 없는 무기 확인을 위한 조건
 
@@ -77,9 +88,10 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!GameManager.instance.isGameOver)
-        {
             GetInput();
+            Pause();
+        if (!GameManager.instance.isGameOver && !GameManager.instance.isPause)
+        {
             Move();
             Turn();
             Attack();
@@ -87,7 +99,18 @@ public class Player : MonoBehaviour
             Swap();
             Interation();
         }
+
+
+
     }
+
+    void FixedUpdate()
+    {
+        FreezeRotation();
+        StopToWall();
+       
+    }
+
 
     void GetInput()        //Input 시스템
     {
@@ -104,6 +127,8 @@ public class Player : MonoBehaviour
         sDown1 = Input.GetButtonDown("Swap1");
         sDown2 = Input.GetButtonDown("Swap2");
         sDown3 = Input.GetButtonDown("Swap3");
+
+        pauseDown = Input.GetButtonDown("Cancel");
     }
 
     void Move()     //캐릭터 움직임
@@ -181,7 +206,14 @@ public class Player : MonoBehaviour
         isDodge = false;
     }
 
-
+    void Pause()
+    {
+        if (pauseDown)
+        {
+            GameManager.instance.OnGamePause();
+        }
+   
+    }
     void Swap()
     {
         if (sDown1 && (!hasWeapons[0] || equipWeaponIndex == 0))
@@ -239,10 +271,58 @@ public class Player : MonoBehaviour
                 int weaponIndex = item.value;
                 hasWeapons[weaponIndex] = true;
 
+                // ToDo 현재 1번 칸만 생성되게 구현. 따라서 아이템 중복으로 획득시 같은 자리에 생성됨.
+                // 추후 아이템 셋팅 구현완료시 아이템에 따라 순차적으로 1,2,3 슬롯에 넣어지고 생성되도록 구현해야함.
+
+                Debug.Log(item.value + "번호의 아이템을 먹었다." );
+                Image itemSlot1 = GameManager.instance.itemSlot1[item.value].GetComponent<Image>();  // 아이템 슬롯 
+                Image itemSlot2 = GameManager.instance.itemSlot2[item.value].GetComponent<Image>();  // 아이템 슬롯 
+                Image itemSlot3 = GameManager.instance.itemSlot3[item.value].GetComponent<Image>();  // 아이템 슬롯 
+
+                if (itemSlot1 != null && !hasSlot1)
+                {
+                    hasSlot1 = true;
+                    Color newColor = new Color(255, 255, 255, 255);
+                    itemSlot1.color = newColor;
+                }
+                else if (itemSlot2 != null && !hasSlot2)
+                {
+                    hasSlot2 = true;
+                    Color newColor = new Color(255, 255, 255, 255);
+                    itemSlot2.color = newColor;
+                }
+                else if (itemSlot3 != null && !hasSlot3)
+                {
+                    hasSlot3 = true;
+                    Color newColor = new Color(255, 255, 255, 255);
+                    itemSlot3.color = newColor;
+                }
+
                 Destroy(nearObject);
+            }
+        }
+        if (iDown && exit != null && !isDodge)
+        {
+            if (exit.tag.Equals("Finish"))
+            {
+                Debug.Log("피니쉬 확인");
+                GlobalFunc.LoadScene("DungeonScene");
+            }
+        }
+        if (iDown && chest != null && !isDodge)
+        {
+            DungeonObject item = chest.GetComponent<DungeonObject>();
+            if ((item != null))
+            {
+                item.ChestOpen();
+                item.tag = "Untagged"; // 보물상자를 열었기 때문에 태그 제거
+                chest = null;
+                chestUI.gameObject.SetActive(false);
             }
 
         }
+
+
     }
 
     void FreezeRotation()
@@ -253,84 +333,83 @@ public class Player : MonoBehaviour
     void StopToWall()
     {
         // 레이 위치 조정
-        float playerEye = 0.3f;
+        float playerEye = 0.05f;
         Vector3 PlayerPosition = new Vector3 (transform.position.x, playerEye, transform.position.z);
 
         Debug.DrawRay(PlayerPosition, transform.forward * distance, Color.green);
         isBorder = Physics.Raycast(PlayerPosition, transform.forward, distance, LayerMask.GetMask("Wall"));
     }
 
-    void FixedUpdate()
-    {
-        FreezeRotation();
-        StopToWall();
-    }
-
-
+   
     private void OnTriggerEnter(Collider other)
     {
-        if(other.tag.Equals("Item"))
+        if(!GameManager.instance.isGameOver)
         {
-          Item item = other.GetComponent<Item>();
-            switch(item.type)
+            if (other.tag.Equals("Item"))
             {
-                case Item.Type.Coin:
-                    if (!GameManager.instance.isGameOver)
-                    {
+              Item item = other.GetComponent<Item>();
+                switch(item.type)
+                {
+                    case Item.Type.Coin:
+                        
                         gold += item.value;
                         if (maxGold < gold)
                         {
                             gold = maxGold;
                         }
                         GameManager.instance.goldText.text = string.Format("{0}", gold);
-                    }
-                    break;
+                        break;
 
-                case Item.Type.Heart:
-                    if (!GameManager.instance.isGameOver)
-                    {
+                    case Item.Type.Heart:
                         health += item.value;
-                    }
-                    break;
+                        break;
 
-                case Item.Type.Key:
-                    if (!GameManager.instance.isGameOver)
-                    {
-                        GameManager.instance.isDoorOpen = true;
-                        Debug.Log("문이 열렸다.");
-                    }
-                    break;
-            }
-            Destroy(other.gameObject);
-        }
-
-        if (other.tag.Equals("EnemyBullet"))
-        {
-            if (!isDamage)
-            {
-                Bullet enemyBullet = other.GetComponent<Bullet>();
-                health -= enemyBullet.damage;
-                GameManager.instance.SetHealth(health);
-
-                if (health <= 0)
-                {
-                    GameManager.instance.OnGameOver();
+                    case Item.Type.Key:
+                        GameManager.instance.DoorOpen();
+                        break;
                 }
-
-                //맞은 후 1초 무적? 때문에 작동이 안됨
-                //if(other.GetComponent<Bullet>() != null)       //리지드바디 유무를 조건으로 하여 
-                //{
-                //    Destroy(other.gameObject);
-                //}
-
-                bool isBossAtk = other.name == "Boss Melee Area";
-                StartCoroutine(OnDamage());
-            }
-            if (other.GetComponent<Bullet>() != null)       //리지드바디 유무를 조건으로 하여 
-            {
                 Destroy(other.gameObject);
             }
 
+            if (other.tag.Equals("EnemyBullet"))
+            {
+                if (!isDamage)
+                {
+                    Bullet enemyBullet = other.GetComponent<Bullet>();
+                    health -= enemyBullet.damage;
+                    GameManager.instance.SetHealth(health);
+
+                    if (health <= 0)
+                    {
+                        GameManager.instance.OnGameOver();
+                    }
+
+                    //맞은 후 1초 무적? 때문에 작동이 안됨
+                    //if(other.GetComponent<Bullet>() != null)       //리지드바디 유무를 조건으로 하여 
+                    //{
+                    //    Destroy(other.gameObject);
+                    //}
+
+                    bool isBossAtk = other.name == "Boss Melee Area";
+                    StartCoroutine(OnDamage());
+                }
+                if (other.GetComponent<Bullet>() != null)       //리지드바디 유무를 조건으로 하여 
+                {
+                    //Destroy(other.gameObject);        // !플레이어를 공격한 뒤 다시 공격하지 않는 문제
+                }
+
+            }
+            if (other.tag.Equals("Sencor"))
+            {
+                Debug.Log("적 : 플레이어를 감지했다.");
+
+                EnemyTest targetPosition = other.GetComponent<EnemyTest>();
+                if (targetPosition.target == null)
+                {
+                    targetPosition.target = transform;
+
+                }
+            }
         }
     }
 
@@ -342,6 +421,23 @@ public class Player : MonoBehaviour
 
             //Debug.Log(nearObject.name);
         }
+        if(other.tag.Equals("Finish"))
+        {
+            exit = other.gameObject;
+
+            exitUI = other.transform.GetChild(0).gameObject;
+            exitUI.gameObject.SetActive(true);
+
+        }
+        if (other.tag.Equals("Chest"))
+        {
+            chest = other.gameObject;
+
+            
+            chestUI = other.transform.GetChild(0).gameObject;
+            chestUI.gameObject.SetActive(true);
+
+        }
 
     }
 
@@ -350,6 +446,16 @@ public class Player : MonoBehaviour
         if(other.tag.Equals("Weapon"))
         {
             nearObject = null; 
+        }
+        if (other.tag.Equals("Finish"))
+        {
+            exit = null;
+            exitUI.gameObject.SetActive(false);
+        }
+        if (other.tag.Equals("Chest"))
+        {
+            chest = null;
+            chestUI.gameObject.SetActive(false);
         }
 
     }
@@ -380,6 +486,9 @@ public class Player : MonoBehaviour
         //}
 
     }
+
+ 
+
 }
 
 
