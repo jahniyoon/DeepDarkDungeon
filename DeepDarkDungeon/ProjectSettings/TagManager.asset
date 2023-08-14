@@ -11,6 +11,8 @@ TagManager:
   - Melee
   - Enemy
   - PLAYER
+  - Chest
+  - Sencor
   layers:
   - Default
   - TransparentFX

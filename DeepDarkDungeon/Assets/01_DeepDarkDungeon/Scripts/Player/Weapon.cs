@@ -22,7 +22,7 @@ public class Weapon : MonoBehaviour
 
     IEnumerator Swing()
     {
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.3f);
         meleeArea.enabled = true; //콜라이더 활성화
 
         yield return new WaitForSeconds(0.5f);

@@ -57,6 +57,7 @@ public class DungeonCreator : MonoBehaviour
     public GameObject boxPrefabs;
     public GameObject chestPrefabs;
     public GameObject tablePrefabs;
+    public GameObject jarPrefabs;
 
     // 룸 데코레이션 리스트
     private Vector3Int spawnRoomCenterPosition; // 스폰 방의 중앙 위치
@@ -67,9 +68,17 @@ public class DungeonCreator : MonoBehaviour
     List<Vector3> boxPositions;
     List<Vector3> chestPositions;
     List<Vector3> tablePositions;
+    List<Vector3> jarPositions;
 
+    private void Awake()
+    {
+        floorOverlap = true;
+
+    }
     void Start()
     {
+        Random.InitState(System.DateTime.Now.Millisecond); // 현재 시간의 밀리초를 랜덤 시드로 사용
+
         StartCoroutine(CheckFloorOverlapAndGenerateDungeon());
     }
 
@@ -119,6 +128,7 @@ public class DungeonCreator : MonoBehaviour
         boxPositions = new List<Vector3>();
         chestPositions = new List<Vector3>();
         tablePositions = new List<Vector3>();
+        jarPositions = new List<Vector3>();
 
         RoomData(generator);
 
@@ -221,6 +231,16 @@ public class DungeonCreator : MonoBehaviour
 
             Vector3 randomArea = new Vector3(randomPosX, 0, randomPosY);
             tablePositions.Add(randomArea);
+        }
+        int jarValue = Random.Range(0, 5);
+        // 방의 랜덤한 위치에 생성
+        for (int i = 0; i <= tableValue; i++)
+        {
+            int randomPosX = Random.Range(dungeonRoom.BottomLeftAreaCorner.x + 1, dungeonRoom.TopRightAreaCorner.x - 1);
+            int randomPosY = Random.Range(dungeonRoom.BottomLeftAreaCorner.y + 1, dungeonRoom.TopRightAreaCorner.y - 1);
+
+            Vector3 randomArea = new Vector3(randomPosX, 0, randomPosY);
+            jarPositions.Add(randomArea);
         }
     }
     private void CreateRoomChest(RoomNode dungeonRoom)
@@ -479,6 +499,10 @@ public class DungeonCreator : MonoBehaviour
         {
             CreateChest(dungeonDecorationParent, chestPosition, chestPrefabs);
         }
+        foreach (var jarPosition in jarPositions)
+        {
+            CreateChest(dungeonDecorationParent, jarPosition, jarPrefabs);
+        }
 
     }
 
@@ -496,6 +520,11 @@ public class DungeonCreator : MonoBehaviour
     public void CreateTable(GameObject dungeonDecorationParent, Vector3 tablePosition, GameObject tablePrefabs)
     {
         GameObject newBox = Instantiate(tablePrefabs, tablePosition, Quaternion.identity, dungeonDecorationParent.transform);
+    }
+    // 병 생성
+    public void CreateJar(GameObject dungeonDecorationParent, Vector3 jarPosition, GameObject jarPrefabs)
+    {
+        GameObject newJar = Instantiate(jarPrefabs, jarPosition, Quaternion.identity, dungeonDecorationParent.transform);
     }
     // 보물상자 생성
     public void CreateChest(GameObject dungeonDecorationParent, Vector3 chestPosition, GameObject chestPrefabs)
