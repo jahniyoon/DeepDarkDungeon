@@ -25,8 +25,8 @@ public class Item : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-     
-        //if(collision.gameObject.tag.Equals("Floor"))
+
+        //if (collision.gameObject.tag.Equals("Floor"))
         //{
         //    rigid.isKinematic = true;
         //    sphereCollider.enabled = false;

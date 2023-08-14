@@ -148,7 +148,7 @@ public class Player : MonoBehaviour
         if (fDown && isFireReady && !isDodge && !isSwap)
         {
             equipWeapon.Use();                   //public 선언해서 다른 스크립트에 있는 거 가져올수있다
-            animator.SetTrigger(equipWeapon.type == Weapon.Type.melee ? "doSwing" : "doShot");   //무기 타입에 따라 다른 트리거 실행 
+            animator.SetTrigger(equipWeapon.type == Weapon.Type.Melee ? "doSwing" : "doShot");   //무기 타입에 따라 다른 트리거 실행 
             fireDelay = 0;  //공격 딜레이 0으로 올려서 다음 공격까지 기다리도록 작성
         }
     }
@@ -309,13 +309,13 @@ public class Player : MonoBehaviour
                     GameManager.instance.OnGameOver();
                 }
 
-                //맞은 후 1초 무적? 때문에 작동이 안됨
+                //맞은 후 1초 무적  때문에 작동이 안됨
                 //if(other.GetComponent<Bullet>() != null)       //리지드바디 유무를 조건으로 하여 
                 //{
                 //    Destroy(other.gameObject);
                 //}
 
-                bool isBossAtk = other.name == "Boss Melee Area";
+                //bool isBossAtk = other.name == "Boss Melee Area";
                 StartCoroutine(OnDamage());
             }
             if (other.GetComponent<Bullet>() != null)       //리지드바디 유무를 조건으로 하여 
@@ -364,6 +364,7 @@ public class Player : MonoBehaviour
         foreach (MeshRenderer mesh in meshs)
         {
             mesh.material.color = Color.white;       //원래대로 돌림
+
         }
 
         //if (isBossAtk)

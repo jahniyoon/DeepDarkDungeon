@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
-    public enum Type { melee, Range };
+    public enum Type { Melee, Range };
     public Type type;
     public int damage;
     public float rate;
@@ -13,7 +13,7 @@ public class Weapon : MonoBehaviour
 
     public void Use()
     {
-        if(type == Type.melee)
+        if(type == Type.Melee)
         {
             StopCoroutine("Swing");
             StartCoroutine("Swing");

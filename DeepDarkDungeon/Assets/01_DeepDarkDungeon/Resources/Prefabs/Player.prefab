@@ -46,7 +46,7 @@ GameObject:
   - component: {fileID: 3822090526057405709}
   m_Layer: 9
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -60,7 +60,7 @@ Transform:
   m_GameObject: {fileID: 9134220906769559779}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1259006187121643191}
@@ -81,7 +81,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 80
   m_CollisionDetection: 0
 --- !u!136 &3822090526057405708
 CapsuleCollider:
@@ -109,15 +109,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d94349bed81032348bc670e412db1812, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 15
+  speed: 3
   playerTransform: {fileID: 7270623120310033236}
   followCamera: {fileID: 0}
-  coin: 0
-  health: 100
-  maxCoin: 999999
+  gold: 0
+  maxGold: 0
   maxHealth: 100
+  health: 100
+  distance: 0.25
   weapons:
-  - {fileID: 0}
+  - {fileID: 2864121123113436692}
   - {fileID: 0}
   - {fileID: 0}
   hasWeapons: 000000
@@ -355,7 +356,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1348174882345252545, guid: c2ec4bfd1a6491c49a0c34b8dc3a7639, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1348174882345252545, guid: c2ec4bfd1a6491c49a0c34b8dc3a7639, type: 3}
+      propertyPath: m_TagString
+      value: Melee
       objectReference: {fileID: 0}
     - target: {fileID: 1873072230472789115, guid: c2ec4bfd1a6491c49a0c34b8dc3a7639, type: 3}
       propertyPath: m_RootOrder
@@ -429,10 +434,10 @@ BoxCollider:
   m_GameObject: {fileID: 2864121123113436692}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1.95, y: 1.25, z: 1.25}
+  m_Center: {x: 0, y: 2.1, z: 0}
 --- !u!114 &3822090524925653202
 MonoBehaviour:
   m_ObjectHideFlags: 0

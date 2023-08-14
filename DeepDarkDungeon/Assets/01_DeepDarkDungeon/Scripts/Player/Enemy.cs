@@ -18,6 +18,7 @@ public class Enemy : MonoBehaviour                     //Áß¿ä! navmesh´Â static¿
     public bool isAttack;                 //ÀÏ¹ÝÇü ¸ó½ºÅÍ º¯¼ö
 
     public Rigidbody rigid;
+    //public SphereCollider sphereCollider;
     public BoxCollider boxCollider;
     //Material mat;
     public MeshRenderer[] meshs;  //ÇÇ°Ý ÀÌÆåÆ®¸¦ ¸ðµç ¸ÞÅ×¸®¾ó·Î
@@ -26,9 +27,9 @@ public class Enemy : MonoBehaviour                     //Áß¿ä! navmesh´Â static¿
 
     public Animator anim;
 
-    public bool doLook;
+    bool findPlayer = false;
 
-    Vector3 doLookVec;
+   
 
     void Awake()
     {
@@ -37,6 +38,8 @@ public class Enemy : MonoBehaviour                     //Áß¿ä! navmesh´Â static¿
         meshs = GetComponentsInChildren<MeshRenderer>();  // MaterialÀº MeshRenderer·Î °¡Á®¿Í¾ßµÈ´Ù
         nav = GetComponent<NavMeshAgent>();
         anim = GetComponentInChildren<Animator>();
+
+        
 
         if (enemyType != Type.D)
             Invoke("ChaseStart", 2);
@@ -50,19 +53,14 @@ public class Enemy : MonoBehaviour                     //Áß¿ä! navmesh´Â static¿
 
     void Update()
     {
-        if (nav.enabled && enemyType != Type.D)       //navi°¡ È°¼ºÈ­µÇ¾îÀÖÀ»¶§¸¸
+        if (nav.enabled && enemyType != Type.D && findPlayer)       //navi°¡ È°¼ºÈ­µÇ¾îÀÖÀ»¶§¸¸
         {
+
+
             nav.SetDestination(target.position);     //SetDestination µµÂøÇÒ ¸ñÇ¥ À§Ä¡ ÁöÁ¤ ÇÔ¼ö 
             nav.isStopped = !isChase;     //isStoppedÀ» »ç¿ëÇÏ¿© ¿Ïº®ÇÏ°Ô ¸ØÃßµµ·Ï
         }
-        if (doLook)
-        {
-            float h = Input.GetAxisRaw("Horizontal");
-            float v = Input.GetAxisRaw("Vertical");
-            doLookVec = new Vector3(h, 0, v) * 5f;   //ÇÃ·¹ÀÌ¾î ÀÔ·Â°ªÀ¸·Î ¿¹Ãø ¹éÅÍ°ª »ý¼º
-            transform.LookAt(target.position + doLookVec);
-        }
-
+       
 
     }
     //// if(isChase)
@@ -178,7 +176,20 @@ public class Enemy : MonoBehaviour                     //Áß¿ä! navmesh´Â static¿
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag.Equals("melee"))
+       
+        
+            //if(other.tag.Equals("Player"))
+            //{
+            //    sphereCollider.enabled = false;
+            //    Transform target = other.GetComponent<Transform>();
+                
+            //    findPlayer = true;
+            //    Debug.Log("ÇÃ·¹ÀÌ¾î À§Ä¡ °¡Á®¿È");
+
+
+            //}
+        
+        if (other.tag.Equals("Melee"))
         {
             Weapon weapon = other.GetComponent<Weapon>();
             curHealth -= weapon.damage;
