@@ -1178,7 +1178,7 @@ GameObject:
   - component: {fileID: 6413299813145826673}
   m_Layer: 0
   m_Name: Monster_Minautor
-  m_TagString: Sencor
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1444,6 +1444,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7788273339516989852}
     m_Modifications:
+    - target: {fileID: 334129299213556260, guid: d650c44ed0bd7e940b7f627089939cf7, type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 335564495288249294, guid: d650c44ed0bd7e940b7f627089939cf7, type: 3}
       propertyPath: m_Name
       value: Enemy_HP UI

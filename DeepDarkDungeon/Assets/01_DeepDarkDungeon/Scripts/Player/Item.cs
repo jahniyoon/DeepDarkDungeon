@@ -10,6 +10,7 @@ public class Item : MonoBehaviour
 
     Rigidbody rigid;
     SphereCollider sphereCollider;
+    public GameObject UI;
 
     void Awake()
     {

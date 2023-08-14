@@ -17,8 +17,10 @@ public class DungeonCreator : MonoBehaviour
     // 통과 가능한 문과 벽의 위치 리스트
     List<Vector3Int> possibleDoorVerticalPosition;
     List<Vector3Int> possibleDoorHorizontalPosition;
-    List<Vector3Int> possibleWallHorizontalPosition;
+
     List<Vector3Int> possibleWallVerticalPosition;
+    List<Vector3Int> possibleWallHorizontalPosition;
+    List<Vector3Int> possibleWallHorizontalBottomPosition;
 
 
     [Header("Dungeon Setting")]
@@ -41,9 +43,8 @@ public class DungeonCreator : MonoBehaviour
     [Header("Dungeon Prefabs")]
 
     public GameObject Floor;                           // 생성된 방의 바닥에 적용할 프리펩
-    public GameObject DoorHorizontal;
-    public GameObject DoorVertical;
-    public GameObject wallVertical, wallHorizontal;    // 생성할 벽 오브젝트 프리펩 설정
+    public GameObject DoorHorizontal, DoorVertical;
+    public GameObject wallVertical, wallHorizontal, wallHorizontalBottom;    // 생성할 벽 오브젝트 프리펩 설정
 
 
 
@@ -63,6 +64,7 @@ public class DungeonCreator : MonoBehaviour
     private Vector3Int spawnRoomCenterPosition; // 스폰 방의 중앙 위치
     private Vector3Int bossRoomCenterPosition; // 보스 방의 중앙 위치
     private Vector3Int exitRoomCenterPosition; // 출구 방의 중앙 위치
+
     List<Vector3Int> enemyPositions;
     List<Vector3> torchPositions;
     List<Vector3> boxPositions;
@@ -77,9 +79,9 @@ public class DungeonCreator : MonoBehaviour
     }
     void Start()
     {
-        Random.InitState(System.DateTime.Now.Millisecond); // 현재 시간의 밀리초를 랜덤 시드로 사용
-
-        StartCoroutine(CheckFloorOverlapAndGenerateDungeon());
+        //Random.InitState(System.DateTime.Now.Millisecond); // 현재 시간의 밀리초를 랜덤 시드로 사용
+        //StartCoroutine(CheckFloorOverlapAndGenerateDungeon());
+        CreateDungeon();
     }
 
     // 던전 생성 메소드 호출
@@ -97,14 +99,15 @@ public class DungeonCreator : MonoBehaviour
             roomOffset,
             corridorWidth);
 
-        if (6 >= generator.CreatedRooms.Count)
-        {
-            //DungeonCreator.floorOverlap = true;
-            Debug.Log("방 개수 미충족. 던전을 다시 생성합니다.");
-        }
+        //if (6 >= generator.CreatedRooms.Count)
+        //{
+        //    //DungeonCreator.floorOverlap = true;
+        //    Debug.Log("방 개수 미충족. 던전을 다시 생성합니다.");
+        //}
         // 벽 생성 가능 리스트
         possibleWallHorizontalPosition = new List<Vector3Int>();
         possibleWallVerticalPosition = new List<Vector3Int>();
+        possibleWallHorizontalBottomPosition = new List<Vector3Int>();
         // 문 생성 가능 리스트
         possibleDoorVerticalPosition = new List<Vector3Int>();
         possibleDoorHorizontalPosition = new List<Vector3Int>();
@@ -355,6 +358,8 @@ public class DungeonCreator : MonoBehaviour
             var wallPosition = new Vector3(bottomRightV.x, 0, col);
             AddWallPositionToList(wallPosition, possibleWallVerticalPosition, possibleDoorVerticalPosition);
         }
+        //foreach ()
+
     }
 
     // 바닥 생성
@@ -381,6 +386,8 @@ public class DungeonCreator : MonoBehaviour
     private void AddWallPositionToList(Vector3 wallPosition, List<Vector3Int> wallList, List<Vector3Int> doorList)
     {
         Vector3Int point = Vector3Int.CeilToInt(wallPosition);
+
+        
         if (wallList.Contains(point))
         {
             doorList.Add(point);
@@ -399,9 +406,14 @@ public class DungeonCreator : MonoBehaviour
         {
             CreateWall(wallParent, wallPosition, wallHorizontal);
         }
+        
         foreach (var wallPosition in possibleWallVerticalPosition)
         {
             CreateWall(wallParent, wallPosition, wallVertical);
+        }
+        foreach (var wallPosition in possibleWallHorizontalBottomPosition)
+        {
+            CreateWall(wallParent, wallPosition, wallHorizontalBottom);
         }
     }
 
@@ -427,6 +439,7 @@ public class DungeonCreator : MonoBehaviour
         {
             CreateDoor(doorParent, doorPosition, DoorHorizontal);
         }
+      
     }
     // 문 생성
     private void CreateDoor(GameObject doorParent, Vector3Int doorPosition, GameObject doorPrefab)
