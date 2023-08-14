@@ -75,11 +75,15 @@ public class MonsterCtrl : MonoBehaviour
             float distance = Vector3.Distance(playerTr.position, monsterTr.position);
 
             //공격 사정거리 범위로 들어왔는지 확인
-            if (distance < attackDist)
+            if (distance <= attackDist)
             {
                 state = State.ATTACK;
             }
-            else if (distance > traceDist)     //추적 사정거리 범위로 들어왔는지 확인
+            else if (distance >= traceDist)     //추적 사정거리 범위로 들어왔는지 확인
+            {
+                state = State.TRACE;
+            }
+            else if (distance <= traceDist)     //추적 사정거리 범위로 들어왔는지 확인
             {
                 state = State.TRACE;
             }

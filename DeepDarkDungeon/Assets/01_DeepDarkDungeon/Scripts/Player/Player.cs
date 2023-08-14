@@ -173,7 +173,7 @@ public class Player : MonoBehaviour
         if (fDown && isFireReady && !isDodge && !isSwap)
         {
             equipWeapon.Use();                   //public 선언해서 다른 스크립트에 있는 거 가져올수있다
-            animator.SetTrigger(equipWeapon.type == Weapon.Type.melee ? "doSwing" : "doShot");   //무기 타입에 따라 다른 트리거 실행 
+            animator.SetTrigger(equipWeapon.type == Weapon.Type.Melee ? "doSwing" : "doShot");   //무기 타입에 따라 다른 트리거 실행 
             fireDelay = 0;  //공격 딜레이 0으로 올려서 다음 공격까지 기다리도록 작성
         }
     }
@@ -398,7 +398,7 @@ public class Player : MonoBehaviour
                     //Destroy(other.gameObject);        // !플레이어를 공격한 뒤 다시 공격하지 않는 문제
                 }
 
-            }
+            } // 팀장님 수정 부분
             if (other.tag.Equals("Sencor"))
             {
                 Debug.Log("적 : 플레이어를 감지했다.");

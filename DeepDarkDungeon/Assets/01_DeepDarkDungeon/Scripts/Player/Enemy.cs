@@ -6,7 +6,7 @@ using UnityEngine.AI;
 
 public class Enemy : MonoBehaviour                     //Áß¿ä! navmesh´Â static¿ÀºêÁ§Æ®¸¸ bake °¡´ÉÇÏ´Ù!
 {
-    public enum Type { A, B, C, D };       //enum Å¸ÀÔ ³ª´©°í
+    public enum Type { A, B, C, D, E };       //enum Å¸ÀÔ ³ª´©°í
     public Type enemyType;              //±×°ÍÀ» ÁöÁ¤ÇÒ º¯¼ö
 
     public int maxHealth;
@@ -14,6 +14,7 @@ public class Enemy : MonoBehaviour                     //Áß¿ä! navmesh´Â static¿
     public Transform target;
     public BoxCollider meleeArea;          //±ÙÁ¢ °ø°Ý ¹üÀ§
     public GameObject bullet;
+    public GameObject magicBall;
     public bool isChase;
     public bool isAttack;                 //ÀÏ¹ÝÇü ¸ó½ºÅÍ º¯¼ö
 
@@ -53,7 +54,7 @@ public class Enemy : MonoBehaviour                     //Áß¿ä! navmesh´Â static¿
 
     void Update()
     {
-        if (nav.enabled && enemyType != Type.D && findPlayer)       //navi°¡ È°¼ºÈ­µÇ¾îÀÖÀ»¶§¸¸
+        if (nav.enabled && enemyType != Type.D )       //navi°¡ È°¼ºÈ­µÇ¾îÀÖÀ»¶§¸¸
         {
 
 
@@ -103,6 +104,11 @@ public class Enemy : MonoBehaviour                     //Áß¿ä! navmesh´Â static¿
                     targetRadius = 0.5f;   //µÎ²²
                     targetRange = 25f;     //¹üÀ§
                     break;
+                case Type.E:
+                    targetRadius = 0.5f;   //µÎ²²
+                    targetRange = 25f;     //¹üÀ§
+                    break;
+
             }
 
             RaycastHit[] rayHits = Physics.SphereCastAll(transform.position,
@@ -157,6 +163,15 @@ public class Enemy : MonoBehaviour                     //Áß¿ä! navmesh´Â static¿
 
                 yield return new WaitForSeconds(2f);
                 break;
+            case Type.E:
+                yield return new WaitForSeconds(0.5f);
+                GameObject instantMagicBall = Instantiate(magicBall, transform.position, transform.rotation);
+
+                
+
+
+                break;
+
         }
 
 
