@@ -35,9 +35,39 @@ public class DugeonGenerator
         CorridorsGenerator corridorGenerator = new CorridorsGenerator();
         var corridorList = corridorGenerator.CreateCorridor(allNodesCollection, corridorWidth);
 
-        return new List<Node>(CreatedRooms).Concat(corridorList).ToList();
-    }
+        // 중첩 체크 스크립트
+        bool foundOverlap = false;
+        foreach (var room in CreatedRooms)
+        {
+            foreach (var corridor in corridorList)
+            {
+                if (CheckOverlap(room, corridor))
+                {
+                    Debug.Log("중첩되는 영역을 확인: Room - " + room + ", Corridor - " + corridor);
+                    foundOverlap = true;
+                }
+                if (foundOverlap) {break;} // 중첩 발생시 체크 break
+            }
+        }
 
+        // 중첩 영역 확인되었으면 CalculateDungeon메서드를 다시 실행
+        if (foundOverlap || CreatedRooms.Count <= 7)  
+        {
+            Debug.Log("중첩된 영역이 발견되었습니다. CalculateDungeon을 다시 실행합니다.");
+            return CalculateDungeon(maxIterations, roomWidthMin, roomLengthMin, roomBottomCornerModifier, roomTopCornerMidifier, roomOffset, corridorWidth);
+        }
+
+        else
+        {
+            return new List<Node>(CreatedRooms).Concat(corridorList).ToList();
+        }
+    }
+    // 복도와 방 중첩 체크 메서드
+    private bool CheckOverlap(Node a, Node b)
+    {
+        return a.BottomLeftAreaCorner.x < b.TopRightAreaCorner.x && a.TopRightAreaCorner.x > b.BottomLeftAreaCorner.x &&
+               a.BottomLeftAreaCorner.y < b.TopRightAreaCorner.y && a.TopRightAreaCorner.y > b.BottomLeftAreaCorner.y;
+    }
 
 
 }

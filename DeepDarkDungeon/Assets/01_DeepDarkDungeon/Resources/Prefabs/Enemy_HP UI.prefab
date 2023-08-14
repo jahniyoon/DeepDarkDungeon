@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 334129299213556260}
   - component: {fileID: 8563799693445503647}
   m_Layer: 5
-  m_Name: HP UI
+  m_Name: Enemy_HP UI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -37,7 +37,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 70, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 2.2}
+  m_AnchoredPosition: {x: 0, y: 2.199997}
   m_SizeDelta: {x: 100, y: 74}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &482030086907220637
@@ -83,7 +83,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 1
+  m_PresetInfoIsWorld: 0
 --- !u!114 &8563799693445503647
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -339,12 +339,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1984623840218853280}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7e7ff05161d589d4188e1e5ecfbe01f4, type: 3}
+  m_Script: {fileID: 11500000, guid: b2b18e84af4e67e45938c644ab54c594, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   hpSlider: {fileID: 3035055021667174955}
   hpText: {fileID: 8601086574261892286}
-  ant: {fileID: 0}
+  enemy: {fileID: 0}
 --- !u!1 &2001013000389905896
 GameObject:
   m_ObjectHideFlags: 0
@@ -568,8 +568,7 @@ MonoBehaviour:
 '
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: af3dc7426dc982541ac6794d8eb20974, type: 2}
-  m_sharedMaterial: {fileID: -5065876795320611741, guid: af3dc7426dc982541ac6794d8eb20974,
-    type: 2}
+  m_sharedMaterial: {fileID: -5065876795320611741, guid: af3dc7426dc982541ac6794d8eb20974, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -706,8 +705,7 @@ MonoBehaviour:
 '
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: af3dc7426dc982541ac6794d8eb20974, type: 2}
-  m_sharedMaterial: {fileID: -5065876795320611741, guid: af3dc7426dc982541ac6794d8eb20974,
-    type: 2}
+  m_sharedMaterial: {fileID: -5065876795320611741, guid: af3dc7426dc982541ac6794d8eb20974, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

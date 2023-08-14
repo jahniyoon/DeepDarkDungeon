@@ -64,6 +64,8 @@ public class Player : MonoBehaviour
     GameObject exitUI;
     GameObject chest;
     GameObject chestUI;
+    GameObject sellItem;
+    GameObject sellItemUI;
     Weapon equipWeapon;      //기존에 장착된 무기를 저장하는 변수를 선언
 
     bool hasSlot1 = false;
@@ -398,8 +400,8 @@ public class Player : MonoBehaviour
                     //Destroy(other.gameObject);        // !플레이어를 공격한 뒤 다시 공격하지 않는 문제
                 }
 
-            } // 팀장님 수정 부분
-            if (other.tag.Equals("Sencor"))
+            }
+            if (other.tag.Equals("Enemy"))
             {
                 Debug.Log("적 : 플레이어를 감지했다.");
 
@@ -429,14 +431,19 @@ public class Player : MonoBehaviour
             exitUI.gameObject.SetActive(true);
 
         }
-        if (other.tag.Equals("Chest"))
+        if (other.tag.Equals("Chest"))  // 보물상자가 범위 내에 있을 때 UI 껐다 키기
         {
             chest = other.gameObject;
 
-            
             chestUI = other.transform.GetChild(0).gameObject;
             chestUI.gameObject.SetActive(true);
-
+        }
+        if (other.tag.Equals("Sell"))
+        {
+            sellItem = other.gameObject;
+            Item itemUI = other.GetComponent<Item>();
+            sellItemUI = itemUI.UI;
+            sellItemUI.gameObject.SetActive(true);
         }
 
     }
@@ -457,7 +464,11 @@ public class Player : MonoBehaviour
             chest = null;
             chestUI.gameObject.SetActive(false);
         }
-
+        if (other.tag.Equals("Sell"))
+        {
+            sellItem = null;
+            sellItemUI.gameObject.SetActive(false);
+        }
     }
 
     IEnumerator OnDamage()
