@@ -13,5 +13,13 @@ public class GameData
     public int maxGold;
     public int curGold;
 
-    public bool data = false;
+    public static bool loadEnable = false;
+
+    public GameData(Player player)
+    {
+        playerMaxHP = player.maxHealth;
+        playerCurHP = player.curHealth;
+        maxGold = player.maxGold;
+        curGold = player.curGold;
+    }
 }

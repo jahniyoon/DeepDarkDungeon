@@ -6,7 +6,6 @@ using TMPro;
 
 public class GameManager : MonoBehaviour
 {
-    GameData gameData = new GameData();
     public static GameManager instance;
 
     [HideInInspector] public bool isGameOver = false; // 게임오버 확인
@@ -55,12 +54,6 @@ public class GameManager : MonoBehaviour
         Initialization();   // 초기화
     }    // } Start()
 
-    // 체력바 UI 맥스로 설정
-    public void SetMaxHealth(int health)
-    {
-        playerHealth.maxValue = health;
-        playerHealth.value = health;
-    }
     // 체력바 UI 플레이어의 체력으로 설정
     public void SetHealth(int health)
     {
@@ -70,29 +63,6 @@ public class GameManager : MonoBehaviour
     public void SetGold(int gold)
     {
         goldText.text = string.Format("{0}", gold);
-    }
-
-    // 데이터 세이브
-    public void SaveData(int playerMaxHP, int playerCurHP, int maxGold, int curGold)
-    {
-        gameData.playerMaxHP = playerMaxHP;
-        gameData.playerCurHP = playerCurHP;
-        gameData.maxGold = maxGold;
-        gameData.curGold = curGold;
-        gameData.data = true;
-    }
-
-    // 데이터 로드
-    public void LoadData(int playerMaxHP, int playerCurHP, int maxGold, int curGold)
-    {
-        playerMaxHP = gameData.playerMaxHP;
-        playerCurHP = gameData.playerCurHP;
-        maxGold = gameData.maxGold;
-        curGold = gameData.curGold;
-    }
-    public bool DataCheck()
-    {
-        return gameData.data;
     }
 
     // 게임 오버
