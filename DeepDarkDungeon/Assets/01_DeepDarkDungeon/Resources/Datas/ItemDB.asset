@@ -42,7 +42,7 @@ MonoBehaviour:
     name: Hammer
     value: 0
     price: 300
-    weaponType: 0
+    weaponType: 2
     damage: 10
     rate: 0.8
   - itemNum: 4
@@ -58,7 +58,7 @@ MonoBehaviour:
     name: ChainSaw
     value: 2
     price: 800
-    weaponType: 0
+    weaponType: 1
     damage: 30
     rate: 1.5
   - itemNum: 6

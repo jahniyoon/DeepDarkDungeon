@@ -5,7 +5,7 @@ using UnityEngine;
 public class Weapon : MonoBehaviour
 {
     public int value;
-    public enum WeaponType { Melee, Range };
+    public enum WeaponType { Sword, ChainSaw, TwohandSword };
     public WeaponType weaponType;
     public int damage;
     public float rate;
@@ -14,7 +14,7 @@ public class Weapon : MonoBehaviour
 
     public void Use()
     {
-        if(weaponType == WeaponType.Melee)
+        if(weaponType == WeaponType.Sword || weaponType == WeaponType.ChainSaw || weaponType == WeaponType.TwohandSword)
         {
             StopCoroutine("Swing");
             StartCoroutine("Swing");

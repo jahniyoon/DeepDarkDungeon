@@ -14,7 +14,7 @@ public class Item : MonoBehaviour
 
     public enum Type { Coin, Grenade, Heart, Weapon, Exit, Key}
     public Type type;       //저장할 변수 지정
-    public enum WeaponType { Melee, Range }
+    public enum WeaponType { Sword, ChainSaw, TwohandSword };
     public WeaponType weaponType;       //저장할 변수 지정
     public int value;       //아이템 갯수나 값 등을 저장할 변수
     public int damage;       //아이템의 데미지를 저장할 변수

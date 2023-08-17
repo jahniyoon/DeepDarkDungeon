@@ -59,6 +59,11 @@ public class GameManager : MonoBehaviour
     {
         playerHealth.value = health;
     }
+    public void SetMaxHealth(int maxHealth)
+    {
+        playerHealth.maxValue = maxHealth;
+        playerHealth.value = maxHealth;
+    }
     // 골드 UI 업데이트
     public void SetGold(int gold)
     {

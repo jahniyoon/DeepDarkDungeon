@@ -9,7 +9,7 @@ using static UnityEditor.Progress;
 
 public class Player : MonoBehaviour
 {
-    private enum WeaponType { Melee, Range }
+    public enum WeaponType { Sword, ChainSaw, TwohandSword };
     WeaponType type;
 
     Rigidbody PlayerRigid;
@@ -27,6 +27,7 @@ public class Player : MonoBehaviour
 
     public float distance;
     public float speed;
+    public float attackDistance;
 
     public GameObject[] weapons;  //플레이어 무기 관련 함수 - 무기 연결하는 
     public bool[] hasWeapons;     //플레이어 무기 관련 함수 - 무기 인벤토리 비슷한
@@ -66,6 +67,9 @@ public class Player : MonoBehaviour
     bool isBorder;              // 이동 시 정면 벽 체크
     bool isDamage;              // 데미지 상태인지 체크
     bool isDodge;               // 닷지중인지 체크
+    bool isDie;               // 죽었는지 체크
+    bool isAttack;
+
     bool pauseDown;             // 포즈 상태 확인
     float fireDelay;
 
@@ -85,13 +89,14 @@ public class Player : MonoBehaviour
         PlayerRigid = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();     //자식 오브젝트에 애니메이션 넣어서 
         meshs = GetComponentsInChildren<MeshRenderer>();
+
         if (GameData.loadEnable)    //  불러오기가 가능하면 데이터 로드 (던전을 클리어 해야 loadEnable = true)
         {
             LoadData();
         }
         //GameManager.instance.SaveData(maxHealth, curHealth, maxGold, curGold);  // 플레이어 데이터 저장
         GameManager.instance.Initialization();                                  // 상태 초기화
-        GameManager.instance.SetHealth(curHealth); // 체력 초기화
+        GameManager.instance.SetMaxHealth(maxHealth); // 체력 초기화
         GameManager.instance.SetGold(curGold);
 
     }
@@ -179,10 +184,27 @@ public class Player : MonoBehaviour
         if (fDown && isFireReady && !isDodge && !isSwap)
         {
             equipWeapon.Use();                   //public 선언해서 다른 스크립트에 있는 거 가져올수있다
-            animator.SetTrigger(equipWeapon.weaponType == Weapon.WeaponType.Melee ? "doSwing" : "doShot");   //무기 타입에 따라 다른 트리거 실행 
+
+            switch (equipWeapon.weaponType)  // 무기 타입에 따라 스위치로 다른 트리거 실행
+            {
+                case Weapon.WeaponType.Sword:
+                    animator.SetTrigger("doAttackSword");
+                    break;
+                case Weapon.WeaponType.ChainSaw:
+                    animator.SetTrigger("doAttackChainSaw");
+                    break;
+                case Weapon.WeaponType.TwohandSword:
+                    animator.SetTrigger("doAttackTwohandSword");
+                    break;
+            }
+            //animator.SetTrigger(equipWeapon.weaponType == Weapon.WeaponType.Melee ? "doSwing" : "doShot");   //무기 타입에 따라 다른 트리거 실행 
+
+            //isAttack = true;
+
             fireDelay = 0;  //공격 딜레이 0으로 올려서 다음 공격까지 기다리도록 작성
         }
     }
+    
 
     void Dodge()
     {
@@ -202,7 +224,7 @@ public class Player : MonoBehaviour
     void DodgeOut()
     {
         speed *= 0.5f;
-        Invoke("DodgeStop", 0.5f);
+        Invoke("DodgeStop", 0.6f);
     }
 
     void DodgeStop() //회피 끝난 후 이동가능 - 회피 중에는 방향 전환 안되는 
@@ -463,7 +485,9 @@ public class Player : MonoBehaviour
         isDamage = true;
         foreach (MeshRenderer mesh in meshs)         //반복문을 사용하여 모든 재질의 색상 변경
         {
-            mesh.material.color = Color.red;
+            //mesh.material.color = Color.red;
+            Material mat = mesh.material;
+            mat.SetColor("_EmissionColor", Color.red * 0.5f);   // EmissionColor 타입은 이렇게 색 변경
         }
 
         //if (isBossAtk)
@@ -475,7 +499,9 @@ public class Player : MonoBehaviour
         isDamage = false;
         foreach (MeshRenderer mesh in meshs)
         {
-            mesh.material.color = Color.white;       //원래대로 돌림
+            //mesh.material.color = Color.white;       //원래대로 돌림
+            Material mat = mesh.material;
+            mat.SetColor("_EmissionColor", Color.black);
         }
 
         //if (isBossAtk)
@@ -503,11 +529,14 @@ public class Player : MonoBehaviour
             weaponSlot1.rate = item.rate;
             switch (weaponSlot1.weaponType)
             {
-                case Weapon.WeaponType.Melee:
-                    weaponSlot1.weaponType = Weapon.WeaponType.Melee;
+                case Weapon.WeaponType.Sword:
+                    weaponSlot1.weaponType = Weapon.WeaponType.Sword;
                     break;
-                case Weapon.WeaponType.Range:
-                    weaponSlot1.weaponType = Weapon.WeaponType.Range;
+                case Weapon.WeaponType.ChainSaw:
+                    weaponSlot1.weaponType = Weapon.WeaponType.ChainSaw;
+                    break;
+                case Weapon.WeaponType.TwohandSword:
+                    weaponSlot1.weaponType = Weapon.WeaponType.TwohandSword;
                     break;
             }
 
@@ -524,11 +553,14 @@ public class Player : MonoBehaviour
             weaponSlot2.rate = item.rate;
             switch (weaponSlot2.weaponType)
             {
-                case Weapon.WeaponType.Melee:
-                    weaponSlot2.weaponType = Weapon.WeaponType.Melee;
+                case Weapon.WeaponType.Sword:
+                    weaponSlot2.weaponType = Weapon.WeaponType.Sword;
                     break;
-                case Weapon.WeaponType.Range:
-                    weaponSlot2.weaponType = Weapon.WeaponType.Range;
+                case Weapon.WeaponType.ChainSaw:
+                    weaponSlot2.weaponType = Weapon.WeaponType.ChainSaw;
+                    break; 
+                case Weapon.WeaponType.TwohandSword:
+                    weaponSlot2.weaponType = Weapon.WeaponType.TwohandSword;
                     break;
             }
 
@@ -545,11 +577,14 @@ public class Player : MonoBehaviour
             weaponSlot3.rate = item.rate;
             switch (weaponSlot3.weaponType)
             {
-                case Weapon.WeaponType.Melee:
-                    weaponSlot3.weaponType = Weapon.WeaponType.Melee;
+                case Weapon.WeaponType.Sword:
+                    weaponSlot3.weaponType = Weapon.WeaponType.Sword;
                     break;
-                case Weapon.WeaponType.Range:
-                    weaponSlot3.weaponType = Weapon.WeaponType.Range;
+                case Weapon.WeaponType.ChainSaw:
+                    weaponSlot3.weaponType = Weapon.WeaponType.ChainSaw;
+                    break; 
+                case Weapon.WeaponType.TwohandSword:
+                    weaponSlot3.weaponType = Weapon.WeaponType.TwohandSword;
                     break;
             }
 
@@ -576,11 +611,17 @@ public class Player : MonoBehaviour
     public void PlayerDamage(int damage)
     {
         curHealth -= damage;
-        if(0 >= curHealth)
-        {
-            GameManager.instance.OnGameOver();
-        }
         GameManager.instance.SetHealth(curHealth);
+
+        animator.SetTrigger("isDamage");
+
+
+        if (0 >= curHealth && !isDie)
+        {
+            isDie = true;
+            GameManager.instance.OnGameOver();
+            animator.SetBool("isDie", GameManager.instance.isGameOver);
+        }
     }
 
     // 골드 획득
