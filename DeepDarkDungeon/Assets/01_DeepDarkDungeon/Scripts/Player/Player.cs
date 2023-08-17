@@ -83,7 +83,7 @@ public class Player : MonoBehaviour
     {
 
         PlayerRigid = GetComponent<Rigidbody>();
-        animator = GetComponentInChildren<Animator>();     //자식 오브젝트에 애니메이션 넣어서 
+        animator = GetComponent<Animator>();     //자식 오브젝트에 애니메이션 넣어서 
         meshs = GetComponentsInChildren<MeshRenderer>();
         if (GameData.loadEnable)    //  불러오기가 가능하면 데이터 로드 (던전을 클리어 해야 loadEnable = true)
         {
@@ -190,11 +190,11 @@ public class Player : MonoBehaviour
         {
             dodgeVec = moveVec; //회피하면서 방향 전환 x
             
-            speed *= 2;
+            speed *= 2f;
             animator.SetTrigger("doDodge");
             isDodge = true;
 
-            Invoke("DodgeOut", 0.5f);
+            Invoke("DodgeOut", 0.1f);
         }
         
     }
@@ -202,7 +202,7 @@ public class Player : MonoBehaviour
     void DodgeOut()
     {
         speed *= 0.5f;
-        Invoke("DodgeStop", 1f);
+        Invoke("DodgeStop", 0.5f);
     }
 
     void DodgeStop() //회피 끝난 후 이동가능 - 회피 중에는 방향 전환 안되는 

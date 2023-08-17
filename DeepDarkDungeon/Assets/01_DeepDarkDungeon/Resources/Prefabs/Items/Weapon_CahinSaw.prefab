@@ -362,8 +362,8 @@ MonoBehaviour:
   itemNo: 5
   itemDB: {fileID: 11400000, guid: bb063523e9de6a848965741264ec9d99, type: 2}
   type: 0
-  value: 0
   weaponType: 0
+  value: 0
   damage: 0
   rate: 0
   sellItem: 0
@@ -408,7 +408,7 @@ Transform:
   m_GameObject: {fileID: 7871455205559898098}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: -0.59, z: 0}
-  m_LocalScale: {x: 10, y: 10, z: 10}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 414462885216277682}

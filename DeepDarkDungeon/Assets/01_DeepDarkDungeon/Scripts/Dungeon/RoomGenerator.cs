@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
+
 
 public class RoomGenerator
 {
@@ -32,6 +34,33 @@ public class RoomGenerator
             listToReturn.Add((RoomNode)space);
                 
         }
+
+        int randomValue = Random.Range(0, 3);
+        // 스폰 방 좌표 
+        int spawnRoomPosX = -1;
+        int SpawnRoomPosY = randomValue - 1;
+
+        // 보스 방과 출구 방 좌표
+        int bossRoomPosX = -4 + randomValue;  
+        int bossRoomPosY = 24;   
+        int bossRoomSize = 7;
+
+        // 스폰 방 생성
+        Vector2Int spawnRoomBottomLeft = new Vector2Int(spawnRoomPosX - 7, SpawnRoomPosY);
+        Vector2Int spawnRoomTopRight = new Vector2Int(spawnRoomPosX , SpawnRoomPosY + 5);
+        listToReturn.Add(new RoomNode(spawnRoomBottomLeft, spawnRoomTopRight, null, 0));
+
+        // 보스 방 생성
+        Vector2Int bossRoomBottomLeft = new Vector2Int(bossRoomPosX, bossRoomPosY);
+        Vector2Int bossRoomTopRight = new Vector2Int(bossRoomPosX + 11, bossRoomPosY + bossRoomSize);
+        listToReturn.Add(new RoomNode(bossRoomBottomLeft, bossRoomTopRight, null, 0));
+
+        // 출구 방 생성
+        Vector2Int exitRoomBottomLeft = new Vector2Int(bossRoomPosX + 3, bossRoomPosY + bossRoomSize + 1);
+        Vector2Int exitRoomTopRight = new Vector2Int(bossRoomPosX + 8, bossRoomPosY + bossRoomSize + 5);
+        listToReturn.Add(new RoomNode(exitRoomBottomLeft, exitRoomTopRight, null, 0));
+
+
         return listToReturn;
     }
 }

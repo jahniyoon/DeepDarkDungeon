@@ -23,7 +23,7 @@ public class Spike : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!isActive && other.tag.Equals("Player") && other.tag.Equals("Enemy"))
+        if (!isActive && other.tag.Equals("Player") || other.tag.Equals("Enemy"))
         {
             isActive = true;
             animator.SetBool("isActive", isActive);

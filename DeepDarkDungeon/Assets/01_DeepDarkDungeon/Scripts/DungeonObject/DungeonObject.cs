@@ -1,13 +1,17 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using Random = UnityEngine.Random;
+
 
 public class DungeonObject : MonoBehaviour
 {
     public int health;
     public GameObject brokePrefab;
     public GameObject goldPrefab;
+    public GameObject[] weaponPrefab;
     public int goldValue;
 
     Animator animator;
@@ -67,7 +71,15 @@ public class DungeonObject : MonoBehaviour
         Vector3 originalPosition = new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z); // 기존 박스의 위치 저장
         Quaternion originalRotation = transform.rotation; // 기존 박스의 각도 저장
 
-        StartCoroutine(SpawnGoldWithDelay(originalPosition, originalRotation));
+        if (goldPrefab != null) // 골드 프리팹 있는 경우
+        {
+            StartCoroutine(SpawnGoldWithDelay(originalPosition, originalRotation));
+        }
+
+        if (weaponPrefab != null)   // 무기 프리팹이 있는 경우
+        {
+            StartCoroutine(SpawnWeaponWithDelay(originalPosition, originalRotation));
+        }
 
     }
 
@@ -80,6 +92,16 @@ public class DungeonObject : MonoBehaviour
             GameObject newGold = Instantiate(goldPrefab, position, rotation);
             newGold.tag = "Item";
         }
+    }
+    private IEnumerator SpawnWeaponWithDelay(Vector3 position, Quaternion rotation)
+    {
+        yield return new WaitForSeconds(0.8f);
+
+        int randomNum = Random.Range(0, 3);
+
+        GameObject newWeapon = Instantiate(weaponPrefab[randomNum], position, rotation);
+        newWeapon.tag = "Weapon";
+        
     }
 
 }

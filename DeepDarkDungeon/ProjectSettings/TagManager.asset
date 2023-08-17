@@ -13,6 +13,7 @@ TagManager:
   - PLAYER
   - Chest
   - Sell
+  - Destroy
   layers:
   - Default
   - TransparentFX

@@ -195,6 +195,16 @@ public class EnemyTest : MonoBehaviour                     //Áß¿ä! navmesh´Â sta
 
             StartCoroutine(OnDamage(reactVec, false));
         }
+        if (other.tag.Equals("EnemyBullet"))
+        {
+           
+            Bullet enemyBullet = other.GetComponent<Bullet>();
+            curHealth -= enemyBullet.damage;
+            Vector3 reactVec = transform.position - other.transform.position;   //³Ë¹é
+            StartCoroutine(OnDamage(reactVec, false));
+
+
+        }
     }
 
     IEnumerator OnDamage(Vector3 reactVec, bool isGrenade)
