@@ -342,8 +342,15 @@ public class Player : MonoBehaviour
         isBorder = Physics.Raycast(PlayerPosition, transform.forward, distance, LayerMask.GetMask("Wall"));
     }
 
-   
-    private void OnTriggerEnter(Collider other)
+    //public void TakeDamage(int damage)
+    //{
+    //    health -= damage;
+
+    //    StartCoroutine(OnDamage());
+    //}
+
+
+    public void OnTriggerEnter(Collider other)
     {
         if(!GameManager.instance.isGameOver)
         {
@@ -373,8 +380,9 @@ public class Player : MonoBehaviour
                 Destroy(other.gameObject);
             }
 
+
             if (other.tag.Equals("EnemyBullet"))
-            {
+                {
                 if (!isDamage)
                 {
                     Bullet enemyBullet = other.GetComponent<Bullet>();
@@ -385,19 +393,18 @@ public class Player : MonoBehaviour
                     {
                         GameManager.instance.OnGameOver();
                     }
-
                     //맞은 후 1초 무적? 때문에 작동이 안됨
                     //if(other.GetComponent<Bullet>() != null)       //리지드바디 유무를 조건으로 하여 
                     //{
                     //    Destroy(other.gameObject);
                     //}
 
-                    bool isBossAtk = other.name == "Boss Melee Area";
+                    //bool isBossAtk = other.name == "Boss Melee Area";
                     StartCoroutine(OnDamage());
                 }
                 if (other.GetComponent<Bullet>() != null)       //리지드바디 유무를 조건으로 하여 
                 {
-                    //Destroy(other.gameObject);        // !플레이어를 공격한 뒤 다시 공격하지 않는 문제
+                    Destroy(other.gameObject);        // !플레이어를 공격한 뒤 다시 공격하지 않는 문제
                 }
 
             }
@@ -471,6 +478,8 @@ public class Player : MonoBehaviour
         }
     }
 
+    
+
     IEnumerator OnDamage()
     {
         isDamage = true;
@@ -498,6 +507,7 @@ public class Player : MonoBehaviour
 
     }
 
+  
  
 
 }
