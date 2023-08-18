@@ -7,6 +7,7 @@ using TMPro;
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
+
     [HideInInspector] public bool isGameOver = false; // 게임오버 확인
     [HideInInspector] public bool isPause = false; // 포즈 확인
     [HideInInspector] public bool isDoorOpen = false; // 문 열림 확인
@@ -15,9 +16,11 @@ public class GameManager : MonoBehaviour
 
     public GameObject gameoverUI;   // 게임 오버 UI
     public GameObject gamePauseUI;   // 게임 포즈 UI
-    public GameObject keyUI;   // 게임 포즈 UI
+    public GameObject keyUI;   
+
     public Slider playerHealth; // 체력 바
     public TMP_Text goldText;   // 골드 텍스트
+
     public Image[] itemSlot1;
     public Image[] itemSlot2;
     public Image[] itemSlot3;
@@ -28,9 +31,11 @@ public class GameManager : MonoBehaviour
     {
         isGameOver = false;
         isPause = false;
-        Time.timeScale = 1;
 
-    }   // } Initialization // } Initialization
+        Time.timeScale = 1;
+        
+
+    }   // } Initialization 
 
     private void Awake()
     {
@@ -49,25 +54,23 @@ public class GameManager : MonoBehaviour
         Initialization();   // 초기화
     }    // } Start()
 
-
-    void Update()
-    {
-       
-       
-    }
-
-
-    public void SetMaxHealth(int health)
-    {
-        playerHealth.maxValue = health;
-        playerHealth.value = health;
-    }
-
+    // 체력바 UI 플레이어의 체력으로 설정
     public void SetHealth(int health)
     {
         playerHealth.value = health;
     }
+    public void SetMaxHealth(int maxHealth)
+    {
+        playerHealth.maxValue = maxHealth;
+        playerHealth.value = maxHealth;
+    }
+    // 골드 UI 업데이트
+    public void SetGold(int gold)
+    {
+        goldText.text = string.Format("{0}", gold);
+    }
 
+    // 게임 오버
     public void OnGameOver()
     {
         isGameOver = true;
@@ -96,8 +99,6 @@ public class GameManager : MonoBehaviour
     public void DoorOpen()
     {
         isDoorOpen = true;
-        keyUI.SetActive(true);
-
     }
 
 

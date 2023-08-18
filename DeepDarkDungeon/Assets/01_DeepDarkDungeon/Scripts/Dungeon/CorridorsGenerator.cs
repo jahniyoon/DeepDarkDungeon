@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor.Experimental.GraphView;
 
 public class CorridorsGenerator
 {
@@ -19,6 +20,7 @@ public class CorridorsGenerator
             CorridorNode corridor = new CorridorNode(node.ChildrenNodeList[0], node.ChildrenNodeList[1], corridorWidth);
             corridorList.Add(corridor);
         }
+
         return corridorList;
     }
 }

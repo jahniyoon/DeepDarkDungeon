@@ -1,97 +1,112 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditorInternal.Profiling.Memory.Experimental;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
+using static UnityEditor.Progress;
 
 public class Player : MonoBehaviour
 {
-    public float speed;
+    public enum WeaponType { Sword, ChainSaw, TwohandSword };
+    WeaponType type;
+
+    Rigidbody PlayerRigid;
+    Animator animator;
+    MeshRenderer[] meshs;
 
     public Transform playerTransform;
     public GameObject followCamera;
-
-
-    public int gold;
-    public int maxGold;
-
+    [Header("Player")]
     public int maxHealth;
-    public int health;
+    public int curHealth;
+
+    public int maxGold;
+    public int curGold;
 
     public float distance;
-
-    float hAxis;
-    float vAxis;
+    public float speed;
+    public float attackDistance;
 
     public GameObject[] weapons;  //플레이어 무기 관련 함수 - 무기 연결하는 
     public bool[] hasWeapons;     //플레이어 무기 관련 함수 - 무기 인벤토리 비슷한
 
-    Vector3 moveVec;
-    Vector3 dodgeVec;  //회피 방향전환 x
+    // 습득한 아이템 슬롯에 저장
+    int slot1;
+    int slot2;
+    int slot3;
 
-    Rigidbody PlayerRigid;
-    Animator animator;
+    int equipWeaponIndex = -1; //무기 중복 교체, 없는 무기 확인을 위한 조건
+    Weapon equipWeapon;         //기존에 장착된 무기를 저장하는 변수를 선언
 
-    MeshRenderer[] meshs;
+
+    // 플레이어 인풋
+    float hAxis;
+    float vAxis;
 
     bool wDown;
     bool jDown;
-
     bool iDown;
+    bool fDown;   // 공격
 
-    bool fDown;   //공격
+    // 플레이어 이동
+    Vector3 moveVec;
+    Vector3 dodgeVec;  // 회피 방향전환 x
 
     //무기 스왑 
     bool sDown1;
     bool sDown2;
     bool sDown3;
 
-    bool isSwap;
-    bool isFireReady = true;
+  
 
-    bool isBorder;
+    // 플레이어 상태 체크
+    bool isSwap;                // 아이템 스왑 중 체크
+    bool isFireReady = true;    // 공격 딜레이 체크
+    bool isBorder;              // 이동 시 정면 벽 체크
+    bool isDamage;              // 데미지 상태인지 체크
+    bool isDodge;               // 닷지중인지 체크
+    bool isDie;               // 죽었는지 체크
+    bool isAttack;
 
-    bool isDamage;
-
-    bool isDodge;
-
-    bool pauseDown; // 포즈 버튼 확인
-
-
-    GameObject nearObject;
-    GameObject exit;
-    GameObject exitUI;
-    GameObject chest;
-    GameObject chestUI;
-    GameObject sellItem;
-    GameObject sellItemUI;
-    Weapon equipWeapon;      //기존에 장착된 무기를 저장하는 변수를 선언
-
-    bool hasSlot1 = false;
-    bool hasSlot2 = false;
-    bool hasSlot3 = false;
-
-    int equipWeaponIndex = -1; //무기 중복 교체, 없는 무기 확인을 위한 조건
-
+    bool pauseDown;             // 포즈 상태 확인
     float fireDelay;
+
+    // 플레이어 상호작용 게임오브젝트
+    GameObject nearObject;      // 가까운 오브젝트
+    GameObject exit;            // 출구 오브젝트
+    GameObject exitUI;          // 출구 UI
+    GameObject chest;           // 보물상자
+    GameObject chestUI;         // 보물상자 UI
+    GameObject sellItem;        // 판매 아이템
+    GameObject sellItemUI;      // 판매 아이템 UI
 
     // Start is called before the first frame update
     void Start()
     {
+
         PlayerRigid = GetComponent<Rigidbody>();
-        animator = GetComponentInChildren<Animator>();     //자식 오브젝트에 애니메이션 넣어서 
+        animator = GetComponent<Animator>();     //자식 오브젝트에 애니메이션 넣어서 
         meshs = GetComponentsInChildren<MeshRenderer>();
 
+        if (GameData.loadEnable)    //  불러오기가 가능하면 데이터 로드 (던전을 클리어 해야 loadEnable = true)
+        {
+            LoadData();
+        }
+        //GameManager.instance.SaveData(maxHealth, curHealth, maxGold, curGold);  // 플레이어 데이터 저장
+        GameManager.instance.Initialization();                                  // 상태 초기화
         GameManager.instance.SetMaxHealth(maxHealth); // 체력 초기화
+        GameManager.instance.SetGold(curGold);
 
     }
 
     // Update is called once per frame
     void Update()
     {
-            GetInput();
-            Pause();
+        GetInput();
+        Pause();
+
         if (!GameManager.instance.isGameOver && !GameManager.instance.isPause)
         {
             Move();
@@ -101,20 +116,16 @@ public class Player : MonoBehaviour
             Swap();
             Interation();
         }
-
-
-
     }
 
     void FixedUpdate()
     {
         FreezeRotation();
         StopToWall();
-       
     }
 
-
-    void GetInput()        //Input 시스템
+    // 입력
+    void GetInput()        
     {
         hAxis = Input.GetAxisRaw("Horizontal");
         vAxis = Input.GetAxisRaw("Vertical");
@@ -155,11 +166,9 @@ public class Player : MonoBehaviour
         animator.SetBool("isWalk", wDown);
     }
     
-    void Turn()  //캐릭터 회전시켜주는 
+    void Turn()  //캐릭터 회전
     {
-            transform.LookAt(transform.position + moveVec);
-
-        
+            transform.LookAt(transform.position + moveVec);   
     }
 
     void Attack()
@@ -175,12 +184,27 @@ public class Player : MonoBehaviour
         if (fDown && isFireReady && !isDodge && !isSwap)
         {
             equipWeapon.Use();                   //public 선언해서 다른 스크립트에 있는 거 가져올수있다
-            animator.SetTrigger(equipWeapon.type == Weapon.Type.Melee ? "doSwing" : "doShot");   //무기 타입에 따라 다른 트리거 실행 
+
+            switch (equipWeapon.weaponType)  // 무기 타입에 따라 스위치로 다른 트리거 실행
+            {
+                case Weapon.WeaponType.Sword:
+                    animator.SetTrigger("doAttackSword");
+                    break;
+                case Weapon.WeaponType.ChainSaw:
+                    animator.SetTrigger("doAttackChainSaw");
+                    break;
+                case Weapon.WeaponType.TwohandSword:
+                    animator.SetTrigger("doAttackTwohandSword");
+                    break;
+            }
+            //animator.SetTrigger(equipWeapon.weaponType == Weapon.WeaponType.Melee ? "doSwing" : "doShot");   //무기 타입에 따라 다른 트리거 실행 
+
+            //isAttack = true;
+
             fireDelay = 0;  //공격 딜레이 0으로 올려서 다음 공격까지 기다리도록 작성
         }
     }
-
-
+    
 
     void Dodge()
     {
@@ -188,11 +212,11 @@ public class Player : MonoBehaviour
         {
             dodgeVec = moveVec; //회피하면서 방향 전환 x
             
-            speed *= 2;
+            speed *= 2f;
             animator.SetTrigger("doDodge");
             isDodge = true;
 
-            Invoke("DodgeOut", 0.5f);
+            Invoke("DodgeOut", 0.1f);
         }
         
     }
@@ -200,42 +224,47 @@ public class Player : MonoBehaviour
     void DodgeOut()
     {
         speed *= 0.5f;
-        Invoke("DodgeStop", 1f);
+        Invoke("DodgeStop", 0.6f);
     }
 
     void DodgeStop() //회피 끝난 후 이동가능 - 회피 중에는 방향 전환 안되는 
     {
         isDodge = false;
     }
-
+    // 게임 Pause
     void Pause()
     {
         if (pauseDown)
         {
             GameManager.instance.OnGamePause();
         }
-   
     }
+
     void Swap()
     {
-        if (sDown1 && (!hasWeapons[0] || equipWeaponIndex == 0))
+        if (sDown1 && (!hasWeapons[0] || equipWeaponIndex == slot1))
         {
-            return;
-        }
-        if (sDown2 && (!hasWeapons[1] || equipWeaponIndex == 1))
-        {
-            return;
-        }
-        if (sDown3 && (!hasWeapons[2] || equipWeaponIndex == 2))
-        {
-            return;
-        }
+            Debug.Log("1 스왑 불가");
 
+            return;
+        }
+        if (sDown2 && (!hasWeapons[1] || equipWeaponIndex == slot2))
+        {
+            Debug.Log("2 스왑 불가");
+
+            return;
+        }
+        if (sDown3 && (!hasWeapons[2] || equipWeaponIndex == slot3))
+        {
+            Debug.Log("3 스왑 불가");
+
+            return;
+        }
 
         int weaponIndex = -1;
-        if (sDown1) weaponIndex = 0;
-        if (sDown2) weaponIndex = 1;
-        if (sDown3) weaponIndex = 2;
+        if (sDown1) weaponIndex = slot1;
+        if (sDown2) weaponIndex = slot2;
+        if (sDown3) weaponIndex = slot3;
 
         if((sDown1 || sDown2 || sDown3) && !isDodge)
         {
@@ -253,7 +282,6 @@ public class Player : MonoBehaviour
             isSwap = true;
 
             Invoke("SwapOut", 0.4f);
-
         }
 
     }
@@ -263,68 +291,59 @@ public class Player : MonoBehaviour
         isSwap = false;
     }
 
-    void Interation()   //무기 입수
+    void Interation()   // 획득 및 줍기 입력
     {
         if(iDown && nearObject != null && !isDodge)   // e키를 했을때 nearobject 비어있지 않고 jump dodge false일때
         {
-            if(nearObject.tag.Equals("Weapon"))
+            if(nearObject.tag.Equals("Weapon")) // 아이템 획득
             {
-                Item item = nearObject.GetComponent<Item>();
-                int weaponIndex = item.value;
-                hasWeapons[weaponIndex] = true;
-
-                // ToDo 현재 1번 칸만 생성되게 구현. 따라서 아이템 중복으로 획득시 같은 자리에 생성됨.
-                // 추후 아이템 셋팅 구현완료시 아이템에 따라 순차적으로 1,2,3 슬롯에 넣어지고 생성되도록 구현해야함.
-
-                Debug.Log(item.value + "번호의 아이템을 먹었다." );
-                Image itemSlot1 = GameManager.instance.itemSlot1[item.value].GetComponent<Image>();  // 아이템 슬롯 
-                Image itemSlot2 = GameManager.instance.itemSlot2[item.value].GetComponent<Image>();  // 아이템 슬롯 
-                Image itemSlot3 = GameManager.instance.itemSlot3[item.value].GetComponent<Image>();  // 아이템 슬롯 
-
-                if (itemSlot1 != null && !hasSlot1)
-                {
-                    hasSlot1 = true;
-                    Color newColor = new Color(255, 255, 255, 255);
-                    itemSlot1.color = newColor;
-                }
-                else if (itemSlot2 != null && !hasSlot2)
-                {
-                    hasSlot2 = true;
-                    Color newColor = new Color(255, 255, 255, 255);
-                    itemSlot2.color = newColor;
-                }
-                else if (itemSlot3 != null && !hasSlot3)
-                {
-                    hasSlot3 = true;
-                    Color newColor = new Color(255, 255, 255, 255);
-                    itemSlot3.color = newColor;
-                }
-
+                GetWeapon(nearObject);
                 Destroy(nearObject);
             }
         }
-        if (iDown && exit != null && !isDodge)
+        if (iDown && exit != null && !isDodge)  // 다음 층으로 이동
         {
             if (exit.tag.Equals("Finish"))
             {
-                Debug.Log("피니쉬 확인");
-                GlobalFunc.LoadScene("DungeonScene");
+                SaveSystem.SaveData(this);  // 데이터 저장
+                GameData.loadEnable = true; // 데이터 로드 가능여부
+                GlobalFunc.LoadScene("DungeonScene");   
             }
         }
-        if (iDown && chest != null && !isDodge)
+        if (iDown && chest != null && !isDodge) // 보물상자 열기
         {
             DungeonObject item = chest.GetComponent<DungeonObject>();
-            if ((item != null))
+            if (item != null)
             {
                 item.ChestOpen();
                 item.tag = "Untagged"; // 보물상자를 열었기 때문에 태그 제거
                 chest = null;
                 chestUI.gameObject.SetActive(false);
             }
-
         }
+        if (iDown && sellItem != null && !isDodge)
+        {
+            Debug.Log("구매가 되나?");
+            Item item = sellItem.GetComponent<Item>();
 
+            if (curGold >= item.price)
+            {
+                switch (item.type)
+                {
+                    case Item.Type.Heart:
+                        PlayerHeal(item.value);
+                        break;
 
+                    case Item.Type.Weapon:
+                        GetWeapon(sellItem);
+                        break;
+                }
+                SpendGold(item);
+                Destroy(sellItem);
+                sellItem = null;
+                sellItemUI.gameObject.SetActive(false);
+            }
+        }
     }
 
     void FreezeRotation()
@@ -342,15 +361,8 @@ public class Player : MonoBehaviour
         isBorder = Physics.Raycast(PlayerPosition, transform.forward, distance, LayerMask.GetMask("Wall"));
     }
 
-    //public void TakeDamage(int damage)
-    //{
-    //    health -= damage;
-
-    //    StartCoroutine(OnDamage());
-    //}
-
-
-    public void OnTriggerEnter(Collider other)
+   
+    private void OnTriggerEnter(Collider other)
     {
         if(!GameManager.instance.isGameOver)
         {
@@ -360,17 +372,11 @@ public class Player : MonoBehaviour
                 switch(item.type)
                 {
                     case Item.Type.Coin:
-                        
-                        gold += item.value;
-                        if (maxGold < gold)
-                        {
-                            gold = maxGold;
-                        }
-                        GameManager.instance.goldText.text = string.Format("{0}", gold);
+                        AddGold(item.value); 
                         break;
 
                     case Item.Type.Heart:
-                        health += item.value;
+                        PlayerHeal(item.value);
                         break;
 
                     case Item.Type.Key:
@@ -380,31 +386,25 @@ public class Player : MonoBehaviour
                 Destroy(other.gameObject);
             }
 
-
             if (other.tag.Equals("EnemyBullet"))
-                {
+            {
                 if (!isDamage)
                 {
                     Bullet enemyBullet = other.GetComponent<Bullet>();
-                    health -= enemyBullet.damage;
-                    GameManager.instance.SetHealth(health);
+                    PlayerDamage(enemyBullet.damage);
 
-                    if (health <= 0)
-                    {
-                        GameManager.instance.OnGameOver();
-                    }
                     //맞은 후 1초 무적? 때문에 작동이 안됨
                     //if(other.GetComponent<Bullet>() != null)       //리지드바디 유무를 조건으로 하여 
                     //{
                     //    Destroy(other.gameObject);
                     //}
 
-                    //bool isBossAtk = other.name == "Boss Melee Area";
+                    bool isBossAtk = other.name == "Boss Melee Area";
                     StartCoroutine(OnDamage());
                 }
                 if (other.GetComponent<Bullet>() != null)       //리지드바디 유무를 조건으로 하여 
                 {
-                    Destroy(other.gameObject);        // !플레이어를 공격한 뒤 다시 공격하지 않는 문제
+                    //Destroy(other.gameObject);        // !플레이어를 공격한 뒤 다시 공격하지 않는 문제
                 }
 
             }
@@ -448,8 +448,10 @@ public class Player : MonoBehaviour
         if (other.tag.Equals("Sell"))
         {
             sellItem = other.gameObject;
-            Item itemUI = other.GetComponent<Item>();
-            sellItemUI = itemUI.UI;
+
+            Item item = sellItem.GetComponent<Item>();
+
+            sellItemUI = item.UI;
             sellItemUI.gameObject.SetActive(true);
         }
 
@@ -478,14 +480,14 @@ public class Player : MonoBehaviour
         }
     }
 
-    
-
     IEnumerator OnDamage()
     {
         isDamage = true;
         foreach (MeshRenderer mesh in meshs)         //반복문을 사용하여 모든 재질의 색상 변경
         {
-            mesh.material.color = Color.red;
+            //mesh.material.color = Color.red;
+            Material mat = mesh.material;
+            mat.SetColor("_EmissionColor", Color.red * 0.5f);   // EmissionColor 타입은 이렇게 색 변경
         }
 
         //if (isBossAtk)
@@ -497,19 +499,157 @@ public class Player : MonoBehaviour
         isDamage = false;
         foreach (MeshRenderer mesh in meshs)
         {
-            mesh.material.color = Color.white;       //원래대로 돌림
+            //mesh.material.color = Color.white;       //원래대로 돌림
+            Material mat = mesh.material;
+            mat.SetColor("_EmissionColor", Color.black);
         }
 
         //if (isBossAtk)
         //{
         //    rigid.velocity = Vector3.zero;     //1초 후 원래대로 돌아옴
         //}
-
     }
 
-  
- 
+    public void GetWeapon(GameObject nearWeapon)
+    {
+        Item item = nearWeapon.GetComponent<Item>();
 
+        //Debug.Log(item.value + "번호의 아이템을 먹었다.");
+        Image itemSlot1 = GameManager.instance.itemSlot1[item.value].GetComponent<Image>();  // 아이템 슬롯 
+        Image itemSlot2 = GameManager.instance.itemSlot2[item.value].GetComponent<Image>();  // 아이템 슬롯 
+        Image itemSlot3 = GameManager.instance.itemSlot3[item.value].GetComponent<Image>();  // 아이템 슬롯 
+
+        if (itemSlot1 != null && !hasWeapons[0])
+        {
+            hasWeapons[0] = true;
+            slot1 = item.value;
+
+            Weapon weaponSlot1 = weapons[item.value].GetComponent<Weapon>();
+            weaponSlot1.damage = item.damage;
+            weaponSlot1.rate = item.rate;
+            switch (weaponSlot1.weaponType)
+            {
+                case Weapon.WeaponType.Sword:
+                    weaponSlot1.weaponType = Weapon.WeaponType.Sword;
+                    break;
+                case Weapon.WeaponType.ChainSaw:
+                    weaponSlot1.weaponType = Weapon.WeaponType.ChainSaw;
+                    break;
+                case Weapon.WeaponType.TwohandSword:
+                    weaponSlot1.weaponType = Weapon.WeaponType.TwohandSword;
+                    break;
+            }
+
+            Color newColor = new Color(255, 255, 255, 255);
+            itemSlot1.color = newColor;
+        }
+        else if (itemSlot2 != null && !hasWeapons[1])
+        {
+            hasWeapons[1] = true;
+            slot2 = item.value;
+
+            Weapon weaponSlot2 = weapons[item.value].GetComponent<Weapon>();
+            weaponSlot2.damage = item.damage;
+            weaponSlot2.rate = item.rate;
+            switch (weaponSlot2.weaponType)
+            {
+                case Weapon.WeaponType.Sword:
+                    weaponSlot2.weaponType = Weapon.WeaponType.Sword;
+                    break;
+                case Weapon.WeaponType.ChainSaw:
+                    weaponSlot2.weaponType = Weapon.WeaponType.ChainSaw;
+                    break; 
+                case Weapon.WeaponType.TwohandSword:
+                    weaponSlot2.weaponType = Weapon.WeaponType.TwohandSword;
+                    break;
+            }
+
+            Color newColor = new Color(255, 255, 255, 255);
+            itemSlot2.color = newColor;
+        }
+        else if (itemSlot3 != null && !hasWeapons[2])
+        {
+            hasWeapons[2] = true;
+            slot3 = item.value;
+
+            Weapon weaponSlot3 = weapons[item.value].GetComponent<Weapon>();
+            weaponSlot3.damage = item.damage;
+            weaponSlot3.rate = item.rate;
+            switch (weaponSlot3.weaponType)
+            {
+                case Weapon.WeaponType.Sword:
+                    weaponSlot3.weaponType = Weapon.WeaponType.Sword;
+                    break;
+                case Weapon.WeaponType.ChainSaw:
+                    weaponSlot3.weaponType = Weapon.WeaponType.ChainSaw;
+                    break; 
+                case Weapon.WeaponType.TwohandSword:
+                    weaponSlot3.weaponType = Weapon.WeaponType.TwohandSword;
+                    break;
+            }
+
+            Color newColor = new Color(255, 255, 255, 255);
+            itemSlot3.color = newColor;
+        }
+    }
+    public void SetWeapon(Weapon item)
+    {
+    }
+
+    // 플레이어 체력 회복
+    public void PlayerHeal(int heal)
+    {
+        curHealth += heal;
+        if (curHealth > maxHealth)
+        {
+            curHealth = maxHealth;
+        }
+        GameManager.instance.SetHealth(curHealth);
+    }
+
+    // 플레이어 데미지
+    public void PlayerDamage(int damage)
+    {
+        curHealth -= damage;
+        GameManager.instance.SetHealth(curHealth);
+
+        animator.SetTrigger("isDamage");
+
+
+        if (0 >= curHealth && !isDie)
+        {
+            isDie = true;
+            GameManager.instance.OnGameOver();
+            animator.SetBool("isDie", GameManager.instance.isGameOver);
+        }
+    }
+
+    // 골드 획득
+    public void AddGold(int gold)
+    {
+        curGold += gold;
+        if(curGold > maxGold)
+        {
+            curGold = maxGold;
+        }
+        GameManager.instance.SetGold(curGold);
+
+    }
+    // 골드 소비
+    public void SpendGold(Item item)
+    {
+        curGold -= item.price;
+        GameManager.instance.goldText.text = string.Format("{0}", curGold);
+        item.tag = "Untagged";
+    }
+
+    public void LoadData()
+    {
+        GameData data = SaveSystem.LoadData();
+
+        maxHealth = data.playerMaxHP;
+        curHealth = data.playerCurHP;
+        maxGold = data.maxGold;
+        curGold = data.curGold;
+    }
 }
-
-

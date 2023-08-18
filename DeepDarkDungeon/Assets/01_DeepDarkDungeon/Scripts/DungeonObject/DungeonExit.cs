@@ -7,14 +7,21 @@ public class DungeonExit : MonoBehaviour
 {
     public GameObject door;
     public GameObject exit;
+    public GameObject keyUI;   
+
     public float speed;
     private Transform doorTransform;
     bool doorOpen = false;
-    
+
+
 
     // Start is called before the first frame update
     void Start()
     {
+        if (GameManager.instance.keyUI == null)
+        {
+            GameManager.instance.keyUI = keyUI;
+        }
     }
 
     // Update is called once per frame

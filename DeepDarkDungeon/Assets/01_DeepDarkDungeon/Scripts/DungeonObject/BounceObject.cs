@@ -20,7 +20,7 @@ public class BounceObject : MonoBehaviour
 
     void Start()
     {
-        // ¹°Ã¼°¡ »ı¼ºµÇ¸é Æ¢¾î¿À¸£±â
+        // ë¬¼ì²´ê°€ ìƒì„±ë˜ë©´ íŠ€ì–´ì˜¤ë¥´ê¸°
         StartBounce();  
     }
 
@@ -35,12 +35,12 @@ public class BounceObject : MonoBehaviour
 
     private void StartBounce()
     {
-        // Áß·Â ºñÈ°¼ºÈ­ ¹× Æ¢¾î¿À¸£´Â »óÅÂ ¼³Á¤
+        // ì¤‘ë ¥ ë¹„í™œì„±í™” ë° íŠ€ì–´ì˜¤ë¥´ëŠ” ìƒíƒœ ì„¤ì •
         rigidbody.useGravity = false;
         rigidbody.velocity = Vector3.zero;
         rigidbody.AddForce(Vector3.up * bounceForce, ForceMode.Impulse);
 
-        // ÀÏÁ¤ ½Ã°£ ÀÌÈÄ Áß·Â ´Ù½Ã È°¼ºÈ­
+        // ì¼ì • ì‹œê°„ ì´í›„ ì¤‘ë ¥ ë‹¤ì‹œ í™œì„±í™”
         StartCoroutine(EnableGravityAfterDelay(bounceDuration));
     }
 

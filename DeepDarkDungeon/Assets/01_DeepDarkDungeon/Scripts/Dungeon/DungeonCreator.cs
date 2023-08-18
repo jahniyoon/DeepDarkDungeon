@@ -50,8 +50,9 @@ public class DungeonCreator : MonoBehaviour
 
     [Header("Prefabs")]
     public GameObject Player;
-    public GameObject bossPrefabs;
-    public GameObject Exit;
+    public GameObject bossRoomPrefab;
+    public GameObject exitRoomPrefab;
+    public GameObject spawnRoomPrefab;
     public GameObject enemyPrefabs;
 
     public GameObject torchPrefabs;
@@ -99,11 +100,7 @@ public class DungeonCreator : MonoBehaviour
             roomOffset,
             corridorWidth);
 
-        //if (6 >= generator.CreatedRooms.Count)
-        //{
-        //    //DungeonCreator.floorOverlap = true;
-        //    Debug.Log("방 개수 미충족. 던전을 다시 생성합니다.");
-        //}
+        
         // 벽 생성 가능 리스트
         possibleWallHorizontalPosition = new List<Vector3Int>();
         possibleWallVerticalPosition = new List<Vector3Int>();
@@ -143,7 +140,9 @@ public class DungeonCreator : MonoBehaviour
         
         CreateWalls(wallParent);        // 벽 생성
         CreateDoors();                  // 문 생성
-        CreateExit();                   // 출구 생성
+        CreateExitRoom();                   // 출구 생성
+        CreateSpawnRoom();
+
         CreateDungeonDecorations(dungeonDecorationParent);  // 던전 장식 생성
 
 
@@ -160,35 +159,30 @@ public class DungeonCreator : MonoBehaviour
     #region 방 구성 관리 메서드
     public void RoomData(DugeonGenerator generator)
     {
-        // 생성된 방 개수와 정보 출력
-        //roomCountText.text = string.Format("Room Count : {0}", generator.CreatedRooms.Count);
-        //Debug.Log("Created Room Count: " + generator.CreatedRooms.Count);
-        //foreach (var room in generator.CreatedRooms)
-        //{
-        //    Debug.Log(roomNum +" Room Position: " + room.BottomLeftAreaCorner + " - " + room.TopRightAreaCorner);
-        //    roomNum++;
-        //}
+        int spawnRoomNum = generator.CreatedRooms.Count - 3; // 스폰 방 번호
+        int bossRoomNum = generator.CreatedRooms.Count - 2; // 보스 방 번호
+        int exitRoomNum = generator.CreatedRooms.Count - 1; // 출구 방 번호
 
         // 첫번째로 생성된 방의 위치는? => 플레이어 스폰 방
-        RoomNode spawnRoom = generator.CreatedRooms[0];
+        RoomNode spawnRoom = generator.CreatedRooms[spawnRoomNum];
         spawnRoomCenterPosition = new Vector3Int(
-        (spawnRoom.BottomLeftAreaCorner.x + spawnRoom.TopRightAreaCorner.x) / 2,
+        ((spawnRoom.BottomLeftAreaCorner.x + spawnRoom.TopRightAreaCorner.x) / 2) - 1,
         0,
         (spawnRoom.BottomLeftAreaCorner.y + spawnRoom.TopRightAreaCorner.y) / 2);
         
         // 출구 방
-        RoomNode exitRoom = generator.CreatedRooms[generator.CreatedRooms.Count - 2];
+        RoomNode exitRoom = generator.CreatedRooms[exitRoomNum];
         exitRoomCenterPosition = new Vector3Int(
         (exitRoom.BottomLeftAreaCorner.x + exitRoom.TopRightAreaCorner.x) / 2,
         0,
         (exitRoom.BottomLeftAreaCorner.y + exitRoom.TopRightAreaCorner.y) / 2);
 
         // 마지막으로 생성된 방의 위치는?  => 보스 방
-        RoomNode bossRoom = generator.CreatedRooms[generator.CreatedRooms.Count - 1];
+        RoomNode bossRoom = generator.CreatedRooms[bossRoomNum];
         bossRoomCenterPosition = new Vector3Int(
        (bossRoom.BottomLeftAreaCorner.x + bossRoom.TopRightAreaCorner.x) / 2,
        0,
-       (bossRoom.BottomLeftAreaCorner.y + bossRoom.TopRightAreaCorner.y) / 2);
+       ((bossRoom.BottomLeftAreaCorner.y + bossRoom.TopRightAreaCorner.y) / 2)+1);
 
 
         // 방 리스트 선언
@@ -197,11 +191,11 @@ public class DungeonCreator : MonoBehaviour
         {
             RoomNode dungeonRoom = dungeonRooms[i];
 
-            CreateRoomCorner(dungeonRoom);
+            CreateRoomCorner(dungeonRoom);  // 모든방에 생성
 
 
-            // 첫번째 방과 마지막 방을 제외한 방에만 생성
-            if (1 <= i && i <= dungeonRooms.Count - 3)
+            // 특별한 방을 제외한 방에만 생성
+            if (i <= dungeonRooms.Count - 4)
             {
                 CreateRoomChest(dungeonRoom);
                 CreateRoomRandom(dungeonRoom);
@@ -460,11 +454,20 @@ public class DungeonCreator : MonoBehaviour
             player.SetActive(true); // 플레이어 오브젝트 활성화
         }
     }
-
-    // 출구 생성
-    public void CreateExit()
+    public void CreateSpawnRoom()
     {
-        GameObject exit = Exit;
+        GameObject spawnRoom = spawnRoomPrefab;
+        if (spawnRoom != null)
+        {
+            spawnRoom.transform.position = spawnRoomCenterPosition; // 마지막 방의 중앙 위치로 설정
+            GameObject dungeonSpawnRoom = Instantiate(spawnRoom, spawnRoom.transform.position, Quaternion.identity);
+            dungeonSpawnRoom.transform.parent = transform;
+        }
+    }
+    // 출구 생성
+    public void CreateExitRoom()
+    {
+        GameObject exit = exitRoomPrefab;
         if (exit != null)
         {
             exit.transform.position = exitRoomCenterPosition; // 마지막 방의 중앙 위치로 설정
@@ -472,11 +475,11 @@ public class DungeonCreator : MonoBehaviour
             dungeonExit.transform.parent = transform;
         }
     }
-
+  
     // 적 리스트 생성
     public void CreateEnemies(GameObject enemyParent)
     {
-        CreateBoss(enemyParent, bossRoomCenterPosition, bossPrefabs);
+        CreateBoss(enemyParent, bossRoomCenterPosition, bossRoomPrefab);
         foreach (var enemyPosition in enemyPositions)
         {
             CreateEnemy(enemyParent, enemyPosition, enemyPrefabs);
@@ -488,9 +491,9 @@ public class DungeonCreator : MonoBehaviour
         GameObject newEnemy = Instantiate(enemyPrefabs, enemyPosition, Quaternion.identity, enemyParent.transform);
     }
     // 보스 생성
-    public void CreateBoss(GameObject enemyParent, Vector3Int bossPosition, GameObject bossPrefabs)
+    public void CreateBoss(GameObject enemyParent, Vector3Int bossPosition, GameObject bossRoomPrefab)
     {
-        GameObject boss = Instantiate(bossPrefabs, bossPosition, Quaternion.identity, enemyParent.transform);
+        GameObject boss = Instantiate(bossRoomPrefab, bossPosition, Quaternion.identity, enemyParent.transform);
     }
 
     // 던전 데코레이션 생성
