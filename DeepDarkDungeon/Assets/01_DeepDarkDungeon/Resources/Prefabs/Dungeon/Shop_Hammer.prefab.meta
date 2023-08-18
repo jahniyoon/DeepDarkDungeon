@@ -1,6 +1,11 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:DeepDarkDungeon/Assets/01_DeepDarkDungeon/Resources/Prefabs/Dungeon/Shop_Hammer.prefab.meta
 guid: 78403592bb05f6e488d92adbf8a231b9
 PrefabImporter:
+========
+guid: de8fb89da83bcf547a2c8ed07d8ecd3b
+DefaultImporter:
+>>>>>>>> origin/feature/jinyoungsoo:DeepDarkDungeon/Assets/01_DeepDarkDungeon/Scenes/DungeonScene Test.unity.meta
   externalObjects: {}
   userData: 
   assetBundleName: 

@@ -16,7 +16,7 @@ public class EnemyTest : MonoBehaviour                     //중요! navmesh는 sta
     public BoxCollider meleeArea;          //근접 공격 범위
     public GameObject bullet;
     public bool isChase;
-    public bool isAttack;                 //일반형 몬스터 변수
+    public bool isAttack;                 
     bool startChase = false;
 
     public Rigidbody rigid;
@@ -32,6 +32,8 @@ public class EnemyTest : MonoBehaviour                     //중요! navmesh는 sta
 
     Vector3 doLookVec;
 
+    //GameObject player;
+
     void Awake()
     {
         rigid = GetComponent<Rigidbody>();
@@ -39,6 +41,8 @@ public class EnemyTest : MonoBehaviour                     //중요! navmesh는 sta
         meshs = GetComponentsInChildren<MeshRenderer>();  // Material은 MeshRenderer로 가져와야된다
         nav = GetComponent<NavMeshAgent>();
         anim = GetComponentInChildren<Animator>();
+
+        //player = GameObject.FindWithTag("Player");
 
         //if (enemyType != Type.D)
         //    Invoke("ChaseStart", 2);  // 플레이어 만나면 시작되게 하기위해 뺐습니다.
@@ -52,14 +56,16 @@ public class EnemyTest : MonoBehaviour                     //중요! navmesh는 sta
 
     void Update()
     {
-        if(target != null && !startChase) //  플레이어를 감지하면 ChaseStart
+        //transform.LookAt(player.transform);
+
+        if(target != null && !startChase) //  플레이어를 감지하면 ChaseStart              //플레이어 타켓 관련 
         {
             startChase = true;
             ChaseStart();
         }
 
 
-        if (nav.enabled && enemyType != Type.D && target != null)       //navi가 활성화되어있을때만
+        if (nav.enabled && enemyType != Type.D && target != null)       //navi가 활성화되어있을때만     //타켓 
         {
             nav.SetDestination(target.position);     //SetDestination 도착할 목표 위치 지정 함수 
             nav.isStopped = !isChase;     //isStopped을 사용하여 완벽하게 멈추도록
