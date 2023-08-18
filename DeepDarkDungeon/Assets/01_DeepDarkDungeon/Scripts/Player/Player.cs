@@ -1,11 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
-using UnityEditorInternal.Profiling.Memory.Experimental;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
-using static UnityEditor.Progress;
 
 public class Player : MonoBehaviour
 {
@@ -17,7 +15,8 @@ public class Player : MonoBehaviour
     MeshRenderer[] meshs;
 
     public Transform playerTransform;
-    public GameObject followCamera;
+    //public GameObject followCamera;
+    public GameObject smoke;
     [Header("Player")]
     public int maxHealth;
     public int curHealth;
@@ -27,15 +26,18 @@ public class Player : MonoBehaviour
 
     public float distance;
     public float speed;
+    public float turnSpeed;
     public float attackDistance;
 
     public GameObject[] weapons;  //플레이어 무기 관련 함수 - 무기 연결하는 
-    public bool[] hasWeapons;     //플레이어 무기 관련 함수 - 무기 인벤토리 비슷한
 
+    public bool hasWeapon1;     //플레이어 무기 관련 함수 - 무기 인벤토리 비슷한
+    public bool hasWeapon2;     
+    public bool hasWeapon3;  
     // 습득한 아이템 슬롯에 저장
-    int slot1;
-    int slot2;
-    int slot3;
+    public int slot1;
+    public int slot2;
+    public int slot3;
 
     int equipWeaponIndex = -1; //무기 중복 교체, 없는 무기 확인을 위한 조건
     Weapon equipWeapon;         //기존에 장착된 무기를 저장하는 변수를 선언
@@ -97,7 +99,10 @@ public class Player : MonoBehaviour
         //GameManager.instance.SaveData(maxHealth, curHealth, maxGold, curGold);  // 플레이어 데이터 저장
         GameManager.instance.Initialization();                                  // 상태 초기화
         GameManager.instance.SetMaxHealth(maxHealth); // 체력 초기화
+        GameManager.instance.SetHealth(curHealth); // 체력 초기화
         GameManager.instance.SetGold(curGold);
+        GameManager.instance.SetFloor();
+        SetWeapon();
 
     }
 
@@ -109,8 +114,6 @@ public class Player : MonoBehaviour
 
         if (!GameManager.instance.isGameOver && !GameManager.instance.isPause)
         {
-            Move();
-            Turn();
             Attack();
             Dodge();
             Swap();
@@ -120,6 +123,11 @@ public class Player : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (!GameManager.instance.isGameOver && !GameManager.instance.isPause)
+        {
+            Move();
+            Turn();
+        }
         FreezeRotation();
         StopToWall();
     }
@@ -146,7 +154,8 @@ public class Player : MonoBehaviour
 
     void Move()     //캐릭터 움직임
     {
-        moveVec = new Vector3(hAxis, 0, vAxis).normalized;
+        moveVec = new Vector3(hAxis, 0, vAxis);
+
 
         if (isDodge)
             moveVec = dodgeVec;
@@ -158,9 +167,11 @@ public class Player : MonoBehaviour
         }
         if (!isBorder)
         {
-            transform.position += moveVec * speed * (wDown ? 0.3f : 1f) * Time.deltaTime;     //삼항연산자 트루면 0.3 아니면 1
+            //transform.position += moveVec * speed * (wDown ? 0.3f : 1f) * Time.deltaTime;     //삼항연산자 트루면 0.3 아니면 1
+            PlayerRigid.MovePosition(transform.position + transform.forward * moveVec.normalized.magnitude * speed * Time.deltaTime);
+
         }
-            
+
 
         animator.SetBool("isRun", moveVec != Vector3.zero);
         animator.SetBool("isWalk", wDown);
@@ -168,7 +179,11 @@ public class Player : MonoBehaviour
     
     void Turn()  //캐릭터 회전
     {
-            transform.LookAt(transform.position + moveVec);   
+        if (moveVec == Vector3.zero) return;
+
+        var rot = Quaternion.LookRotation(moveVec.ToIso(), Vector3.up);
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, rot, turnSpeed * Time.deltaTime);
+            //transform.LookAt(transform.position + moveVec);   
     }
 
     void Attack()
@@ -215,6 +230,8 @@ public class Player : MonoBehaviour
             speed *= 2f;
             animator.SetTrigger("doDodge");
             isDodge = true;
+            smoke.gameObject.SetActive(true);   // 닷지시 연기
+
 
             Invoke("DodgeOut", 0.1f);
         }
@@ -230,6 +247,8 @@ public class Player : MonoBehaviour
     void DodgeStop() //회피 끝난 후 이동가능 - 회피 중에는 방향 전환 안되는 
     {
         isDodge = false;
+        smoke.gameObject.SetActive(false);   // 닷지시 연기
+
     }
     // 게임 Pause
     void Pause()
@@ -242,19 +261,19 @@ public class Player : MonoBehaviour
 
     void Swap()
     {
-        if (sDown1 && (!hasWeapons[0] || equipWeaponIndex == slot1))
+        if (sDown1 && (!hasWeapon1 || equipWeaponIndex == slot1))
         {
             Debug.Log("1 스왑 불가");
 
             return;
         }
-        if (sDown2 && (!hasWeapons[1] || equipWeaponIndex == slot2))
+        if (sDown2 && (!hasWeapon2 || equipWeaponIndex == slot2))
         {
             Debug.Log("2 스왑 불가");
 
             return;
         }
-        if (sDown3 && (!hasWeapons[2] || equipWeaponIndex == slot3))
+        if (sDown3 && (!hasWeapon3 || equipWeaponIndex == slot3))
         {
             Debug.Log("3 스왑 불가");
 
@@ -514,14 +533,12 @@ public class Player : MonoBehaviour
     {
         Item item = nearWeapon.GetComponent<Item>();
 
-        //Debug.Log(item.value + "번호의 아이템을 먹었다.");
-        Image itemSlot1 = GameManager.instance.itemSlot1[item.value].GetComponent<Image>();  // 아이템 슬롯 
-        Image itemSlot2 = GameManager.instance.itemSlot2[item.value].GetComponent<Image>();  // 아이템 슬롯 
-        Image itemSlot3 = GameManager.instance.itemSlot3[item.value].GetComponent<Image>();  // 아이템 슬롯 
+       
 
-        if (itemSlot1 != null && !hasWeapons[0])
+        if (!hasWeapon1)
         {
-            hasWeapons[0] = true;
+
+            hasWeapon1 = true;
             slot1 = item.value;
 
             Weapon weaponSlot1 = weapons[item.value].GetComponent<Weapon>();
@@ -539,13 +556,10 @@ public class Player : MonoBehaviour
                     weaponSlot1.weaponType = Weapon.WeaponType.TwohandSword;
                     break;
             }
-
-            Color newColor = new Color(255, 255, 255, 255);
-            itemSlot1.color = newColor;
         }
-        else if (itemSlot2 != null && !hasWeapons[1])
+        else if (!hasWeapon2)
         {
-            hasWeapons[1] = true;
+            hasWeapon2 = true;
             slot2 = item.value;
 
             Weapon weaponSlot2 = weapons[item.value].GetComponent<Weapon>();
@@ -563,13 +577,10 @@ public class Player : MonoBehaviour
                     weaponSlot2.weaponType = Weapon.WeaponType.TwohandSword;
                     break;
             }
-
-            Color newColor = new Color(255, 255, 255, 255);
-            itemSlot2.color = newColor;
         }
-        else if (itemSlot3 != null && !hasWeapons[2])
+        else if (!hasWeapon3)
         {
-            hasWeapons[2] = true;
+            hasWeapon3 = true;
             slot3 = item.value;
 
             Weapon weaponSlot3 = weapons[item.value].GetComponent<Weapon>();
@@ -587,13 +598,24 @@ public class Player : MonoBehaviour
                     weaponSlot3.weaponType = Weapon.WeaponType.TwohandSword;
                     break;
             }
-
-            Color newColor = new Color(255, 255, 255, 255);
-            itemSlot3.color = newColor;
         }
+        SetWeapon();
+       
     }
-    public void SetWeapon(Weapon item)
+    public void SetWeapon()
     {
+        //Debug.Log(item.value + "번호의 아이템을 먹었다.");
+        Image itemSlot1 = GameManager.instance.itemSlot1[slot1].GetComponent<Image>();  // 아이템 슬롯 
+        Image itemSlot2 = GameManager.instance.itemSlot2[slot2].GetComponent<Image>();  // 아이템 슬롯 
+        Image itemSlot3 = GameManager.instance.itemSlot3[slot3].GetComponent<Image>();  // 아이템 슬롯 
+
+        Color newColor = new Color(255, 255, 255, 255);
+        if (hasWeapon1)
+        { itemSlot1.color = newColor; }
+        if (hasWeapon2)
+        { itemSlot2.color = newColor; }
+        if (hasWeapon3)
+        { itemSlot3.color = newColor; }
     }
 
     // 플레이어 체력 회복
@@ -612,13 +634,14 @@ public class Player : MonoBehaviour
     {
         curHealth -= damage;
         GameManager.instance.SetHealth(curHealth);
-
         animator.SetTrigger("isDamage");
 
 
         if (0 >= curHealth && !isDie)
         {
             isDie = true;
+            GameData.loadEnable = false;    // 세이브 로드 못하게 설정
+            SaveSystem.SaveData(this);  // 데이터 저장
             GameManager.instance.OnGameOver();
             animator.SetBool("isDie", GameManager.instance.isGameOver);
         }
@@ -651,5 +674,15 @@ public class Player : MonoBehaviour
         curHealth = data.playerCurHP;
         maxGold = data.maxGold;
         curGold = data.curGold;
+
+        slot1 = data.slot1;
+        slot2 = data.slot2;
+        slot3 = data.slot3;
+
+        hasWeapon1 = data.hasWeapon1;
+        hasWeapon2 = data.hasWeapon2;
+        hasWeapon3 = data.hasWeapon3;
+
     }
+   
 }

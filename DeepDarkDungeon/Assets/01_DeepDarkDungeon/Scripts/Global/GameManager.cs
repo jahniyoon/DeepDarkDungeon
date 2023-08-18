@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public bool isGameOver = false; // 게임오버 확인
     [HideInInspector] public bool isPause = false; // 포즈 확인
     [HideInInspector] public bool isDoorOpen = false; // 문 열림 확인
+    private int floor = 1;
 
     [Header("UI instance")]
 
@@ -20,6 +21,7 @@ public class GameManager : MonoBehaviour
 
     public Slider playerHealth; // 체력 바
     public TMP_Text goldText;   // 골드 텍스트
+    public TMP_Text floorText;
 
     public Image[] itemSlot1;
     public Image[] itemSlot2;
@@ -70,12 +72,21 @@ public class GameManager : MonoBehaviour
         goldText.text = string.Format("{0}", gold);
     }
 
+    public void SetFloor()
+    {
+        GameData.floor += 1;
+        floorText.text = string.Format("Floor {0}", GameData.floor);
+
+
+    }
+
     // 게임 오버
     public void OnGameOver()
     {
         isGameOver = true;
         gameoverUI.SetActive(true);
-
+        GameData.floor = 0;
+        
         //Audio audio = FindObjectOfType<Audio>();
         //audio.RetrySound();
     }

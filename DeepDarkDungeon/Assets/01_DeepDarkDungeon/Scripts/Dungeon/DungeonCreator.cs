@@ -54,6 +54,7 @@ public class DungeonCreator : MonoBehaviour
     public GameObject exitRoomPrefab;
     public GameObject spawnRoomPrefab;
     public GameObject enemyPrefabs;
+    public GameObject shopPrefab;
 
     public GameObject torchPrefabs;
     public GameObject boxPrefabs;
@@ -145,9 +146,7 @@ public class DungeonCreator : MonoBehaviour
 
         CreateDungeonDecorations(dungeonDecorationParent);  // 던전 장식 생성
 
-
         surface.BuildNavMesh(); // NavMesh 업데이트 [움직이지 않는 것 들을 생성한 뒤 호출해야 함]
-
 
         CreateEnemies(enemyParent);     // 적 생성
         CreatePlayer();                 // 플레이어 생성
@@ -187,15 +186,18 @@ public class DungeonCreator : MonoBehaviour
 
         // 방 리스트 선언
         List<RoomNode> dungeonRooms = generator.CreatedRooms;
+
+        int shopRoomNum = Random.Range(0, spawnRoomNum); // 상점을 제외한 방
+
         for (int i = 0; i <= dungeonRooms.Count - 1; i++)
         {
             RoomNode dungeonRoom = dungeonRooms[i];
 
-            CreateRoomCorner(dungeonRoom);  // 모든방에 생성
+            CreateRoomCorner(dungeonRoom);  // 모든 방에 생성
 
 
             // 특별한 방을 제외한 방에만 생성
-            if (i <= dungeonRooms.Count - 4)
+            if (i <= dungeonRooms.Count - 4 && i != shopRoomNum)
             {
                 CreateRoomChest(dungeonRoom);
                 CreateRoomRandom(dungeonRoom);

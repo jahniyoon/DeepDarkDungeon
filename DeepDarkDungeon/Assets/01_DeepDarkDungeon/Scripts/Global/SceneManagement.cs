@@ -8,8 +8,13 @@ public class SceneManagement : MonoBehaviour
 {
     public static SceneManagement instance;
 
-    public void ChangeGameStartScene()
+    public void ChangeDungeonScene()
     {
+        SceneManager.LoadScene("DungeonScene");
+    }
+    public void ChangeReplayDungeonScene()
+    {
+        ResetData();
         SceneManager.LoadScene("DungeonScene");
     }
     public void ExitGame()
@@ -18,6 +23,7 @@ public class SceneManagement : MonoBehaviour
     }
     public void ChangeGameTitleScene()
     {
+        ResetData();
         SceneManager.LoadScene("TitleScene");
     }
 
@@ -25,5 +31,10 @@ public class SceneManagement : MonoBehaviour
     public void ChangeGameTestDungeonScene()
     {
         SceneManager.LoadScene("TestDungeonScene");
+    }
+    void ResetData()
+    {
+        GameData.loadEnable = false;    // 세이브 로드 못하게 설정
+        GameData.floor = 0;
     }
 }
