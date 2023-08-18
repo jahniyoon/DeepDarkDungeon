@@ -10,9 +10,9 @@ public class Bullet : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        if (!isRock && collision.gameObject.tag.Equals("Floor"))  //탄피  //게임상에서 isRock체크해서 사라지지 않게
+        if (collision.gameObject.tag.Equals("Floor"))  //탄피  //!isRock 게임상에서 isRock체크해서 사라지지 않게
         {
-            Destroy(gameObject, 10); 
+            Destroy(gameObject, 5.0f); 
         }
         
         
@@ -24,6 +24,10 @@ public class Bullet : MonoBehaviour
         {
             Destroy(gameObject);
 
+        }
+        else if(other.gameObject.tag.Equals("Player"))
+        {
+            Destroy(gameObject);
         }
     }
 

@@ -1098,6 +1098,7 @@ MonoBehaviour:
   curGold: 0
   distance: 0.2
   speed: 3
+  attackDistance: 0
   weapons:
   - {fileID: 8756710527464983245}
   - {fileID: 3979992227229141584}

@@ -1882,7 +1882,7 @@ GameObject:
   - component: {fileID: 5631324152637381495}
   - component: {fileID: 1839982612}
   - component: {fileID: 1839982613}
-  - component: {fileID: 1839982614}
+  - component: {fileID: 762234520204747338}
   m_Layer: 0
   m_Name: Enemy_Boss
   m_TagString: Untagged
@@ -1966,7 +1966,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 20
+  m_Speed: 10
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -1978,7 +1978,7 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &1839982614
+--- !u!114 &762234520204747338
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1987,13 +1987,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 5663890350162724715}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee39406212fa07a4499fde05721d6cc4, type: 3}
+  m_Script: {fileID: 11500000, guid: fa541c0ee62173d4ead4c56332c60368, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  state: 0
-  traceDist: 10
-  attackDist: 0.7
-  isDie: 0
 --- !u!1 &5663890350177804531
 GameObject:
   m_ObjectHideFlags: 0
@@ -2762,7 +2758,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: dc6b778020859df4f95d2d3493befc8c, type: 3}
       propertyPath: m_TagString
-      value: Melee
+      value: MonsterMelee
       objectReference: {fileID: 0}
     - target: {fileID: 1838910330315923163, guid: dc6b778020859df4f95d2d3493befc8c, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -2805,7 +2801,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd8da2d3d40ebe94389cdc1387299bda, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 0
-  damage: 50
+  value: 0
+  weaponType: 0
+  damage: 20
   rate: 1
   meleeArea: {fileID: 1301209865}

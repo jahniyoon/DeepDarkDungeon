@@ -386,6 +386,17 @@ public class Player : MonoBehaviour
                 Destroy(other.gameObject);
             }
 
+            if(other.tag.Equals("MonsterMelee"))
+            {
+                if(!isDamage)
+                {
+                    Weapon weapon = other.GetComponent<Weapon>();
+                    PlayerDamage(weapon.damage);
+
+                    StartCoroutine(OnDamage());
+                }
+            }
+
             if (other.tag.Equals("EnemyBullet"))
             {
                 if (!isDamage)
@@ -399,7 +410,7 @@ public class Player : MonoBehaviour
                     //    Destroy(other.gameObject);
                     //}
 
-                    bool isBossAtk = other.name == "Boss Melee Area";
+                    //bool isBossAtk = other.name == "Boss Melee Area";
                     StartCoroutine(OnDamage());
                 }
                 if (other.GetComponent<Bullet>() != null)       //리지드바디 유무를 조건으로 하여 

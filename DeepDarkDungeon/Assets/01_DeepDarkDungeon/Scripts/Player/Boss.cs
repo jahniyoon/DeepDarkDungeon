@@ -1,42 +1,85 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Reflection;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Boss : Enemy
+public class Boss : Monster
 {
-    public ParticleSystem particle;
+    public GameObject Rock;
+
+    public Transform RockA;
+    public Transform RockB;
+    public Transform RockC;
+    public Transform RockD;
+    public Transform RockE;
 
     public bool isLook;
 
-    Vector3 lookVec;     //플레이어 움직임 예측 백터 변수
-
+    Vector3 moveVector;
+    Vector3 lookVec;
+    Vector3 tauntVec;
 
     // Start is called before the first frame update
-    void Awake()   //awake함수는 자식 스크립트만 단독 실행 enemy awke스크립트 상속 안됨
+    void Awake()
     {
+        monsterTr = GetComponent<Transform>();
+        playerTr = GameObject.FindWithTag("Player").GetComponent<Transform>();
         rigid = GetComponent<Rigidbody>();
         boxCollider = GetComponent<BoxCollider>();
-        meshs = GetComponentsInChildren<MeshRenderer>();  // Material은 MeshRenderer로 가져와야된다
-        nav = GetComponent<NavMeshAgent>();
-        anim = GetComponentInChildren<Animator>();
+        agent = GetComponent<NavMeshAgent>();
+        anim = GetComponent<Animator>();
+        meshs = GetComponentsInChildren<MeshRenderer>();
 
         StartCoroutine(Think());
     }
 
-
     // Update is called once per frame
     void Update()
     {
-        if (isLook)
+        if(isDie)
+        {
+            StopAllCoroutines();
+            return;
+        }
+        if(isLook)
         {
             float h = Input.GetAxisRaw("Horizontal");
             float v = Input.GetAxisRaw("Vertical");
-            lookVec = new Vector3(h, 0, v) * 5f;   //플레이어 입력값으로 예측 백터값 생성
-            transform.LookAt(target.position + lookVec);
+            lookVec = new Vector3(h, 0, v) * 5;
+            transform.LookAt(playerTarget.position + lookVec);
         }
+        else
+        {
+            agent.SetDestination(tauntVec);
+        }
+       
+
     }
+    //void BossSkill()
+    //{
+    //    float distance = Vector3.Distance(playerTr.position, monsterTr.position);
+
+    //    if (distance >= traceDist)
+    //    {
+    //        int ranAction = Random.Range(0, 5);
+    //        switch (ranAction)
+    //        {
+    //            case 0:
+    //            case 1:
+    //            case 2:
+    //            case 3:
+    //                StartCoroutine(RockAttack());
+    //                break;
+    //            case 4:
+    //                //StartCoroutine();
+
+    //                break;
+
+    //        }
+    //    }
+    //}
+
 
     IEnumerator Think()
     {
@@ -47,36 +90,46 @@ public class Boss : Enemy
         {
             case 0:
             case 1:
-                StartCoroutine(MissileShot());
+                StartCoroutine(Taunt());
                 break;
             case 2:
             case 3:
+                StartCoroutine(RockAttack());
                 //돌 굴러가는 패턴
                 break;
             case 4:
-                //점프 공격 패턴
                 break;
 
         }
 
     }
 
-    IEnumerator MissileShot()
+
+
+
+
+    IEnumerator RockAttack()
     {
-        anim.SetTrigger("doShot");
-        yield return new WaitForSeconds(0.2f);
-        //GameObject instantMissileA = Instantiate(missile, missilePortA.position, missilePortA.rotation);
-        //BossMissile bossMissileA = instantMissileA.GetComponent<BossMissile>();     //미사일 스크립트까지 접근하여 목표물 설정(유도)
-        //bossMissileA.target = target;
+        agent.isStopped = true;
 
-        //yield return new WaitForSeconds(0.3f);
-        //GameObject instantMissileB = Instantiate(missile, missilePortA.position, missilePortA.rotation);
-        //BossMissile bossMissileB = instantMissileA.GetComponent<BossMissile>();     //미사일 스크립트까지 접근하여 목표물 설정(유도)
-        //bossMissileA.target = target;
+        anim.SetTrigger("doRock");
+        yield return new WaitForSeconds(1.0f);
+        GameObject instantRockA = Instantiate(Rock, RockA.position, RockA.rotation);
 
-        //yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(3f);
+        agent.isStopped = false;
 
-        //StartCoroutine(Think());
+
+        StartCoroutine(Think());
+        
     }
 
+    IEnumerator Taunt()
+    {
+        tauntVec = playerTarget.position + lookVec;
+
+        yield return null;      //임시로 넣은 값
+
+        StartCoroutine(Think());
+    }
 }

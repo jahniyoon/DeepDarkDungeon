@@ -21,7 +21,7 @@ public class Weapon : MonoBehaviour
         }
     }
 
-    IEnumerator Swing()
+    IEnumerator Swing()                                           //나중에 폴리싱 기간에 수정
     {
         yield return new WaitForSeconds(0.3f);
         meleeArea.enabled = true; //콜라이더 활성화

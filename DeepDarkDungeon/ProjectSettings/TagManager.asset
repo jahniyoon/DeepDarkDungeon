@@ -14,6 +14,9 @@ TagManager:
   - Chest
   - Sell
   - Destroy
+  - Missile
+  - Effect
+  - MonsterMelee
   layers:
   - Default
   - TransparentFX

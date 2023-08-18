@@ -14,6 +14,7 @@ public class BossRock : Bullet
     void Awake()
     {
         rigid = GetComponent<Rigidbody>();
+
         StartCoroutine(GainPowerTimer());
         StartCoroutine(GainPower());
     }
@@ -29,23 +30,19 @@ public class BossRock : Bullet
         while (!isShoot)
         {
 
-            angularPower += 0.1f;
-            scaleValue += 0.03f; 
+            angularPower += 0.3f;
+            
+            scaleValue += 0.05f;
+            
             transform.localScale = Vector3.one * scaleValue;
             rigid.AddTorque(transform.right * angularPower, ForceMode.Acceleration);  //계속 속도 올려야해서Acceleration
+
 
             yield return null;   //꼭 써야한다
         }
     }
 
-    //void OnTriggerEnter(Collider other)
-    //{
-    //    if (other.gameObject.layer == LayerMask.NameToLayer("Wall"))
-    //    {
-    //        Destroy(gameObject);
-
-    //    }
-    //}
+    
 
 }
 
