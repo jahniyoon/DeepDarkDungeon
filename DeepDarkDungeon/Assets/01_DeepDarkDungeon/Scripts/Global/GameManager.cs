@@ -18,11 +18,14 @@ public class GameManager : MonoBehaviour
     public GameObject gameoverUI;   // 게임 오버 UI
     public GameObject gamePauseUI;   // 게임 포즈 UI
     public GameObject keyUI;   
+    public GameObject bossUI;
 
+    [Header("Player UI instance")]
     public Slider playerHealth; // 체력 바
     public TMP_Text goldText;   // 골드 텍스트
     public TMP_Text floorText;
 
+    [Header("Item Slot UI")]
     public Image[] itemSlot1;
     public Image[] itemSlot2;
     public Image[] itemSlot3;
@@ -106,6 +109,14 @@ public class GameManager : MonoBehaviour
             Time.timeScale = 1;
             gamePauseUI.SetActive(false);
         }
+    }
+    public void OnBossRoom()
+    {
+        bossUI.SetActive(true);
+    }
+    public void BossDead()
+    {
+        bossUI.SetActive(false);
     }
     public void DoorOpen()
     {

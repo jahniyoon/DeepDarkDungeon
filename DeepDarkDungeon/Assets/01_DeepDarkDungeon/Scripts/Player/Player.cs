@@ -69,13 +69,16 @@ public class Player : MonoBehaviour
     bool isBorder;              // 이동 시 정면 벽 체크
     bool isDamage;              // 데미지 상태인지 체크
     bool isDodge;               // 닷지중인지 체크
-    bool isDie;               // 죽었는지 체크
+    bool isDie;                 // 죽었는지 체크
     bool isAttack;
+
+    bool isBossRoom;            // 보스룸인지 체크
 
     bool pauseDown;             // 포즈 상태 확인
     float fireDelay;
 
     // 플레이어 상호작용 게임오브젝트
+    GameObject bossRoomDoor;
     GameObject nearObject;      // 가까운 오브젝트
     GameObject exit;            // 출구 오브젝트
     GameObject exitUI;          // 출구 UI
@@ -123,7 +126,7 @@ public class Player : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (!GameManager.instance.isGameOver && !GameManager.instance.isPause)
+        if (!GameManager.instance.isGameOver && !GameManager.instance.isPause && !isAttack)
         {
             Move();
             Turn();
@@ -195,12 +198,17 @@ public class Player : MonoBehaviour
 
         fireDelay += Time.deltaTime;    //공격딜레이에 시간을 더해주고 공격가능 여부를 확인
         isFireReady = equipWeapon.rate < fireDelay;
+     
 
         if (fDown && isFireReady && !isDodge && !isSwap)
         {
             equipWeapon.Use();                   //public 선언해서 다른 스크립트에 있는 거 가져올수있다
 
-            switch (equipWeapon.weaponType)  // 무기 타입에 따라 스위치로 다른 트리거 실행
+            isAttack = true;
+
+            Debug.Log("공격을 했다. 공격중");
+
+            switch (equipWeapon.weaponType)  // 무기 타입에 따라 스위치로 다른 애니메이션 트리거 실행
             {
                 case Weapon.WeaponType.Sword:
                     animator.SetTrigger("doAttackSword");
@@ -214,17 +222,27 @@ public class Player : MonoBehaviour
             }
             //animator.SetTrigger(equipWeapon.weaponType == Weapon.WeaponType.Melee ? "doSwing" : "doShot");   //무기 타입에 따라 다른 트리거 실행 
 
-            //isAttack = true;
-
             fireDelay = 0;  //공격 딜레이 0으로 올려서 다음 공격까지 기다리도록 작성
+            StopCoroutine("AttackDelay");
+            StartCoroutine("AttackDelay");
+
+
         }
     }
-    
+    IEnumerator AttackDelay()  // 공격 딜레이
+    {
+        yield return new WaitForSeconds(equipWeapon.rate - 0.5f);
+        isAttack = false;
+
+    }
+
+
 
     void Dodge()
     {
         if(jDown && moveVec != Vector3.zero && !isDodge)
         {
+            isAttack = false;   // 어택 캔슬
             dodgeVec = moveVec; //회피하면서 방향 전환 x
             
             speed *= 2f;
@@ -281,7 +299,10 @@ public class Player : MonoBehaviour
         }
 
         int weaponIndex = -1;
-        if (sDown1) weaponIndex = slot1;
+        if (sDown1)
+        {
+            weaponIndex = slot1;
+        }
         if (sDown2) weaponIndex = slot2;
         if (sDown3) weaponIndex = slot3;
 
@@ -314,11 +335,14 @@ public class Player : MonoBehaviour
     {
         if(iDown && nearObject != null && !isDodge)   // e키를 했을때 nearobject 비어있지 않고 jump dodge false일때
         {
-            if(nearObject.tag.Equals("Weapon")) // 아이템 획득
+
+            if(nearObject.tag.Equals("Weapon") && !hasWeapon3) // 아이템 획득
             {
                 GetWeapon(nearObject);
                 Destroy(nearObject);
             }
+            else
+            { Debug.Log("아이템이 꽉찼다.");}
         }
         if (iDown && exit != null && !isDodge)  // 다음 층으로 이동
         {
@@ -342,7 +366,7 @@ public class Player : MonoBehaviour
         }
         if (iDown && sellItem != null && !isDodge)
         {
-            Debug.Log("구매가 되나?");
+            //Debug.Log("구매가 되나?");
             Item item = sellItem.GetComponent<Item>();
 
             if (curGold >= item.price)
@@ -400,6 +424,10 @@ public class Player : MonoBehaviour
 
                     case Item.Type.Key:
                         GameManager.instance.DoorOpen();
+
+                        Animator bossDoor = bossRoomDoor.GetComponentInChildren<Animator>();
+                        bossDoor.SetBool("isDoorClose", false);
+
                         break;
                 }
                 Destroy(other.gameObject);
@@ -440,13 +468,27 @@ public class Player : MonoBehaviour
             }
             if (other.tag.Equals("Enemy"))
             {
-                Debug.Log("적 : 플레이어를 감지했다.");
 
                 EnemyTest targetPosition = other.GetComponent<EnemyTest>();
                 if (targetPosition.target == null)
                 {
                     targetPosition.target = transform;
+                    targetPosition.scanCollider.enabled = false;    // !적 만나면 스캔 콜라이더 없애줘야함
+                    Debug.Log("적 : 플레이어를 감지했다.");
 
+
+                }
+            }
+            if (other.tag.Equals("BossRoom"))   // 보스룸 진입 시 보스룸 메서드 호출
+            {
+                if (!isBossRoom)
+                {
+                    isBossRoom = true;
+                    bossRoomDoor = other.gameObject;
+                    Animator bossDoor = bossRoomDoor.GetComponentInChildren<Animator>();
+                    bossDoor.SetBool("isDoorClose", true);
+
+                    GameManager.instance.OnBossRoom();
                 }
             }
         }
@@ -555,15 +597,15 @@ public class Player : MonoBehaviour
             Weapon weaponSlot1 = weapons[item.value].GetComponent<Weapon>();
             weaponSlot1.damage = item.damage;
             weaponSlot1.rate = item.rate;
-            switch (weaponSlot1.weaponType)
+            switch (item.weaponType)
             {
-                case Weapon.WeaponType.Sword:
+                case Item.WeaponType.Sword:
                     weaponSlot1.weaponType = Weapon.WeaponType.Sword;
                     break;
-                case Weapon.WeaponType.ChainSaw:
+                case Item.WeaponType.ChainSaw:
                     weaponSlot1.weaponType = Weapon.WeaponType.ChainSaw;
                     break;
-                case Weapon.WeaponType.TwohandSword:
+                case Item.WeaponType.TwohandSword:
                     weaponSlot1.weaponType = Weapon.WeaponType.TwohandSword;
                     break;
             }
@@ -576,15 +618,15 @@ public class Player : MonoBehaviour
             Weapon weaponSlot2 = weapons[item.value].GetComponent<Weapon>();
             weaponSlot2.damage = item.damage;
             weaponSlot2.rate = item.rate;
-            switch (weaponSlot2.weaponType)
+            switch (item.weaponType)
             {
-                case Weapon.WeaponType.Sword:
+                case Item.WeaponType.Sword:
                     weaponSlot2.weaponType = Weapon.WeaponType.Sword;
                     break;
-                case Weapon.WeaponType.ChainSaw:
+                case Item.WeaponType.ChainSaw:
                     weaponSlot2.weaponType = Weapon.WeaponType.ChainSaw;
                     break; 
-                case Weapon.WeaponType.TwohandSword:
+                case Item.WeaponType.TwohandSword:
                     weaponSlot2.weaponType = Weapon.WeaponType.TwohandSword;
                     break;
             }
@@ -597,15 +639,15 @@ public class Player : MonoBehaviour
             Weapon weaponSlot3 = weapons[item.value].GetComponent<Weapon>();
             weaponSlot3.damage = item.damage;
             weaponSlot3.rate = item.rate;
-            switch (weaponSlot3.weaponType)
+            switch (item.weaponType)
             {
-                case Weapon.WeaponType.Sword:
+                case Item.WeaponType.Sword:
                     weaponSlot3.weaponType = Weapon.WeaponType.Sword;
                     break;
-                case Weapon.WeaponType.ChainSaw:
+                case Item.WeaponType.ChainSaw:
                     weaponSlot3.weaponType = Weapon.WeaponType.ChainSaw;
                     break; 
-                case Weapon.WeaponType.TwohandSword:
+                case Item.WeaponType.TwohandSword:
                     weaponSlot3.weaponType = Weapon.WeaponType.TwohandSword;
                     break;
             }

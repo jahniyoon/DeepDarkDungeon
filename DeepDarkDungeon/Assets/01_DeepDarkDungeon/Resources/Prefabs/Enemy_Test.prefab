@@ -1241,10 +1241,13 @@ MonoBehaviour:
   isAttack: 0
   rigid: {fileID: 7754978843292374892}
   boxCollider: {fileID: 7754978843292374890}
+  scanCollider: {fileID: 0}
   meshs: []
   nav: {fileID: 7754978843292374893}
   anim: {fileID: 7448480968123247399}
   doLook: 0
+  goldPrefab: {fileID: 82943549552955422, guid: d92c79644cd1a8e479a9ac764a15249d, type: 3}
+  goldMaxValue: 3
 --- !u!65 &7754978843292374890
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1404,6 +1407,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 10
+  isMelee: 0
+  isRock: 0
 --- !u!1 &7840145933129579362
 GameObject:
   m_ObjectHideFlags: 0

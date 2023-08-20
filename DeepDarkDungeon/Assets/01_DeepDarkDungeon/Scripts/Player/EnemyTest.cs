@@ -4,6 +4,7 @@ using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UIElements;
 
 public class EnemyTest : MonoBehaviour                     //중요! navmesh는 static오브젝트만 bake 가능하다!
 {
@@ -21,6 +22,7 @@ public class EnemyTest : MonoBehaviour                     //중요! navmesh는 sta
 
     public Rigidbody rigid;
     public BoxCollider boxCollider;
+    public SphereCollider scanCollider;
     //Material mat;
     public MeshRenderer[] meshs;  //피격 이펙트를 모든 메테리얼로
 
@@ -32,14 +34,20 @@ public class EnemyTest : MonoBehaviour                     //중요! navmesh는 sta
 
     Vector3 doLookVec;
 
+    [Header("Drop Gold")] // 몬스터 사망 시 골드 드롭
+
+    public GameObject goldPrefab;   // 골드 프리팹
+    public int goldMaxValue; // 최대 골드 값
     //GameObject player;
 
     void Awake()
     {
         rigid = GetComponent<Rigidbody>();
         boxCollider = GetComponent<BoxCollider>();
+        scanCollider = GetComponent<SphereCollider>();
         meshs = GetComponentsInChildren<MeshRenderer>();  // Material은 MeshRenderer로 가져와야된다
-        nav = GetComponent<NavMeshAgent>();
+        if (nav != null)
+        { nav = GetComponent<NavMeshAgent>(); }
         anim = GetComponentInChildren<Animator>();
 
         //player = GameObject.FindWithTag("Player");
@@ -65,7 +73,7 @@ public class EnemyTest : MonoBehaviour                     //중요! navmesh는 sta
         }
 
 
-        if (nav.enabled && enemyType != Type.D && target != null)       //navi가 활성화되어있을때만     //타켓 
+        if (nav != null &&  nav.enabled &&enemyType != Type.D && target != null)       //navi가 활성화되어있을때만     //타켓 
         {
             nav.SetDestination(target.position);     //SetDestination 도착할 목표 위치 지정 함수 
             nav.isStopped = !isChase;     //isStopped을 사용하여 완벽하게 멈추도록
@@ -188,7 +196,11 @@ public class EnemyTest : MonoBehaviour                     //중요! navmesh는 sta
         {
             Weapon weapon = other.GetComponent<Weapon>();
             curHealth -= weapon.damage;
-            Vector3 reactVec = transform.position - other.transform.position;   //넉백
+            if(curHealth <= 0)
+            {
+                Die(); // 죽으면 골드 드롭 실행
+            }
+            Vector3 reactVec = (transform.position - other.transform.position) / 3;   //넉백
 
             StartCoroutine(OnDamage(reactVec, false));
         }
@@ -215,11 +227,14 @@ public class EnemyTest : MonoBehaviour                     //중요! navmesh는 sta
 
     IEnumerator OnDamage(Vector3 reactVec, bool isGrenade)
     {
+        boxCollider.enabled = false; //콜라이더 활성화
+        //Debug.Log("적 한대 맞았다. 히트박스 비활성화");
+
+
         foreach (MeshRenderer mesh in meshs)
         {
             mesh.material.color = Color.red;
         }
-
         yield return new WaitForSeconds(0.1f);
 
         if (curHealth > 0)
@@ -229,6 +244,7 @@ public class EnemyTest : MonoBehaviour                     //중요! navmesh는 sta
                 mesh.material.color = Color.white;
             }
         }
+
         else
         {
             foreach (MeshRenderer mesh in meshs)
@@ -260,7 +276,30 @@ public class EnemyTest : MonoBehaviour                     //중요! navmesh는 sta
             }
 
             if (enemyType != Type.D)
-                Destroy(gameObject, 4);
+                Destroy(gameObject, 0.5f);
+        }
+        yield return new WaitForSeconds(0.5f);
+        boxCollider.enabled = true; //콜라이더 활성화
+        //Debug.Log("적 히트박스 활성화");
+
+
+    }
+
+    // 몬스터 사망시 골드드롭
+    public void Die()
+    {
+        Vector3 originalPosition = new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z); // 기존 박스의 위치 저장
+        Quaternion originalRotation = transform.rotation; // 기존 박스의 각도 저장
+        int goldValue = Random.Range(0, goldMaxValue);
+
+        if (goldPrefab != null) // 골드 프리팹 있는 경우
+        {
+            for (int i = 0; i <= goldValue; i++)
+            {
+                GameObject newGold = Instantiate(goldPrefab, originalPosition, originalRotation);
+                newGold.tag = "Item";
+            }
         }
     }
+
 }

@@ -163,12 +163,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce9f4cece16dc6d45a3ec337d14600f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 1
-  dungeonObject: []
-  brokePrefab: {fileID: 304817483547169628, guid: e29f9e630592590428fa5ca9f9713c6c, type: 3}
-  goldPrefab: {fileID: 82943549552955422, guid: d92c79644cd1a8e479a9ac764a15249d, type: 3}
-  goldValue: 3
   type: 1
+  health: 1
+  brokePrefab: {fileID: 304817483547169628, guid: e29f9e630592590428fa5ca9f9713c6c, type: 3}
+  goldMaxValue: 8
+  goldPrefab: {fileID: 82943549552955422, guid: d92c79644cd1a8e479a9ac764a15249d, type: 3}
+  heartPrefab: {fileID: 82943549552955422, guid: 265cf70b0eef9934590e0fac8f46d5bb, type: 3}
+  weaponPrefab: []
 --- !u!1 &1141216488700547070
 GameObject:
   m_ObjectHideFlags: 0

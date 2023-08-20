@@ -95,6 +95,7 @@ GameObject:
   - component: {fileID: 5098039648163875245}
   - component: {fileID: 1860001073811720491}
   - component: {fileID: 1108642433948739339}
+  - component: {fileID: 8155599656069386989}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -185,6 +186,18 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &8155599656069386989
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5245483905722436899}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49a6d5b5599234b44b9b07af6728a994, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5356721771913104375
 GameObject:
   m_ObjectHideFlags: 0
@@ -412,7 +425,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: "'E' \uC0C1\uC790 \uC5F4\uAE30"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 9c7e8ff094c79b848a45cde23aed6869, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: a12bab270f4307646ad67661e5a04046, type: 2}
   m_sharedMaterial: {fileID: 6750971858840446636, guid: 9c7e8ff094c79b848a45cde23aed6869, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -476,7 +489,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!1 &8793534171300916949
@@ -493,7 +506,7 @@ GameObject:
   - component: {fileID: 3983817231773370804}
   - component: {fileID: 6663004875808225570}
   m_Layer: 0
-  m_Name: GoldChest
+  m_Name: Chest Gold
   m_TagString: Chest
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -555,12 +568,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce9f4cece16dc6d45a3ec337d14600f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  type: 2
   health: 0
   brokePrefab: {fileID: 0}
+  goldMaxValue: 10
   goldPrefab: {fileID: 82943549552955422, guid: d92c79644cd1a8e479a9ac764a15249d, type: 3}
+  heartPrefab: {fileID: 82943549552955422, guid: 265cf70b0eef9934590e0fac8f46d5bb, type: 3}
   weaponPrefab: []
-  goldValue: 5
-  type: 0
 --- !u!95 &6663004875808225570
 Animator:
   serializedVersion: 5

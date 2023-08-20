@@ -40,7 +40,7 @@ public class DungeonCreator : MonoBehaviour
     public int roomOffset;                             // 방의 간격 설정
     
 
-    [Header("Dungeon Prefabs")]
+    [Header("Dungeon Deco Prefabs")]
 
     public GameObject Floor;                           // 생성된 방의 바닥에 적용할 프리펩
     public GameObject DoorHorizontal, DoorVertical;
@@ -48,14 +48,18 @@ public class DungeonCreator : MonoBehaviour
 
 
 
-    [Header("Prefabs")]
-    public GameObject Player;
+
+    [Header("Room Prefabs")]
     public GameObject bossRoomPrefab;
     public GameObject exitRoomPrefab;
     public GameObject spawnRoomPrefab;
-    public GameObject enemyPrefabs;
-    public GameObject shopPrefab;
+    public GameObject shopRoomPrefab;
+    public GameObject trapRoomPrefab;
 
+    [Header("Dungeon Object Prefabs")]
+    public GameObject Player;
+    public GameObject enemyPrefabs;
+    public GameObject spikePrefab;
     public GameObject torchPrefabs;
     public GameObject boxPrefabs;
     public GameObject chestPrefabs;
@@ -63,10 +67,12 @@ public class DungeonCreator : MonoBehaviour
     public GameObject jarPrefabs;
 
     // 룸 데코레이션 리스트
-    private Vector3Int spawnRoomCenterPosition; // 스폰 방의 중앙 위치
-    private Vector3Int bossRoomCenterPosition; // 보스 방의 중앙 위치
-    private Vector3Int exitRoomCenterPosition; // 출구 방의 중앙 위치
-
+    Vector3Int spawnRoomCenterPosition; // 스폰 방의 중앙 위치
+    Vector3Int bossRoomCenterPosition; // 보스 방의 중앙 위치
+    Vector3Int exitRoomCenterPosition; // 출구 방의 중앙 위치
+    Vector3Int shopPosition; 
+    Vector3Int trapPosition; 
+    
     List<Vector3Int> enemyPositions;
     List<Vector3> torchPositions;
     List<Vector3> boxPositions;
@@ -143,6 +149,8 @@ public class DungeonCreator : MonoBehaviour
         CreateDoors();                  // 문 생성
         CreateExitRoom();                   // 출구 생성
         CreateSpawnRoom();
+        CreateShopRoom();
+        CreateTrapRoom();
 
         CreateDungeonDecorations(dungeonDecorationParent);  // 던전 장식 생성
 
@@ -165,9 +173,9 @@ public class DungeonCreator : MonoBehaviour
         // 첫번째로 생성된 방의 위치는? => 플레이어 스폰 방
         RoomNode spawnRoom = generator.CreatedRooms[spawnRoomNum];
         spawnRoomCenterPosition = new Vector3Int(
-        ((spawnRoom.BottomLeftAreaCorner.x + spawnRoom.TopRightAreaCorner.x) / 2) - 1,
+        ((spawnRoom.BottomLeftAreaCorner.x + spawnRoom.TopRightAreaCorner.x) / 2),
         0,
-        (spawnRoom.BottomLeftAreaCorner.y + spawnRoom.TopRightAreaCorner.y) / 2);
+        ((spawnRoom.BottomLeftAreaCorner.y + spawnRoom.TopRightAreaCorner.y) / 2 )-1);
         
         // 출구 방
         RoomNode exitRoom = generator.CreatedRooms[exitRoomNum];
@@ -183,11 +191,27 @@ public class DungeonCreator : MonoBehaviour
        0,
        ((bossRoom.BottomLeftAreaCorner.y + bossRoom.TopRightAreaCorner.y) / 2)+1);
 
+        // 생성된 방중에 하나
+        int shopRoomNum = Random.Range(0, spawnRoomNum); // 상점을 제외한 방
+        RoomNode shopRoom = generator.CreatedRooms[shopRoomNum];
+        shopPosition = new Vector3Int(
+        ((shopRoom.BottomLeftAreaCorner.x + shopRoom.TopRightAreaCorner.x) / 2),
+        0,
+        (shopRoom.BottomLeftAreaCorner.y + shopRoom.TopRightAreaCorner.y) / 2);
+
+        int trapRoomNum = Random.Range(0, spawnRoomNum);
+        if (trapRoomNum != shopRoomNum)
+        {
+            Debug.Log("트랩룸 생성X");
+            RoomNode trapRoom = generator.CreatedRooms[trapRoomNum];
+            trapPosition = new Vector3Int(
+            ((trapRoom.BottomLeftAreaCorner.x + trapRoom.TopRightAreaCorner.x) / 2),
+             0,
+            (trapRoom.BottomLeftAreaCorner.y + trapRoom.TopRightAreaCorner.y) / 2);
+        }
 
         // 방 리스트 선언
         List<RoomNode> dungeonRooms = generator.CreatedRooms;
-
-        int shopRoomNum = Random.Range(0, spawnRoomNum); // 상점을 제외한 방
 
         for (int i = 0; i <= dungeonRooms.Count - 1; i++)
         {
@@ -195,14 +219,15 @@ public class DungeonCreator : MonoBehaviour
 
             CreateRoomCorner(dungeonRoom);  // 모든 방에 생성
 
-
             // 특별한 방을 제외한 방에만 생성
-            if (i <= dungeonRooms.Count - 4 && i != shopRoomNum)
+            if (i <= dungeonRooms.Count - 4)
             {
                 CreateRoomChest(dungeonRoom);
                 CreateRoomRandom(dungeonRoom);
-
-                CreateRoomCenter(dungeonRoom);
+                if (i != shopRoomNum && i!= trapRoomNum)
+                {
+                    CreateRoomCenter(dungeonRoom);
+                }
             }
         }
 
@@ -210,34 +235,52 @@ public class DungeonCreator : MonoBehaviour
     // 방의 랜덤한 위치에 생성
     private void CreateRoomRandom(RoomNode dungeonRoom)
     {
-        int boxValue = Random.Range(0, 3);
+        int dungeonRoomCenterX = (((dungeonRoom.BottomLeftAreaCorner.x + 1) + (dungeonRoom.TopRightAreaCorner.x - 1)) / 2);
+        int dungeonRoomCenterY = (((dungeonRoom.BottomLeftAreaCorner.y + 1) + (dungeonRoom.TopRightAreaCorner.y - 1)) / 2);
+        int dungeonRoomCenterXMin = dungeonRoomCenterX - 2;
+        int dungeonRoomCenterXMax = dungeonRoomCenterX + 2;
+        int dungeonRoomCenterYMin = dungeonRoomCenterY - 2;
+        int dungeonRoomCenterYMax = dungeonRoomCenterY + 2;
+
+
+        int boxValue = Random.Range(2, 5);
         // 방의 랜덤한 위치에 생성
         for (int i = 0; i < boxValue; i++)
         {
             int randomPosX = Random.Range(dungeonRoom.BottomLeftAreaCorner.x + 1, dungeonRoom.TopRightAreaCorner.x - 1);
             int randomPosY = Random.Range(dungeonRoom.BottomLeftAreaCorner.y + 1, dungeonRoom.TopRightAreaCorner.y - 1);
-
+            if(randomPosX > dungeonRoomCenterXMin && randomPosX < dungeonRoomCenterXMax && randomPosY > dungeonRoomCenterYMin && randomPosY < dungeonRoomCenterYMax)
+            {
+                continue; }
+            
             Vector3 randomArea = new Vector3(randomPosX, 0, randomPosY);
             boxPositions.Add(randomArea);
         }
 
-        int tableValue = Random.Range(0, 1);
+        int tableValue = Random.Range(1, 2);
         // 방의 랜덤한 위치에 생성
         for (int i = 0; i <= tableValue; i++)
         {
             int randomPosX = Random.Range(dungeonRoom.BottomLeftAreaCorner.x + 1, dungeonRoom.TopRightAreaCorner.x - 1);
             int randomPosY = Random.Range(dungeonRoom.BottomLeftAreaCorner.y + 1, dungeonRoom.TopRightAreaCorner.y - 1);
+            if (randomPosX > dungeonRoomCenterXMin && randomPosX < dungeonRoomCenterXMax && randomPosY > dungeonRoomCenterYMin && randomPosY < dungeonRoomCenterYMax)
+            {
+                continue;
+            }
 
             Vector3 randomArea = new Vector3(randomPosX, 0, randomPosY);
             tablePositions.Add(randomArea);
         }
-        int jarValue = Random.Range(0, 5);
+        int jarValue = Random.Range(1, 5);
         // 방의 랜덤한 위치에 생성
         for (int i = 0; i <= tableValue; i++)
         {
             int randomPosX = Random.Range(dungeonRoom.BottomLeftAreaCorner.x + 1, dungeonRoom.TopRightAreaCorner.x - 1);
             int randomPosY = Random.Range(dungeonRoom.BottomLeftAreaCorner.y + 1, dungeonRoom.TopRightAreaCorner.y - 1);
-
+            if (randomPosX > dungeonRoomCenterXMin && randomPosX < dungeonRoomCenterXMax && randomPosY > dungeonRoomCenterYMin && randomPosY < dungeonRoomCenterYMax)
+            {
+                continue;
+            }
             Vector3 randomArea = new Vector3(randomPosX, 0, randomPosY);
             jarPositions.Add(randomArea);
         }
@@ -478,6 +521,27 @@ public class DungeonCreator : MonoBehaviour
         }
     }
   
+    public void CreateShopRoom()
+    {
+        GameObject shop = shopRoomPrefab;
+        if (shop != null)
+        {
+            shop.transform.position = shopPosition;
+            GameObject dungeonShop = Instantiate(shop, shop.transform.position, Quaternion.identity);
+            dungeonShop.transform.parent = transform;
+        }
+    }
+    public void CreateTrapRoom()
+    {
+        GameObject trap = trapRoomPrefab;
+        if (trap != null)
+        {
+            trap.transform.position = trapPosition;
+            GameObject dungeonTrap = Instantiate(trap, trap.transform.position, Quaternion.identity);
+            dungeonTrap.transform.parent = transform;
+        }
+    }
+
     // 적 리스트 생성
     public void CreateEnemies(GameObject enemyParent)
     {

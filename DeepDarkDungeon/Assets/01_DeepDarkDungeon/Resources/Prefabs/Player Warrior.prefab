@@ -10188,7 +10188,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   value: 0
-  weaponType: 2
+  weaponType: 0
   damage: 10
   rate: 0.4
   meleeArea: {fileID: 2807436964837788730}
@@ -10460,7 +10460,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &9035149784659159637
 Transform:
   m_ObjectHideFlags: 0
@@ -12893,7 +12893,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   value: 0
-  weaponType: 1
+  weaponType: 0
   damage: 10
   rate: 0.4
   meleeArea: {fileID: 5086881884485724402}
