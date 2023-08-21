@@ -9,29 +9,36 @@ using UnityEngine.AI;
 public class Boss_Lich : MonoBehaviour
 {
     Animator animator;
+    Rigidbody rigid;
+    [Header("Status")]
     bool isDamage;
     bool isDead;
-    bool isChase;
-    bool isAttack;
-    bool startChase;
+    public bool isChase;
+    public bool isAttack;
+    public bool startChase;
+
+    [Header("Boss Info")]
 
     public int bossMaxHealth;
     public int bossCurHealth;
     public string bossName;
-    
-    // 타겟
+
+    [Header("Target")]
     public SphereCollider scanCollider;
     public Transform target;
     public NavMeshAgent nav;
 
+    [Header("Attack")]
     public BoxCollider meleeArea;
+    public GameObject poisonArea;
 
-
+    [Header("Drop Item")]
     public GameObject exitKeyPrefab;
     public GameObject bossDeadPrefab;
 
     void Awake()
     {
+        rigid = GetComponent<Rigidbody>();
         scanCollider = GetComponent<SphereCollider>();
         animator = GetComponent<Animator>();
 
@@ -54,25 +61,27 @@ public class Boss_Lich : MonoBehaviour
             startChase = true;
             ChaseStart();
         }
-        if (nav != null && nav.enabled && target != null)       //navi가 활성화되어있을때만     //타켓 
+        if (nav != null && nav.enabled && target != null)       //navi가 활성화되어있을때만
         {
-            nav.SetDestination(target.position);     //SetDestination 도착할 목표 위치 지정 함수 
-            nav.isStopped = !isChase;                //isStopped을 사용하여 완벽하게 멈추도록
-
+            nav.SetDestination(target.position);                //SetDestination 도착할 목표 위치 지정 함수 
+            nav.isStopped = !isChase;                            //isStopped을 사용하여 완벽하게 멈추도록
         }
 
+    }
+    void FixedUpdate()
+    {
+        Targeting();
+        FreezeVelocity();
     }
     void ChaseStart()
     {
         isChase = true;
-        //animator.SetBool("isWalk", true);
+        animator.SetBool("isMove", true);
     }
     void Targeting()
     {
-            float targetRadius = 3.0f;
-            float targetRange = 0.8f;                   //sphererCast의 반지름, 길이를 조정 변수
-
-            
+            float targetRadius = 0.5f;
+            float targetRange = 0.5f;                   //sphererCast의 반지름, 길이를 조정 변수
 
             RaycastHit[] rayHits = Physics.SphereCastAll(transform.position,
             targetRadius, transform.forward, targetRange, LayerMask.GetMask("Player"));    //자신의 위치, 반지름, 쏘는 방향, 레이 쏘는 거리      
@@ -83,9 +92,17 @@ public class Boss_Lich : MonoBehaviour
             //rayHit 변수에 데이터가 들어오면 공격 코루틴 실행한다
             if (rayHits.Length > 0 && !isAttack)  //범위 안이고 공격중이면 공격하지 않는다
             {
-                StartCoroutine(MeleeAttack());
+                //StartCoroutine(MeleeAttack());
+                StartCoroutine(PoisonAttack());
             }
-
+    }
+    void FreezeVelocity()
+    {
+        if (isChase)
+        {
+            rigid.velocity = Vector3.zero;      //물리력이 navAgent 이동을 방해하지 않도록 로직 추가
+            rigid.angularVelocity = Vector3.zero;    //물리회전속도 0으로
+        }
 
     }
     IEnumerator MeleeAttack()
@@ -93,21 +110,39 @@ public class Boss_Lich : MonoBehaviour
         //먼저 정지를 한 다음, 애니메이션과 함께 공격범위 활성화
         isChase = false;
         isAttack = true;
-        //anim.SetBool("isAttack", true);
+        animator.SetTrigger("isMeleeAttack");
 
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(0.9f);
         meleeArea.enabled = true;  //공격범위 활성화
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(1.2f);
         meleeArea.enabled = false;  //공격범위 비활성화
-
         yield return new WaitForSeconds(1f);
-           
+
+
         isChase = true;
         isAttack = false;
-        //anim.SetBool("isAttack", false);
     }
+    IEnumerator PoisonAttack()
+    {
+        //먼저 정지를 한 다음, 애니메이션과 함께 공격범위 활성화
+        isChase = false;
+        isAttack = true;
+        animator.SetTrigger("isPoisonAttack");
 
+        yield return new WaitForSeconds(1.05f);
+        poisonArea.SetActive(true);
+        meleeArea.enabled = true;  //공격범위 활성화
+
+        yield return new WaitForSeconds(1.3f);
+        poisonArea.SetActive(false);
+        meleeArea.enabled = false;  //공격범위 비활성화
+        yield return new WaitForSeconds(1f);
+
+
+        isChase = true;
+        isAttack = false;
+    }
 
     void OnTriggerEnter(Collider other)
     {
