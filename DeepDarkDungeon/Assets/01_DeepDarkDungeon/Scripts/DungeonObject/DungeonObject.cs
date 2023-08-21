@@ -40,36 +40,42 @@ public class DungeonObject : MonoBehaviour
                 health -= weapon.damage;
                 Vector3 reactVec = transform.position - other.transform.position;   //넉백
             }
+            if (other.tag.Equals("EnemyBullet"))
+            {
+                Bullet enemyBullet = other.GetComponent<Bullet>(); 
+                health -= enemyBullet.damage;
 
+                Vector3 reactVec = transform.position - other.transform.position;   //넉백
+            }
             // 부서지는 아이템 중 부서지는 효과가 있을 경우 부서지게 하기.
             if (health <= 0 && !isBroken && brokePrefab != null)    
-                {
-                    isBroken = true;
+            {
+                        isBroken = true;
 
-                Vector3 originalPosition = transform.position; // 기존 박스의 위치 저장
-                Quaternion originalRotation = transform.rotation; // 기존 박스의 각도 저장
-                GameObject newObject = Instantiate(brokePrefab, originalPosition, originalRotation);
+                    Vector3 originalPosition = transform.position; // 기존 박스의 위치 저장
+                    Quaternion originalRotation = transform.rotation; // 기존 박스의 각도 저장
+                    GameObject newObject = Instantiate(brokePrefab, originalPosition, originalRotation);
 
-                // 부서질 때 골드 드롭 타입이면 골드 드롭
-                if (type == Type.GoldDrop)  
+                    // 부서질 때 골드 드롭 타입이면 골드 드롭
+                    if (type == Type.GoldDrop)  
                     {
-                    int goldValue = Random.Range(0, goldMaxValue);    // 골드 밸류중 랜덤으로 골드 생성
-                        Vector3 goldPosition = new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z); // 기존 박스의 위치 저장
+                        int goldValue = Random.Range(0, goldMaxValue);    // 골드 밸류중 랜덤으로 골드 생성
+                            Vector3 goldPosition = new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z); // 기존 박스의 위치 저장
 
-                    for (int i = 0; i <= goldValue; i++)
-                    {
-                        GameObject newGold = Instantiate(goldPrefab, goldPosition, originalRotation);
-                        newGold.tag = "Item";
+                        for (int i = 0; i <= goldValue; i++)
+                        {
+                            GameObject newGold = Instantiate(goldPrefab, goldPosition, originalRotation);
+                            newGold.tag = "Item";
+                        }
+
+                        if (goldValue == 0 && heartPrefab != null) // 골드밸류의 1 확률로 하트 생성
+                        {
+                            GameObject newHeart = Instantiate(heartPrefab, goldPosition, originalRotation);
+                            newHeart.tag = "Item";
+                        }
+
                     }
-
-                    if (goldValue == 0 && heartPrefab != null) // 골드밸류의 1 확률로 하트 생성
-                    {
-                        GameObject newHeart = Instantiate(heartPrefab, goldPosition, originalRotation);
-                        newHeart.tag = "Item";
-                    }
-
-                }
-                Destroy(gameObject); // 기존 오브젝트 파괴
+                    Destroy(gameObject); // 기존 오브젝트 파괴
             }
         
 

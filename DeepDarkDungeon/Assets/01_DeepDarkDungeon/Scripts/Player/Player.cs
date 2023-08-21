@@ -350,7 +350,9 @@ public class Player : MonoBehaviour
             {
                 SaveSystem.SaveData(this);  // 데이터 저장
                 GameData.loadEnable = true; // 데이터 로드 가능여부
-                GlobalFunc.LoadScene("DungeonScene");   
+                GlobalFunc.LoadScene("DungeonScene");
+                //SceneManagement.instance.ChangeDungeonScene();
+
             }
         }
         if (iDown && chest != null && !isDodge) // 보물상자 열기
@@ -475,6 +477,19 @@ public class Player : MonoBehaviour
                     targetPosition.target = transform;
                     targetPosition.scanCollider.enabled = false;    // !적 만나면 스캔 콜라이더 없애줘야함
                     Debug.Log("적 : 플레이어를 감지했다.");
+
+
+                }
+            }
+            if (other.tag.Equals("BossLich"))
+            {
+
+                Boss_Lich targetPosition = other.GetComponent<Boss_Lich>();
+                if (targetPosition.target == null)
+                {
+                    targetPosition.target = transform;
+                    targetPosition.scanCollider.enabled = false;    // !적 만나면 스캔 콜라이더 없애줘야함
+                    Debug.Log("보스 : 플레이어를 감지했다.");
 
 
                 }

@@ -18,6 +18,7 @@ TagManager:
   - Effect
   - MonsterMelee
   - BossRoom
+  - BossLich
   layers:
   - Default
   - TransparentFX

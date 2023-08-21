@@ -7,30 +7,48 @@ using UnityEngine.SceneManagement;
 public class SceneManagement : MonoBehaviour
 {
     public static SceneManagement instance;
+    public Animator fadeAnimation;
+    string sceneName;
 
-    public void ChangeDungeonScene()
+    public void Start()
     {
-        SceneManager.LoadScene("DungeonScene");
+        Animator fadeAnimation = GetComponent<Animator>();
+
     }
-    public void ChangeReplayDungeonScene()
+
+    public void ChangeDungeonScene()    // 던전씬으로 이동
     {
+        fadeAnimation.SetTrigger("FadeOut");
+        sceneName = "DungeonScene";
+        StartCoroutine("LoadScene");
+    }
+    public void ChangeReplayDungeonScene()  // 던전 재시작 (데이터 초기화)
+    {
+        fadeAnimation.SetTrigger("FadeOut"); 
+        sceneName = "DungeonScene";
         ResetData();
-        SceneManager.LoadScene("DungeonScene");
+        StartCoroutine("LoadScene");
     }
-    public void ExitGame()
+    public void ExitGame()  // 게임 종료
     {
+        StartCoroutine("FadeOut");
         Application.Quit();
     }
-    public void ChangeGameTitleScene()
+    public void ChangeGameTitleScene()  // 타이틀 씬으로 이동
     {
+        Time.timeScale = 1;
+        fadeAnimation.SetTrigger("FadeOut");
         ResetData();
-        SceneManager.LoadScene("TitleScene");
+        sceneName = "TitleScene";
+        StartCoroutine("LoadScene");
+
     }
 
-    // 디버그용 테스트 던전
-    public void ChangeGameTestDungeonScene()
+    IEnumerator LoadScene()
     {
-        SceneManager.LoadScene("TestDungeonScene");
+        yield return new WaitForSeconds(1f);
+        SceneManager.LoadScene(sceneName);
+
     }
     void ResetData()
     {

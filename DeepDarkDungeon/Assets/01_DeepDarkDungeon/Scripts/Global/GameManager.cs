@@ -11,14 +11,20 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public bool isGameOver = false; // 게임오버 확인
     [HideInInspector] public bool isPause = false; // 포즈 확인
     [HideInInspector] public bool isDoorOpen = false; // 문 열림 확인
+    [HideInInspector] public bool isBoss = false; // 문 열림 확인
     private int floor = 1;
 
     [Header("UI instance")]
 
     public GameObject gameoverUI;   // 게임 오버 UI
     public GameObject gamePauseUI;   // 게임 포즈 UI
-    public GameObject keyUI;   
+    public GameObject keyUI;
+
+    [Header("Boss UI instance")]
+
     public GameObject bossUI;
+    public Slider bossHealth;
+    public TMP_Text bossName;
 
     [Header("Player UI instance")]
     public Slider playerHealth; // 체력 바
@@ -79,8 +85,6 @@ public class GameManager : MonoBehaviour
     {
         GameData.floor += 1;
         floorText.text = string.Format("Floor {0}", GameData.floor);
-
-
     }
 
     // 게임 오버
@@ -110,14 +114,29 @@ public class GameManager : MonoBehaviour
             gamePauseUI.SetActive(false);
         }
     }
+
+    // 보스 파트
     public void OnBossRoom()
     {
+        isBoss = true;
         bossUI.SetActive(true);
+    }
+    public void SetBossMaxHealth(int bossMaxHealth, string name)
+    {
+        bossName.text = string.Format(name);
+        bossHealth.maxValue = bossMaxHealth;
+        bossHealth.value = bossMaxHealth;
+    }
+    public void SetBossHealth(int bossCurHealth)
+    {
+        bossHealth.value = bossCurHealth;
     }
     public void BossDead()
     {
         bossUI.SetActive(false);
     }
+
+    // 보스처치시 열쇠 먹었을 경우
     public void DoorOpen()
     {
         isDoorOpen = true;
