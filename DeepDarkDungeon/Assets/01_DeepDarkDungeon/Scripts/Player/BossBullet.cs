@@ -13,7 +13,7 @@ public class BossBullet : Bullet
     void Start()
     {
         nav = GetComponent<NavMeshAgent>();
-        target = GetComponent<Transform>();
+        
     }
 
     // Update is called once per frame

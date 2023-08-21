@@ -71,6 +71,7 @@ public class Player : MonoBehaviour
     bool isDodge;               // 닷지중인지 체크
     bool isDie;                 // 죽었는지 체크
     bool isAttack;
+    public bool bossDamage;
 
     bool isBossRoom;            // 보스룸인지 체크
 
@@ -438,7 +439,10 @@ public class Player : MonoBehaviour
             if(other.tag.Equals("Punch"))
             {
                 Boss boss = other.GetComponent<Boss>();
-                PlayerDamage(boss.damage);
+                if (boss != null) // 다른 객체가 Boss 컴포넌트를 가지고 있는지 확인
+                {
+                    PlayerDamage(boss.damage);
+                }
 
                 StartCoroutine(OnDamage());
             }
