@@ -1,11 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
-using UnityEditorInternal.Profiling.Memory.Experimental;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
-using static UnityEditor.Progress;
 
 public class Player : MonoBehaviour
 {
@@ -17,7 +15,8 @@ public class Player : MonoBehaviour
     MeshRenderer[] meshs;
 
     public Transform playerTransform;
-    public GameObject followCamera;
+    //public GameObject followCamera;
+    public GameObject smoke;
     [Header("Player")]
     public int maxHealth;
     public int curHealth;
@@ -27,15 +26,18 @@ public class Player : MonoBehaviour
 
     public float distance;
     public float speed;
+    public float turnSpeed;
     public float attackDistance;
 
     public GameObject[] weapons;  //플레이어 무기 관련 함수 - 무기 연결하는 
-    public bool[] hasWeapons;     //플레이어 무기 관련 함수 - 무기 인벤토리 비슷한
 
+    public bool hasWeapon1;     //플레이어 무기 관련 함수 - 무기 인벤토리 비슷한
+    public bool hasWeapon2;     
+    public bool hasWeapon3;  
     // 습득한 아이템 슬롯에 저장
-    int slot1;
-    int slot2;
-    int slot3;
+    public int slot1;
+    public int slot2;
+    public int slot3;
 
     int equipWeaponIndex = -1; //무기 중복 교체, 없는 무기 확인을 위한 조건
     Weapon equipWeapon;         //기존에 장착된 무기를 저장하는 변수를 선언
@@ -67,13 +69,16 @@ public class Player : MonoBehaviour
     bool isBorder;              // 이동 시 정면 벽 체크
     bool isDamage;              // 데미지 상태인지 체크
     bool isDodge;               // 닷지중인지 체크
-    bool isDie;               // 죽었는지 체크
+    bool isDie;                 // 죽었는지 체크
     bool isAttack;
+
+    bool isBossRoom;            // 보스룸인지 체크
 
     bool pauseDown;             // 포즈 상태 확인
     float fireDelay;
 
     // 플레이어 상호작용 게임오브젝트
+    GameObject bossRoomDoor;
     GameObject nearObject;      // 가까운 오브젝트
     GameObject exit;            // 출구 오브젝트
     GameObject exitUI;          // 출구 UI
@@ -98,7 +103,10 @@ public class Player : MonoBehaviour
         //GameManager.instance.SaveData(maxHealth, curHealth, maxGold, curGold);  // 플레이어 데이터 저장
         GameManager.instance.Initialization();                                  // 상태 초기화
         GameManager.instance.SetMaxHealth(maxHealth); // 체력 초기화
+        GameManager.instance.SetHealth(curHealth); // 체력 초기화
         GameManager.instance.SetGold(curGold);
+        GameManager.instance.SetFloor();
+        SetWeapon();
 
     }
 
@@ -110,8 +118,6 @@ public class Player : MonoBehaviour
 
         if (!GameManager.instance.isGameOver && !GameManager.instance.isPause)
         {
-            Move();
-            Turn();
             Attack();
             Dodge();
             Swap();
@@ -121,6 +127,11 @@ public class Player : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (!GameManager.instance.isGameOver && !GameManager.instance.isPause && !isAttack)
+        {
+            Move();
+            Turn();
+        }
         FreezeRotation();
         StopToWall();
     }
@@ -147,7 +158,8 @@ public class Player : MonoBehaviour
 
     void Move()     //캐릭터 움직임
     {
-        moveVec = new Vector3(hAxis, 0, vAxis).normalized;
+        moveVec = new Vector3(hAxis, 0, vAxis);
+
 
         if (isDodge)
             moveVec = dodgeVec;
@@ -159,9 +171,11 @@ public class Player : MonoBehaviour
         }
         if (!isBorder)
         {
-            transform.position += moveVec * speed * (wDown ? 0.3f : 1f) * Time.deltaTime;     //삼항연산자 트루면 0.3 아니면 1
+            //transform.position += moveVec * speed * (wDown ? 0.3f : 1f) * Time.deltaTime;     //삼항연산자 트루면 0.3 아니면 1
+            PlayerRigid.MovePosition(transform.position + transform.forward * moveVec.normalized.magnitude * speed * Time.deltaTime);
+
         }
-            
+
 
         animator.SetBool("isRun", moveVec != Vector3.zero);
         animator.SetBool("isWalk", wDown);
@@ -169,7 +183,11 @@ public class Player : MonoBehaviour
     
     void Turn()  //캐릭터 회전
     {
-            transform.LookAt(transform.position + moveVec);   
+        if (moveVec == Vector3.zero) return;
+
+        var rot = Quaternion.LookRotation(moveVec.ToIso(), Vector3.up);
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, rot, turnSpeed * Time.deltaTime);
+            //transform.LookAt(transform.position + moveVec);   
     }
 
     void Attack()
@@ -181,12 +199,17 @@ public class Player : MonoBehaviour
 
         fireDelay += Time.deltaTime;    //공격딜레이에 시간을 더해주고 공격가능 여부를 확인
         isFireReady = equipWeapon.rate < fireDelay;
+     
 
         if (fDown && isFireReady && !isDodge && !isSwap)
         {
             equipWeapon.Use();                   //public 선언해서 다른 스크립트에 있는 거 가져올수있다
 
-            switch (equipWeapon.weaponType)  // 무기 타입에 따라 스위치로 다른 트리거 실행
+            isAttack = true;
+
+            Debug.Log("공격을 했다. 공격중");
+
+            switch (equipWeapon.weaponType)  // 무기 타입에 따라 스위치로 다른 애니메이션 트리거 실행
             {
                 case Weapon.WeaponType.Sword:
                     animator.SetTrigger("doAttackSword");
@@ -200,22 +223,34 @@ public class Player : MonoBehaviour
             }
             //animator.SetTrigger(equipWeapon.weaponType == Weapon.WeaponType.Melee ? "doSwing" : "doShot");   //무기 타입에 따라 다른 트리거 실행 
 
-            //isAttack = true;
-
             fireDelay = 0;  //공격 딜레이 0으로 올려서 다음 공격까지 기다리도록 작성
+            StopCoroutine("AttackDelay");
+            StartCoroutine("AttackDelay");
+
+
         }
     }
-    
+    IEnumerator AttackDelay()  // 공격 딜레이
+    {
+        yield return new WaitForSeconds(equipWeapon.rate - 0.5f);
+        isAttack = false;
+
+    }
+
+
 
     void Dodge()
     {
         if(jDown && moveVec != Vector3.zero && !isDodge)
         {
+            isAttack = false;   // 어택 캔슬
             dodgeVec = moveVec; //회피하면서 방향 전환 x
             
             speed *= 2f;
             animator.SetTrigger("doDodge");
             isDodge = true;
+            smoke.gameObject.SetActive(true);   // 닷지시 연기
+
 
             Invoke("DodgeOut", 0.1f);
         }
@@ -231,6 +266,8 @@ public class Player : MonoBehaviour
     void DodgeStop() //회피 끝난 후 이동가능 - 회피 중에는 방향 전환 안되는 
     {
         isDodge = false;
+        smoke.gameObject.SetActive(false);   // 닷지시 연기
+
     }
     // 게임 Pause
     void Pause()
@@ -243,19 +280,19 @@ public class Player : MonoBehaviour
 
     void Swap()
     {
-        if (sDown1 && (!hasWeapons[0] || equipWeaponIndex == slot1))
+        if (sDown1 && (!hasWeapon1 || equipWeaponIndex == slot1))
         {
             Debug.Log("1 스왑 불가");
 
             return;
         }
-        if (sDown2 && (!hasWeapons[1] || equipWeaponIndex == slot2))
+        if (sDown2 && (!hasWeapon2 || equipWeaponIndex == slot2))
         {
             Debug.Log("2 스왑 불가");
 
             return;
         }
-        if (sDown3 && (!hasWeapons[2] || equipWeaponIndex == slot3))
+        if (sDown3 && (!hasWeapon3 || equipWeaponIndex == slot3))
         {
             Debug.Log("3 스왑 불가");
 
@@ -263,7 +300,10 @@ public class Player : MonoBehaviour
         }
 
         int weaponIndex = -1;
-        if (sDown1) weaponIndex = slot1;
+        if (sDown1)
+        {
+            weaponIndex = slot1;
+        }
         if (sDown2) weaponIndex = slot2;
         if (sDown3) weaponIndex = slot3;
 
@@ -296,11 +336,14 @@ public class Player : MonoBehaviour
     {
         if(iDown && nearObject != null && !isDodge)   // e키를 했을때 nearobject 비어있지 않고 jump dodge false일때
         {
-            if(nearObject.tag.Equals("Weapon")) // 아이템 획득
+
+            if(nearObject.tag.Equals("Weapon") && !hasWeapon3) // 아이템 획득
             {
                 GetWeapon(nearObject);
                 Destroy(nearObject);
             }
+            else
+            { Debug.Log("아이템이 꽉찼다.");}
         }
         if (iDown && exit != null && !isDodge)  // 다음 층으로 이동
         {
@@ -308,7 +351,9 @@ public class Player : MonoBehaviour
             {
                 SaveSystem.SaveData(this);  // 데이터 저장
                 GameData.loadEnable = true; // 데이터 로드 가능여부
-                GlobalFunc.LoadScene("DungeonScene");   
+                GlobalFunc.LoadScene("DungeonScene");
+                //SceneManagement.instance.ChangeDungeonScene();
+
             }
         }
         if (iDown && chest != null && !isDodge) // 보물상자 열기
@@ -324,7 +369,7 @@ public class Player : MonoBehaviour
         }
         if (iDown && sellItem != null && !isDodge)
         {
-            Debug.Log("구매가 되나?");
+            //Debug.Log("구매가 되나?");
             Item item = sellItem.GetComponent<Item>();
 
             if (curGold >= item.price)
@@ -382,6 +427,10 @@ public class Player : MonoBehaviour
 
                     case Item.Type.Key:
                         GameManager.instance.DoorOpen();
+
+                        Animator bossDoor = bossRoomDoor.GetComponentInChildren<Animator>();
+                        bossDoor.SetBool("isDoorClose", false);
+
                         break;
                 }
                 Destroy(other.gameObject);
@@ -438,13 +487,40 @@ public class Player : MonoBehaviour
             }
             if (other.tag.Equals("Enemy"))
             {
-                Debug.Log("적 : 플레이어를 감지했다.");
 
                 EnemyTest targetPosition = other.GetComponent<EnemyTest>();
                 if (targetPosition.target == null)
                 {
                     targetPosition.target = transform;
+                    targetPosition.scanCollider.enabled = false;    // !적 만나면 스캔 콜라이더 없애줘야함
+                    Debug.Log("적 : 플레이어를 감지했다.");
 
+
+                }
+            }
+            if (other.tag.Equals("BossLich"))
+            {
+
+                Boss_Lich targetPosition = other.GetComponent<Boss_Lich>();
+                if (targetPosition.target == null)
+                {
+                    targetPosition.target = transform;
+                    targetPosition.scanCollider.enabled = false;    // !적 만나면 스캔 콜라이더 없애줘야함
+                    Debug.Log("보스 : 플레이어를 감지했다.");
+
+
+                }
+            }
+            if (other.tag.Equals("BossRoom"))   // 보스룸 진입 시 보스룸 메서드 호출
+            {
+                if (!isBossRoom)
+                {
+                    isBossRoom = true;
+                    bossRoomDoor = other.gameObject;
+                    Animator bossDoor = bossRoomDoor.GetComponentInChildren<Animator>();
+                    bossDoor.SetBool("isDoorClose", true);
+
+                    GameManager.instance.OnBossRoom();
                 }
             }
         }
@@ -542,86 +618,89 @@ public class Player : MonoBehaviour
     {
         Item item = nearWeapon.GetComponent<Item>();
 
-        //Debug.Log(item.value + "번호의 아이템을 먹었다.");
-        Image itemSlot1 = GameManager.instance.itemSlot1[item.value].GetComponent<Image>();  // 아이템 슬롯 
-        Image itemSlot2 = GameManager.instance.itemSlot2[item.value].GetComponent<Image>();  // 아이템 슬롯 
-        Image itemSlot3 = GameManager.instance.itemSlot3[item.value].GetComponent<Image>();  // 아이템 슬롯 
+       
 
-        if (itemSlot1 != null && !hasWeapons[0])
+        if (!hasWeapon1)
         {
-            hasWeapons[0] = true;
+
+            hasWeapon1 = true;
             slot1 = item.value;
 
             Weapon weaponSlot1 = weapons[item.value].GetComponent<Weapon>();
             weaponSlot1.damage = item.damage;
             weaponSlot1.rate = item.rate;
-            switch (weaponSlot1.weaponType)
+            switch (item.weaponType)
             {
-                case Weapon.WeaponType.Sword:
+                case Item.WeaponType.Sword:
                     weaponSlot1.weaponType = Weapon.WeaponType.Sword;
                     break;
-                case Weapon.WeaponType.ChainSaw:
+                case Item.WeaponType.ChainSaw:
                     weaponSlot1.weaponType = Weapon.WeaponType.ChainSaw;
                     break;
-                case Weapon.WeaponType.TwohandSword:
+                case Item.WeaponType.TwohandSword:
                     weaponSlot1.weaponType = Weapon.WeaponType.TwohandSword;
                     break;
             }
-
-            Color newColor = new Color(255, 255, 255, 255);
-            itemSlot1.color = newColor;
         }
-        else if (itemSlot2 != null && !hasWeapons[1])
+        else if (!hasWeapon2)
         {
-            hasWeapons[1] = true;
+            hasWeapon2 = true;
             slot2 = item.value;
 
             Weapon weaponSlot2 = weapons[item.value].GetComponent<Weapon>();
             weaponSlot2.damage = item.damage;
             weaponSlot2.rate = item.rate;
-            switch (weaponSlot2.weaponType)
+            switch (item.weaponType)
             {
-                case Weapon.WeaponType.Sword:
+                case Item.WeaponType.Sword:
                     weaponSlot2.weaponType = Weapon.WeaponType.Sword;
                     break;
-                case Weapon.WeaponType.ChainSaw:
+                case Item.WeaponType.ChainSaw:
                     weaponSlot2.weaponType = Weapon.WeaponType.ChainSaw;
                     break; 
-                case Weapon.WeaponType.TwohandSword:
+                case Item.WeaponType.TwohandSword:
                     weaponSlot2.weaponType = Weapon.WeaponType.TwohandSword;
                     break;
             }
-
-            Color newColor = new Color(255, 255, 255, 255);
-            itemSlot2.color = newColor;
         }
-        else if (itemSlot3 != null && !hasWeapons[2])
+        else if (!hasWeapon3)
         {
-            hasWeapons[2] = true;
+            hasWeapon3 = true;
             slot3 = item.value;
 
             Weapon weaponSlot3 = weapons[item.value].GetComponent<Weapon>();
             weaponSlot3.damage = item.damage;
             weaponSlot3.rate = item.rate;
-            switch (weaponSlot3.weaponType)
+            switch (item.weaponType)
             {
-                case Weapon.WeaponType.Sword:
+                case Item.WeaponType.Sword:
                     weaponSlot3.weaponType = Weapon.WeaponType.Sword;
                     break;
-                case Weapon.WeaponType.ChainSaw:
+                case Item.WeaponType.ChainSaw:
                     weaponSlot3.weaponType = Weapon.WeaponType.ChainSaw;
                     break; 
-                case Weapon.WeaponType.TwohandSword:
+                case Item.WeaponType.TwohandSword:
                     weaponSlot3.weaponType = Weapon.WeaponType.TwohandSword;
                     break;
             }
-
-            Color newColor = new Color(255, 255, 255, 255);
-            itemSlot3.color = newColor;
         }
+        SetWeapon();
+       
     }
-    public void SetWeapon(Weapon item)
+    public void SetWeapon()
     {
+        //Debug.Log(item.value + "번호의 아이템을 먹었다.");
+        Image itemSlot1 = GameManager.instance.itemSlot1[slot1].GetComponent<Image>();  // 아이템 슬롯 
+        Image itemSlot2 = GameManager.instance.itemSlot2[slot2].GetComponent<Image>();  // 아이템 슬롯 
+        Image itemSlot3 = GameManager.instance.itemSlot3[slot3].GetComponent<Image>();  // 아이템 슬롯 
+
+        Color newColor = new Color(255, 255, 255, 255);
+        if (hasWeapon1)
+        { itemSlot1.color = newColor; }
+        if (hasWeapon2)
+        { itemSlot2.color = newColor; }
+        if (hasWeapon3)
+        { itemSlot3.color = newColor; }
     }
 
     // 플레이어 체력 회복
@@ -640,13 +719,14 @@ public class Player : MonoBehaviour
     {
         curHealth -= damage;
         GameManager.instance.SetHealth(curHealth);
-
         animator.SetTrigger("isDamage");
 
 
         if (0 >= curHealth && !isDie)
         {
             isDie = true;
+            GameData.loadEnable = false;    // 세이브 로드 못하게 설정
+            SaveSystem.SaveData(this);  // 데이터 저장
             GameManager.instance.OnGameOver();
             animator.SetBool("isDie", GameManager.instance.isGameOver);
         }
@@ -679,5 +759,15 @@ public class Player : MonoBehaviour
         curHealth = data.playerCurHP;
         maxGold = data.maxGold;
         curGold = data.curGold;
+
+        slot1 = data.slot1;
+        slot2 = data.slot2;
+        slot3 = data.slot3;
+
+        hasWeapon1 = data.hasWeapon1;
+        hasWeapon2 = data.hasWeapon2;
+        hasWeapon3 = data.hasWeapon3;
+
     }
+   
 }

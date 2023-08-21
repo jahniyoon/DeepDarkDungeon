@@ -49,7 +49,7 @@ public class DugeonGenerator
         }
 
         // 중첩 영역 확인되었으면 CalculateDungeon메서드를 다시 실행
-        if (foundOverlap || CreatedRooms.Count <= 7)
+        if (foundOverlap || CreatedRooms.Count <= 9)
         {
             Debug.Log("중첩된 영역이 발견되었습니다. CalculateDungeon을 다시 실행합니다.");
             return CalculateDungeon(maxIterations, roomWidthMin, roomLengthMin, roomBottomCornerModifier, roomTopCornerMidifier, roomOffset, corridorWidth);

@@ -43,6 +43,7 @@ public class Floor : MonoBehaviour
         {
             floors[0].SetActive(false);
             floors[1].SetActive(false);
+            floors[2].SetActive(false);
 
         }
 

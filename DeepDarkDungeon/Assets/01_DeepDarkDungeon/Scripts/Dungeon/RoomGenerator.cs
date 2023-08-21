@@ -37,8 +37,8 @@ public class RoomGenerator
 
         int randomValue = Random.Range(0, 3);
         // 스폰 방 좌표 
-        int spawnRoomPosX = -1;
-        int SpawnRoomPosY = randomValue - 1;
+        int spawnRoomPosX = 20 + randomValue;
+        int SpawnRoomPosY = -7 ;
 
         // 보스 방과 출구 방 좌표
         int bossRoomPosX = -4 + randomValue;  

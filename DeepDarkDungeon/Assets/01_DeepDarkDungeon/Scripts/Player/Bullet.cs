@@ -27,7 +27,7 @@ public class Bullet : MonoBehaviour
         }
         else if(other.gameObject.tag.Equals("Player"))
         {
-            Destroy(gameObject);
+            //Destroy(gameObject);
         }
     }
 
