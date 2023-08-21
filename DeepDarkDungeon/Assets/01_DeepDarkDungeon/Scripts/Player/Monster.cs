@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -13,6 +14,9 @@ public class Monster : MonoBehaviour
         ATTACK,
         DIE
     }
+
+    public enum Type { A, B, C }
+    public Type monsterType;
 
     //몬스터의 현재 상태
     public State state = State.IDLE;
@@ -33,16 +37,20 @@ public class Monster : MonoBehaviour
 
     public MeshRenderer[] meshs;
     public Transform playerTarget;
+    public GameObject bullet;
 
 
     // Animator 파라미터의 해시값 추출
-    [SerializeField] private readonly int hashTrace = Animator.StringToHash("IsTrace");
-    [SerializeField] private readonly int hashAttack = Animator.StringToHash("IsAttack");
-    //private readonly int hashHit = Animator.StringToHash("Hit");
+    public readonly int hashTrace = Animator.StringToHash("IsTrace");
+    public readonly int hashAttack = Animator.StringToHash("IsAttack");
+    public readonly int hashHit = Animator.StringToHash("Hit");
+    public readonly int hashDie = Animator.StringToHash("Die");
 
     public int hp = 100;
 
     public bool isDamage;
+
+    public int damage;
 
 
 
@@ -111,53 +119,74 @@ public class Monster : MonoBehaviour
     }
 
     //몬스터의 상태에 따라 몬스터의 동작을 수행
-    IEnumerator MonsterAction()
+    public virtual IEnumerator MonsterAction()
     {
-        while (!isDie)
-        {
-            switch (state)
+            while (!isDie)
             {
-                //IDLE 상태
-                case State.IDLE:
-                    //추적 중지
-                    agent.isStopped = true;
+                switch (state)
+                {
+                    //IDLE 상태
+                    case State.IDLE:
+                        //추적 중지
+                        agent.isStopped = true;
 
-                    // Animator의 IsTrace 변수를 false로 설정
-                    anim.SetBool(hashTrace, false);
-                    break;
+                        // Animator의 IsTrace 변수를 false로 설정
+                        anim.SetBool(hashTrace, false);
+                        break;
 
-                //추적 상태
-                case State.TRACE:
-                    //추적 대상의 좌표로 이동 시작
-                    agent.SetDestination(playerTr.position);
-                    agent.isStopped = false;
+                    //추적 상태
+                    case State.TRACE:
+                        //추적 대상의 좌표로 이동 시작
+                        agent.SetDestination(playerTr.position);
+                        agent.isStopped = false;
 
-                    // Animator의 IsTrace 변수를 true로 설정
-                    anim.SetBool(hashTrace, true);
+                        // Animator의 IsTrace 변수를 true로 설정
+                        anim.SetBool(hashTrace, true);
 
-                    // Animator의 IsAttack 변수를 false로 설정
-                    anim.SetBool(hashAttack, false);
-                    break;
+                        // Animator의 IsAttack 변수를 false로 설정
+                        anim.SetBool(hashAttack, false);
+                        break;
 
-                //공격 상태
-                case State.ATTACK:
-                    // Animator의 IsAttack 변수를 true로 설정
-                    anim.SetBool(hashAttack, true);
-                    break;
+                    //공격 상태
+                    case State.ATTACK:
+                        // Animator의 IsAttack 변수를 true로 설정
+                        //anim.SetBool(hashAttack, true);
 
-                //사망
-                case State.DIE:
-                    //isDie = true;
-                    ////추적 중지
-                    //agent.isStopped = true;
-                    ////사망 애니메이션 실행
-                    ////anim.SetTrigger(hashDie);
-                    ////몬스터의 Collider 컴포넌트 비활성화
-                    //GetComponent<CapsuleCollider>().enabled = false;
-                    break;
+                        switch(monsterType)
+                        {
+                            case Type.A:
+                                anim.SetBool(hashAttack, true);
+
+                                break;
+
+                            case Type.B:
+                              
+                                    yield return new WaitForSeconds(0.5f);
+                                    GameObject instantBullet = Instantiate(bullet, transform.position, transform.rotation);
+                                    Rigidbody rigidBullet = instantBullet.GetComponent<Rigidbody>();
+                                    rigidBullet.velocity = transform.forward * 10;
+
+                                    yield return new WaitForSeconds(2f);
+                            
+                            
+                                break;
+                        }
+
+                        break;
+
+                    //사망
+                    case State.DIE:
+                        isDie = true;
+                        //추적 중지
+                        agent.isStopped = true;
+                        //사망 애니메이션 실행
+                        anim.SetTrigger(hashDie);
+                        //몬스터의 Collider 컴포넌트 비활성화
+                        GetComponent<CapsuleCollider>().enabled = false;
+                        break;
+                }
+                yield return new WaitForSeconds(0.3f);
             }
-            yield return new WaitForSeconds(0.3f);
-        }
     }
 
     void OnTriggerEnter(Collider other)
@@ -167,9 +196,9 @@ public class Monster : MonoBehaviour
             if (!isDamage)
             {
                 Weapon weapon = other.GetComponent<Weapon>();
-                //몬스터의 hp 차감
                 hp -= weapon.damage;
-               
+                anim.SetTrigger(hashHit);
+
                 if (hp < 0)
                 {
                     state = State.DIE;
@@ -219,6 +248,6 @@ public class Monster : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        
     }
 }

@@ -89,6 +89,7 @@ public class Player : MonoBehaviour
         PlayerRigid = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();     //자식 오브젝트에 애니메이션 넣어서 
         meshs = GetComponentsInChildren<MeshRenderer>();
+        playerTransform = GetComponent<Transform>();
 
         if (GameData.loadEnable)    //  불러오기가 가능하면 데이터 로드 (던전을 클리어 해야 loadEnable = true)
         {
@@ -385,8 +386,24 @@ public class Player : MonoBehaviour
                 }
                 Destroy(other.gameObject);
             }
+            if(other.tag.Equals("Punch"))
+            {
+                Boss boss = other.GetComponent<Boss>();
+                PlayerDamage(boss.damage);
 
-            if(other.tag.Equals("MonsterMelee"))
+                StartCoroutine(OnDamage());
+            }
+
+            if (other.tag.Equals("Tornado"))
+            {
+                BossBullet bossBullet = other.GetComponent<BossBullet>();
+                PlayerDamage(bossBullet.damage);
+
+                StartCoroutine(OnDamage());
+            }
+
+
+            if (other.tag.Equals("MonsterMelee"))
             {
                 if(!isDamage)
                 {

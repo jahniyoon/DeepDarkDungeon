@@ -61,7 +61,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -2798576160931330916, guid: 8b7968ec4f8b8a04ab2bb33b14dce797, type: 3}
+  - {fileID: 2100000, guid: 73634d8eef28d614abee44bcfbb35e9b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -99,7 +99,7 @@ GameObject:
   - component: {fileID: 1534791007873511878}
   m_Layer: 0
   m_Name: Monster_Knight 1
-  m_TagString: Enemy
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -180,7 +180,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.8
-  m_Speed: 10
+  m_Speed: 1
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 360
@@ -205,10 +205,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   state: 0
-  traceDist: 10
+  traceDist: 3
   attackDist: 0.8
   isDie: 0
+  monsterTr: {fileID: 1534791007873511879}
+  playerTr: {fileID: 0}
+  rigid: {fileID: 2994415644325209702}
+  boxCollider: {fileID: 2994415644325209703}
+  agent: {fileID: 2994415643320959902}
+  anim: {fileID: 2994415643320959896}
+  meshs: []
   playerTarget: {fileID: 0}
+  hp: 100
+  isDamage: 0
 --- !u!1 &3637474195605087403
 GameObject:
   m_ObjectHideFlags: 0
@@ -307,7 +316,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -2798576160931330916, guid: 8b7968ec4f8b8a04ab2bb33b14dce797, type: 3}
+  - {fileID: 2100000, guid: 73634d8eef28d614abee44bcfbb35e9b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -695,7 +704,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -2798576160931330916, guid: 8b7968ec4f8b8a04ab2bb33b14dce797, type: 3}
+  - {fileID: 2100000, guid: 73634d8eef28d614abee44bcfbb35e9b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

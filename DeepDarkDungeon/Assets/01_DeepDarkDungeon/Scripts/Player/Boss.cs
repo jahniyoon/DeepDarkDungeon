@@ -1,24 +1,30 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
+using static UnityEngine.GraphicsBuffer;
 
 public class Boss : Monster
 {
-    public GameObject Rock;
+    public GameObject tornado;
+    public Transform tornadoA;
 
-    public Transform RockA;
-    public Transform RockB;
-    public Transform RockC;
-    public Transform RockD;
-    public Transform RockE;
+
 
     public bool isLook;
 
-    Vector3 moveVector;
     Vector3 lookVec;
     Vector3 tauntVec;
+
+    public new readonly int hashTrace = Animator.StringToHash("IsTrace");
+    public readonly int hashAttack1 = Animator.StringToHash("AttackPattern1");
+    public readonly int hashAttack2 = Animator.StringToHash("AttackPattern2");
+    public readonly int hashAttack3 = Animator.StringToHash("AttackPattern3");
+    public readonly int hashAttack4 = Animator.StringToHash("AttackPattern4");
+    public new readonly int  hashHit = Animator.StringToHash("Hit");
+    public new readonly int hashDie = Animator.StringToHash("Die");
 
     // Start is called before the first frame update
     void Awake()
@@ -31,7 +37,82 @@ public class Boss : Monster
         anim = GetComponent<Animator>();
         meshs = GetComponentsInChildren<MeshRenderer>();
 
-        StartCoroutine(Think());
+        
+    }
+
+    public override IEnumerator MonsterAction()
+    {
+        while (!isDie)
+        {
+            switch (state)
+            {
+                //IDLE 상태
+                case State.IDLE:
+                    //추적 중지
+                    agent.isStopped = true;
+
+                    // Animator의 IsTrace 변수를 false로 설정
+                    anim.SetBool(hashTrace, false);
+                    break;
+
+                //추적 상태
+                case State.TRACE:
+                    //추적 대상의 좌표로 이동 시작
+                    agent.SetDestination(playerTr.position);
+                    agent.isStopped = false;
+
+                    // Animator의 IsTrace 변수를 true로 설정
+                    anim.SetBool(hashTrace, true);
+
+                    // Animator의 IsAttack 변수를 false로 설정
+                    anim.SetBool(hashAttack1, false);
+                    anim.SetBool(hashAttack2, false);
+                    anim.SetBool(hashAttack3, false);
+                    break;
+
+                //공격 상태
+                case State.ATTACK:
+
+                    int attackPattern = Random.Range(1, 5);
+                    
+
+                    // 선택한 패턴에 따라 동작 실행
+                    switch (attackPattern)
+                    {
+                        case 1:
+                            anim.SetBool(hashAttack1, true);
+                            break;
+                        case 2:
+                            anim.SetBool(hashAttack2, true);
+                            break;
+                        case 3:
+                            anim.SetBool(hashAttack3, true);
+                            break;
+                        case 4:
+                            anim.SetBool(hashAttack4, true);
+
+                            yield return new WaitForSeconds(0.2f);
+                            GameObject instantTornado = Instantiate(tornado, tornadoA.position, tornadoA.rotation);
+                            BossBullet bulletTornadoA = instantTornado.GetComponent<BossBullet>();     //미사일 스크립트까지 접근하여 목표물 설정(유도)
+                            bulletTornadoA.target = playerTarget;
+                            break;
+                           
+                    }
+                    break;
+
+                //사망
+                case State.DIE:
+                    isDie = true;
+                    //추적 중지
+                    agent.isStopped = true;
+                    //사망 애니메이션 실행
+                    //anim.SetTrigger(hashDie);
+                    //몬스터의 Collider 컴포넌트 비활성화
+                    GetComponent<BoxCollider>().enabled = false;
+                    break;
+            }
+            yield return new WaitForSeconds(0.3f);
+        }
     }
 
     // Update is called once per frame
@@ -56,80 +137,5 @@ public class Boss : Monster
        
 
     }
-    //void BossSkill()
-    //{
-    //    float distance = Vector3.Distance(playerTr.position, monsterTr.position);
-
-    //    if (distance >= traceDist)
-    //    {
-    //        int ranAction = Random.Range(0, 5);
-    //        switch (ranAction)
-    //        {
-    //            case 0:
-    //            case 1:
-    //            case 2:
-    //            case 3:
-    //                StartCoroutine(RockAttack());
-    //                break;
-    //            case 4:
-    //                //StartCoroutine();
-
-    //                break;
-
-    //        }
-    //    }
-    //}
-
-
-    IEnumerator Think()
-    {
-        yield return new WaitForSeconds(0.1f);
-
-        int ranAction = Random.Range(0, 5);
-        switch (ranAction)
-        {
-            case 0:
-            case 1:
-                StartCoroutine(Taunt());
-                break;
-            case 2:
-            case 3:
-                StartCoroutine(RockAttack());
-                //돌 굴러가는 패턴
-                break;
-            case 4:
-                break;
-
-        }
-
-    }
-
-
-
-
-
-    IEnumerator RockAttack()
-    {
-        agent.isStopped = true;
-
-        anim.SetTrigger("doRock");
-        yield return new WaitForSeconds(1.0f);
-        GameObject instantRockA = Instantiate(Rock, RockA.position, RockA.rotation);
-
-        yield return new WaitForSeconds(3f);
-        agent.isStopped = false;
-
-
-        StartCoroutine(Think());
-        
-    }
-
-    IEnumerator Taunt()
-    {
-        tauntVec = playerTarget.position + lookVec;
-
-        yield return null;      //임시로 넣은 값
-
-        StartCoroutine(Think());
-    }
+   
 }

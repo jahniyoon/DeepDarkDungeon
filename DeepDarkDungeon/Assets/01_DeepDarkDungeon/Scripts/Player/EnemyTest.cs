@@ -16,7 +16,8 @@ public class EnemyTest : MonoBehaviour                     //중요! navmesh는 sta
     public BoxCollider meleeArea;          //근접 공격 범위
     public GameObject bullet;
     public bool isChase;
-    public bool isAttack;                 
+    public bool isAttack;
+    public bool isDead;
     bool startChase = false;
 
     public Rigidbody rigid;
@@ -54,11 +55,12 @@ public class EnemyTest : MonoBehaviour                     //중요! navmesh는 sta
         anim.SetBool("isWalk", true);
     }
 
+
     void Update()
     {
         //transform.LookAt(player.transform);
 
-        if(target != null && !startChase) //  플레이어를 감지하면 ChaseStart              //플레이어 타켓 관련 
+        if (target != null && !startChase) //  플레이어를 감지하면 ChaseStart              //플레이어 타켓 관련 
         {
             startChase = true;
             ChaseStart();
@@ -74,7 +76,7 @@ public class EnemyTest : MonoBehaviour                     //중요! navmesh는 sta
 
 
     }
-  
+
 
     void FreezeVelocity()
     {
@@ -203,7 +205,7 @@ public class EnemyTest : MonoBehaviour                     //중요! navmesh는 sta
         }
         if (other.tag.Equals("EnemyBullet"))
         {
-           
+
             Bullet enemyBullet = other.GetComponent<Bullet>();
             curHealth -= enemyBullet.damage;
             Vector3 reactVec = transform.position - other.transform.position;   //넉백
