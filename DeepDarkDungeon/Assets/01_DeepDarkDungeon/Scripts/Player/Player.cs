@@ -42,7 +42,6 @@ public class Player : MonoBehaviour
     int equipWeaponIndex = -1; //무기 중복 교체, 없는 무기 확인을 위한 조건
     Weapon equipWeapon;         //기존에 장착된 무기를 저장하는 변수를 선언
 
-
     // 플레이어 인풋
     float hAxis;
     float vAxis;
@@ -71,6 +70,7 @@ public class Player : MonoBehaviour
     bool isDodge;               // 닷지중인지 체크
     bool isDie;                 // 죽었는지 체크
     bool isAttack;
+    public bool isStep;
 
     bool isBossRoom;            // 보스룸인지 체크
 
@@ -86,6 +86,8 @@ public class Player : MonoBehaviour
     GameObject chestUI;         // 보물상자 UI
     GameObject sellItem;        // 판매 아이템
     GameObject sellItemUI;      // 판매 아이템 UI
+
+    Audio audio;
 
     // Start is called before the first frame update
     void Start()
@@ -107,6 +109,7 @@ public class Player : MonoBehaviour
         GameManager.instance.SetGold(curGold);
         GameManager.instance.SetFloor();
         SetWeapon();
+        audio = FindObjectOfType<Audio>();
 
     }
 
@@ -175,12 +178,22 @@ public class Player : MonoBehaviour
             PlayerRigid.MovePosition(transform.position + transform.forward * moveVec.normalized.magnitude * speed * Time.deltaTime);
 
         }
-
+        if (moveVec != Vector3.zero && !isStep)
+        {
+            StartCoroutine("PlayerStepSound");
+        }
 
         animator.SetBool("isRun", moveVec != Vector3.zero);
         animator.SetBool("isWalk", wDown);
     }
-    
+    IEnumerator PlayerStepSound()  // 공격 딜레이
+    {
+        isStep = true;
+        audio.PlayerStepSound();
+        yield return new WaitForSeconds(0.3f);
+        isStep = false;
+
+    }
     void Turn()  //캐릭터 회전
     {
         if (moveVec == Vector3.zero) return;
@@ -224,9 +237,8 @@ public class Player : MonoBehaviour
             //animator.SetTrigger(equipWeapon.weaponType == Weapon.WeaponType.Melee ? "doSwing" : "doShot");   //무기 타입에 따라 다른 트리거 실행 
 
             fireDelay = 0;  //공격 딜레이 0으로 올려서 다음 공격까지 기다리도록 작성
-            StopCoroutine("AttackDelay");
             StartCoroutine("AttackDelay");
-
+            // stop코루틴부터 시작해야 잘 적용됨
 
         }
     }
@@ -234,10 +246,7 @@ public class Player : MonoBehaviour
     {
         yield return new WaitForSeconds(equipWeapon.rate - 0.5f);
         isAttack = false;
-
-    }
-
-
+    } 
 
     void Dodge()
     {
@@ -253,8 +262,7 @@ public class Player : MonoBehaviour
 
 
             Invoke("DodgeOut", 0.1f);
-        }
-        
+        }    
     }
 
     void DodgeOut()
@@ -300,16 +308,15 @@ public class Player : MonoBehaviour
         }
 
         int weaponIndex = -1;
-        if (sDown1)
-        {
-            weaponIndex = slot1;
-        }
+        if (sDown1) weaponIndex = slot1;
         if (sDown2) weaponIndex = slot2;
         if (sDown3) weaponIndex = slot3;
 
         if((sDown1 || sDown2 || sDown3) && !isDodge)
         {
-            if(equipWeapon != null)
+            audio.ItemEquipSound();
+
+            if (equipWeapon != null)
             {
                 equipWeapon.gameObject.SetActive(false); //시작 비활성화
             }
@@ -418,7 +425,9 @@ public class Player : MonoBehaviour
                 switch(item.type)
                 {
                     case Item.Type.Coin:
-                        AddGold(item.value); 
+                        AddGold(item.value);
+                        audio.CoinSound();
+
                         break;
 
                     case Item.Type.Heart:
@@ -720,6 +729,7 @@ public class Player : MonoBehaviour
         curHealth -= damage;
         GameManager.instance.SetHealth(curHealth);
         animator.SetTrigger("isDamage");
+        audio.PlayerDamageSound();
 
 
         if (0 >= curHealth && !isDie)
