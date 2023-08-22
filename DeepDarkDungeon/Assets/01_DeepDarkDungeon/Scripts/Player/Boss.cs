@@ -97,6 +97,8 @@ public class Boss : Monster
                             bulletTornadoA.target = playerTarget;
                             break;
                            
+
+
                     }
                     break;
 
