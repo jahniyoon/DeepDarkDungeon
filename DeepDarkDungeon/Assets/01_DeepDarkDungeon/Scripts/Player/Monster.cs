@@ -7,6 +7,7 @@ using UnityEngine.AI;
 public class Monster : MonoBehaviour
 {
 
+
     public enum State
     {
         IDLE,
@@ -39,6 +40,10 @@ public class Monster : MonoBehaviour
     public Transform playerTarget;
     public GameObject bullet;
 
+    [Header("Drop Item")]
+    public GameObject exitKeyPrefab;
+    public GameObject bossDeadPrefab;
+
 
     // Animator 파라미터의 해시값 추출
     public readonly int hashTrace = Animator.StringToHash("IsTrace");
@@ -46,6 +51,7 @@ public class Monster : MonoBehaviour
     public readonly int hashHit = Animator.StringToHash("Hit");
     public readonly int hashDie = Animator.StringToHash("Die");
 
+    public bool isBoss;
     public int maxHp = 100;
     public int hp = 100;
     public string name;
@@ -77,13 +83,13 @@ public class Monster : MonoBehaviour
 
         meshs = GetComponentsInChildren<MeshRenderer>();
 
-<<<<<<< HEAD
         transform.LookAt(playerTr.position);
-=======
-        GameManager.instance.SetBossMaxHealth(maxHp, name); // 보스 맥스 체력 셋팅
-        GameManager.instance.SetBossHealth(hp);              // 보스 현재 체력 셋팅
->>>>>>> origin/feature/Jihwan
 
+        if (isBoss)
+        {
+            GameManager.instance.SetBossMaxHealth(maxHp, name); // 보스 맥스 체력 셋팅
+            GameManager.instance.SetBossHealth(hp);              // 보스 현재 체력 셋팅
+        }
         //몬스터의 상태를 체크하는 코루틴 함수 호출
         StartCoroutine(CheckMonsterState());
         //상태에 따라 몬스터의 행동을 수행하는 코루틴 함수 호출
@@ -221,6 +227,15 @@ public class Monster : MonoBehaviour
                 if (hp < 0)
                 {
                     state = State.DIE;
+                    Vector3 keyPosition = new Vector3(transform.position.x, transform.position.y + 1f, transform.position.z); // 열쇠 드롭 위치
+                    Vector3 originalPosition = new Vector3(transform.position.x, transform.position.y, transform.position.z); // 죽음 애니메이션 위치
+                    Quaternion originalRotation = new Quaternion(transform.rotation.x, transform.rotation.y, transform.rotation.z - 90f, 1); // 열쇠 드롭 시 각도 보정
+                    if (exitKeyPrefab != null)
+                    {
+                        GameObject key = Instantiate(exitKeyPrefab, keyPosition, originalRotation);
+                        GameObject deathEffect = Instantiate(bossDeadPrefab, originalPosition, originalRotation);   // 보스 죽음 이펙트
+                        key.tag = "Item";
+                    }
                     GameManager.instance.BossDead();
 
                 }
@@ -253,8 +268,9 @@ public class Monster : MonoBehaviour
         foreach (MeshRenderer mesh in meshs)         //반복문을 사용하여 모든 재질의 색상 변경
         {
             //mesh.material.color = Color.red;
+
             Material mat = mesh.material;
-            mat.SetColor("_EmissionColor", Color.gray * 0.5f);
+            mat.SetColor("_EmissionColor", Color.red * 0.5f);
         }
         yield return new WaitForSeconds(0.5f);  //무적 타임
 
@@ -263,6 +279,15 @@ public class Monster : MonoBehaviour
         {
             Material mat = mesh.material;
             mat.SetColor("_EmissionColor", Color.black);
+        }
+
+        if (hp <= 0)
+        {
+            foreach (MeshRenderer mesh in meshs)         //반복문을 사용하여 모든 재질의 색상 변경
+            {
+                mesh.material.color = Color.gray;
+            }
+
         }
     }
 

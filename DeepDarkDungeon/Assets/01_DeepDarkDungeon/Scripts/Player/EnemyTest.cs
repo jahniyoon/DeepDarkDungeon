@@ -39,6 +39,7 @@ public class EnemyTest : MonoBehaviour                     //중요! navmesh는 sta
 
     public GameObject goldPrefab;   // 골드 프리팹
     public int goldMaxValue; // 최대 골드 값
+    public GameObject deathPrefab;   // 죽음 프리팹
     //GameObject player;
 
     void Awake()
@@ -119,8 +120,8 @@ public class EnemyTest : MonoBehaviour                     //중요! navmesh는 sta
                     targetRange = 25f;     //범위
                     break;
                 case Type.Skeletone:
-                    targetRadius = 0.3f;   //두께
-                    targetRange = 0.3f;     //범위
+                    targetRadius = 0.15f;   //두께
+                    targetRange = 0.15f;     //범위
                     break;
             }
 
@@ -180,13 +181,12 @@ public class EnemyTest : MonoBehaviour                     //중요! navmesh는 sta
                 yield return new WaitForSeconds(2f);
                 break;
             case Type.Skeletone:
-                yield return new WaitForSeconds(0.2f);
-                meleeArea.enabled = true;  //공격범위 활성화
 
-                yield return new WaitForSeconds(1f);
-                meleeArea.enabled = false;  //공격범위 비활성화
 
-                yield return new WaitForSeconds(1f);
+                yield return new WaitForSeconds(1f);    // 공격 애니메이션 속도 대기
+                anim.SetBool("isAttack", false);
+                yield return new WaitForSeconds(1f);    // 공격 쿨타임
+
                 break;
         }
 

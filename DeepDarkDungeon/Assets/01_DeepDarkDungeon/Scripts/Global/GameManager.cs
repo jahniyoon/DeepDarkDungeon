@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public bool isPause = false; // 포즈 확인
     [HideInInspector] public bool isDoorOpen = false; // 문 열림 확인
     [HideInInspector] public bool isBoss = false; // 문 열림 확인
-    private int floor = 1;
+    public int floor = 1;
 
     [Header("UI instance")]
 

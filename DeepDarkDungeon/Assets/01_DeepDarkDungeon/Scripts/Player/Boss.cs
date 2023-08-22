@@ -26,6 +26,8 @@ public class Boss : Monster
     public new readonly int  hashHit = Animator.StringToHash("Hit");
     public new readonly int hashDie = Animator.StringToHash("Die");
 
+
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -111,6 +113,7 @@ public class Boss : Monster
                     //anim.SetTrigger(hashDie);
                     //몬스터의 Collider 컴포넌트 비활성화
                     GetComponent<BoxCollider>().enabled = false;
+                    Destroy(gameObject);
                     break;
             }
             yield return new WaitForSeconds(0.3f);
@@ -122,10 +125,11 @@ public class Boss : Monster
     {
         if(isDie)
         {
+
             StopAllCoroutines();
             return;
         }
-        if(isLook)
+        if(isLook && playerTarget != null)
         {
             float h = Input.GetAxisRaw("Horizontal");
             float v = Input.GetAxisRaw("Vertical");
