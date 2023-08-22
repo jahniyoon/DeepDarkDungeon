@@ -18,13 +18,12 @@ public class Boss : Monster
     Vector3 lookVec;
     Vector3 tauntVec;
 
-    public new readonly int hashTrace = Animator.StringToHash("IsTrace");
+    
     public readonly int hashAttack1 = Animator.StringToHash("AttackPattern1");
     public readonly int hashAttack2 = Animator.StringToHash("AttackPattern2");
     public readonly int hashAttack3 = Animator.StringToHash("AttackPattern3");
     public readonly int hashAttack4 = Animator.StringToHash("AttackPattern4");
-    public new readonly int  hashHit = Animator.StringToHash("Hit");
-    public new readonly int hashDie = Animator.StringToHash("Die");
+    
 
 
 
@@ -93,7 +92,7 @@ public class Boss : Monster
                         case 4:
                             anim.SetBool(hashAttack4, true);
 
-                            yield return new WaitForSeconds(0.2f);
+                            yield return new WaitForSeconds(0.5f);     //애니메이션 60프레임 1초니까 0.5 30프레임
                             GameObject instantTornado = Instantiate(tornado, tornadoA.position, tornadoA.rotation);
                             BossBullet bulletTornadoA = instantTornado.GetComponent<BossBullet>();     //미사일 스크립트까지 접근하여 목표물 설정(유도)
                             bulletTornadoA.target = playerTarget;
