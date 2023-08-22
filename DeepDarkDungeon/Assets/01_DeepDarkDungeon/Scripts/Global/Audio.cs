@@ -8,7 +8,7 @@ public class Audio : MonoBehaviour
 
     [Header("Player Clip")]
     public AudioClip playerStepClip;
-    public AudioClip playerDamaheClip;
+    public AudioClip playerDamageClip;
 
     [Header("Item Clip")]
     public AudioClip coinClip;
@@ -33,7 +33,7 @@ public class Audio : MonoBehaviour
     }
     public void PlayerDamageSound()
     {
-        audioSource.PlayOneShot(playerDamaheClip);
+        audioSource.PlayOneShot(playerDamageClip);
     }
     public void ItemEquipSound()
     {

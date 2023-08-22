@@ -13,10 +13,10 @@ public class Boss_Lich : MonoBehaviour
     [Header("Status")]
     bool isDamage;
     bool isDead;
-    public bool isChase;
-    public bool isAttack;
-    public bool isDash;
-    public bool startChase;
+    bool isChase;
+    bool isAttack;
+    bool isDash;
+    bool startChase;
 
     [Header("Boss Info")]
 

@@ -127,7 +127,7 @@ public class Boss : Monster
         {
             float h = Input.GetAxisRaw("Horizontal");
             float v = Input.GetAxisRaw("Vertical");
-            lookVec = new Vector3(h, 0, v) * 5;
+            lookVec = new Vector3(h, 0, v) * 0.5f;
             transform.LookAt(playerTarget.position + lookVec);
         }
         else
