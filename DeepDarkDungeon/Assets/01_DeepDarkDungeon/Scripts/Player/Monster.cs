@@ -46,7 +46,9 @@ public class Monster : MonoBehaviour
     public readonly int hashHit = Animator.StringToHash("Hit");
     public readonly int hashDie = Animator.StringToHash("Die");
 
+    public int maxHp = 100;
     public int hp = 100;
+    public string name;
 
     public bool isDamage;
 
@@ -75,7 +77,12 @@ public class Monster : MonoBehaviour
 
         meshs = GetComponentsInChildren<MeshRenderer>();
 
+<<<<<<< HEAD
         transform.LookAt(playerTr.position);
+=======
+        GameManager.instance.SetBossMaxHealth(maxHp, name); // 보스 맥스 체력 셋팅
+        GameManager.instance.SetBossHealth(hp);              // 보스 현재 체력 셋팅
+>>>>>>> origin/feature/Jihwan
 
         //몬스터의 상태를 체크하는 코루틴 함수 호출
         StartCoroutine(CheckMonsterState());
@@ -209,9 +216,13 @@ public class Monster : MonoBehaviour
                 hp -= weapon.damage;
                 anim.SetTrigger(hashHit);
 
+                GameManager.instance.SetBossHealth(hp);              // 보스 현재 체력 셋팅
+
                 if (hp < 0)
                 {
                     state = State.DIE;
+                    GameManager.instance.BossDead();
+
                 }
 
                 StartCoroutine(OnDamage());

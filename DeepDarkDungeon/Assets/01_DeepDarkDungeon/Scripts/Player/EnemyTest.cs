@@ -8,7 +8,7 @@ using UnityEngine.UIElements;
 
 public class EnemyTest : MonoBehaviour                     //중요! navmesh는 static오브젝트만 bake 가능하다!
 {
-    public enum Type { A, B, C, D };       //enum 타입 나누고
+    public enum Type { A, B, C, D, Skeletone};       //enum 타입 나누고
     public Type enemyType;              //그것을 지정할 변수
 
     public int maxHealth;
@@ -118,6 +118,10 @@ public class EnemyTest : MonoBehaviour                     //중요! navmesh는 sta
                     targetRadius = 0.5f;   //두께
                     targetRange = 25f;     //범위
                     break;
+                case Type.Skeletone:
+                    targetRadius = 0.3f;   //두께
+                    targetRange = 0.3f;     //범위
+                    break;
             }
 
             RaycastHit[] rayHits = Physics.SphereCastAll(transform.position,
@@ -174,6 +178,15 @@ public class EnemyTest : MonoBehaviour                     //중요! navmesh는 sta
                 rigidBullet.velocity = transform.forward * 20;
 
                 yield return new WaitForSeconds(2f);
+                break;
+            case Type.Skeletone:
+                yield return new WaitForSeconds(0.2f);
+                meleeArea.enabled = true;  //공격범위 활성화
+
+                yield return new WaitForSeconds(1f);
+                meleeArea.enabled = false;  //공격범위 비활성화
+
+                yield return new WaitForSeconds(1f);
                 break;
         }
 

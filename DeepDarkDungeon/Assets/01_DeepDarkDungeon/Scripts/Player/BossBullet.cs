@@ -1,11 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine;
 
 public class BossBullet : Bullet
 {
-    
+
     public Transform target;
     public Transform playerTr;
     NavMeshAgent nav;
@@ -21,5 +19,6 @@ public class BossBullet : Bullet
     void Update()
     {
         nav.SetDestination(playerTr.position);
+        Destroy(gameObject, 8f);
     }
 }

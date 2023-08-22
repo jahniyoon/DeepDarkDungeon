@@ -6,7 +6,8 @@ public class Bullet : MonoBehaviour
 {
     public int damage;
     public bool isMelee;
-    public bool isRock;     
+    public bool isRock;
+    public bool isDestroy;
 
     void OnCollisionEnter(Collision collision)
     {
@@ -25,9 +26,9 @@ public class Bullet : MonoBehaviour
             Destroy(gameObject);
 
         }
-        else if(other.gameObject.tag.Equals("Player"))
+        else if(other.gameObject.tag.Equals("Player") && isDestroy)
         {
-            //SDestroy(gameObject);
+            Destroy(gameObject);
         }
     }
 
