@@ -75,7 +75,7 @@ public class Monster : MonoBehaviour
 
         meshs = GetComponentsInChildren<MeshRenderer>();
 
-
+        transform.LookAt(playerTr.position);
 
         //몬스터의 상태를 체크하는 코루틴 함수 호출
         StartCoroutine(CheckMonsterState());
@@ -161,15 +161,25 @@ public class Monster : MonoBehaviour
 
                             case Type.B:
                               
-                                    yield return new WaitForSeconds(0.5f);
-                                    GameObject instantBullet = Instantiate(bullet, transform.position, transform.rotation);
-                                    Rigidbody rigidBullet = instantBullet.GetComponent<Rigidbody>();
-                                    rigidBullet.velocity = transform.forward * 10;
+                                 yield return new WaitForSeconds(0.5f);
+                                 GameObject instantBullet = Instantiate(bullet, transform.position, transform.rotation);
+                                 Rigidbody rigidBullet = instantBullet.GetComponent<Rigidbody>();
+                                 rigidBullet.velocity = transform.forward * 3;
 
-                                    yield return new WaitForSeconds(2f);
+                                GameObject leftInstantBullet = Instantiate(bullet, transform.position, Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(0, -15, 0)));
+                                Rigidbody rigidLeftBullet = leftInstantBullet.GetComponent<Rigidbody>();
+                                rigidLeftBullet.velocity = leftInstantBullet.transform.forward * 3;
+
+                                // 오른쪽 불렛 발사
+                                GameObject rightInstantBullet = Instantiate(bullet, transform.position, Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(0, 15, 0)));
+                                Rigidbody rigidRightBullet = rightInstantBullet.GetComponent<Rigidbody>();
+                                rigidRightBullet.velocity = rightInstantBullet.transform.forward * 3;
+
+                                yield return new WaitForSeconds(2f);
+                            break;
                             
                             
-                                break;
+                                
                         }
 
                         break;
@@ -248,6 +258,6 @@ public class Monster : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+       
     }
 }

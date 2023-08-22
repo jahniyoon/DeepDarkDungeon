@@ -19,6 +19,7 @@ TagManager:
   - MonsterMelee
   - Punch
   - Tornado
+  - WolfAttack
   layers:
   - Default
   - TransparentFX

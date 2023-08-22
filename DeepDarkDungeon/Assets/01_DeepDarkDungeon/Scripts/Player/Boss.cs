@@ -40,6 +40,11 @@ public class Boss : Monster
         
     }
 
+    //IEnumerator Think()
+    //{
+    //    yield return null;
+    //}
+
     public override IEnumerator MonsterAction()
     {
         while (!isDie)
@@ -90,16 +95,15 @@ public class Boss : Monster
                             break;
                         case 4:
                             anim.SetBool(hashAttack4, true);
-
                             yield return new WaitForSeconds(0.2f);
                             GameObject instantTornado = Instantiate(tornado, tornadoA.position, tornadoA.rotation);
                             BossBullet bulletTornadoA = instantTornado.GetComponent<BossBullet>();     //미사일 스크립트까지 접근하여 목표물 설정(유도)
                             bulletTornadoA.target = playerTarget;
+
+                            //yield return new WaitForSeconds(2.0f);
                             break;
-                           
-
-
                     }
+                    state = State.TRACE;
                     break;
 
                 //사망
@@ -129,7 +133,7 @@ public class Boss : Monster
         {
             float h = Input.GetAxisRaw("Horizontal");
             float v = Input.GetAxisRaw("Vertical");
-            lookVec = new Vector3(h, 0, v) * 5;
+            lookVec = new Vector3(h, 0, v) * 10;
             transform.LookAt(playerTarget.position + lookVec);
         }
         else
