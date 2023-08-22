@@ -60,7 +60,8 @@ public class Player : MonoBehaviour
     bool sDown2;
     bool sDown3;
 
-  
+    // 업그레이드
+    float shield = 1f;
 
     // 플레이어 상태 체크
     bool isSwap;                // 아이템 스왑 중 체크
@@ -188,8 +189,7 @@ public class Player : MonoBehaviour
     IEnumerator PlayerStepSound()  // 공격 딜레이
     {
         isStep = true;
-        //Audio audio = FindObjectOfType<Audio>();
-        //audio.PlayerStepSound();
+        //AudioManager.instance.PlaySFX("Playerfootstep");
         yield return new WaitForSeconds(0.3f);
         isStep = false;
 
@@ -226,11 +226,15 @@ public class Player : MonoBehaviour
             {
                 case Weapon.WeaponType.Sword:
                     animator.SetTrigger("doAttackSword");
+                    StartCoroutine("SwordAttackSoundDelay");
+
+
                     break;
                 case Weapon.WeaponType.ChainSaw:
                     animator.SetTrigger("doAttackChainSaw");
                     break;
                 case Weapon.WeaponType.TwohandSword:
+                    AudioManager.instance.PlaySFX("SwingSword");
                     animator.SetTrigger("doAttackTwohandSword");
                     break;
             }
@@ -241,6 +245,11 @@ public class Player : MonoBehaviour
             // stop코루틴부터 시작해야 잘 적용됨
 
         }
+    }
+    IEnumerator SwordAttackSoundDelay()  // 공격 딜레이
+    {
+        yield return new WaitForSeconds(0.55f);
+        AudioManager.instance.PlaySFX("SwingSword");
     }
     IEnumerator AttackDelay()  // 공격 딜레이
     {
@@ -254,7 +263,8 @@ public class Player : MonoBehaviour
         {
             isAttack = false;   // 어택 캔슬
             dodgeVec = moveVec; //회피하면서 방향 전환 x
-            
+            AudioManager.instance.PlaySFX("Dash");
+
             speed *= 2f;
             animator.SetTrigger("doDodge");
             isDodge = true;
@@ -314,8 +324,8 @@ public class Player : MonoBehaviour
 
         if((sDown1 || sDown2 || sDown3) && !isDodge)
         {
-            //Audio audio = FindObjectOfType<Audio>();
-            //audio.ItemEquipSound();
+            AudioManager.instance.PlaySFX("ItemEquip");
+
 
             if (equipWeapon != null)
             {
@@ -347,6 +357,8 @@ public class Player : MonoBehaviour
 
             if(nearObject.tag.Equals("Weapon") && !hasWeapon3) // 아이템 획득
             {
+                AudioManager.instance.PlaySFX("ItemGet");
+
                 GetWeapon(nearObject);
                 Destroy(nearObject);
             }
@@ -369,6 +381,8 @@ public class Player : MonoBehaviour
             DungeonObject item = chest.GetComponent<DungeonObject>();
             if (item != null)
             {
+                AudioManager.instance.PlaySFX("ChestOpen");
+
                 item.ChestOpen();
                 item.tag = "Untagged"; // 보물상자를 열었기 때문에 태그 제거
                 chest = null;
@@ -386,6 +400,18 @@ public class Player : MonoBehaviour
                 {
                     case Item.Type.Heart:
                         PlayerHeal(item.value);
+                        break;
+
+                    case Item.Type.Shield:
+                        shield *= 0.8f;
+                        break;
+
+                    case Item.Type.Speed:
+                        speed *= 1.2f;
+
+                        break;
+                    case Item.Type.Power:
+                        GameManager.instance.power *= 1.2f;
                         break;
 
                     case Item.Type.Weapon:
@@ -448,7 +474,7 @@ public class Player : MonoBehaviour
             if(other.tag.Equals("Punch"))
             {
                 Boss boss = other.GetComponent<Boss>();
-                PlayerDamage(boss.damage);
+                PlayerDamage(boss.damage, shield);
 
                 StartCoroutine(OnDamage());
             }
@@ -456,7 +482,7 @@ public class Player : MonoBehaviour
             if (other.tag.Equals("Tornado"))
             {
                 BossBullet bossBullet = other.GetComponent<BossBullet>();
-                PlayerDamage(bossBullet.damage);
+                PlayerDamage(bossBullet.damage , shield);
 
                 StartCoroutine(OnDamage());
             }
@@ -467,7 +493,7 @@ public class Player : MonoBehaviour
                 if(!isDamage)
                 {
                     Weapon weapon = other.GetComponent<Weapon>();
-                    PlayerDamage(weapon.damage);
+                    PlayerDamage(weapon.damage, shield);
 
                     StartCoroutine(OnDamage());
                 }
@@ -478,7 +504,7 @@ public class Player : MonoBehaviour
                 if (!isDamage)
                 {
                     Bullet enemyBullet = other.GetComponent<Bullet>();
-                    PlayerDamage(enemyBullet.damage);
+                    PlayerDamage(enemyBullet.damage, shield);
 
                     //맞은 후 1초 무적? 때문에 작동이 안됨
                     //if(other.GetComponent<Bullet>() != null)       //리지드바디 유무를 조건으로 하여 
@@ -725,9 +751,13 @@ public class Player : MonoBehaviour
     }
 
     // 플레이어 데미지
-    public void PlayerDamage(int damage)
+    public void PlayerDamage(int damage, float shield)
     {
-        curHealth -= damage;
+        float totalDamage = damage * shield; // 데미지에 쉴드를 곱한 결과 (float)
+        int finalDamage = Mathf.FloorToInt(totalDamage); // 내림하여 int로 변환
+
+        curHealth -= finalDamage;
+
         GameManager.instance.SetHealth(curHealth);
         animator.SetTrigger("isDamage");
         AudioManager.instance.PlaySFX("PlayerHurt");

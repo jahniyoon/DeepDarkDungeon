@@ -37,6 +37,7 @@ public class GameManager : MonoBehaviour
     public Image[] itemSlot3;
 
 
+    public float power = 1f;
     // √ ±‚»≠
     public void Initialization()
     {

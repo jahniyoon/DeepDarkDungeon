@@ -38,6 +38,7 @@ public class Boss_Lich : MonoBehaviour
     public BoxCollider meleeArea;
     public BoxCollider poisonArea;
     public GameObject skeletonePrefab;
+    public GameObject spawnAuraPrefab;
 
     [Header("Drop Item")]
     public GameObject exitKeyPrefab;
@@ -213,16 +214,26 @@ public class Boss_Lich : MonoBehaviour
         isAttack = true;
 
         animator.SetTrigger("isEnemySpawn");
-        yield return new WaitForSeconds(4f);
-
-
-
         Vector3 frontPosition = new Vector3(transform.position.x, transform.position.y, transform.position.z - 1f); // 죽음 애니메이션 위치
         Vector3 backLeftPosition = new Vector3(transform.position.x - 1f, transform.position.y, transform.position.z + 1f); // 죽음 애니메이션 위치
         Vector3 backRightPosition = new Vector3(transform.position.x + 1f, transform.position.y, transform.position.z + 1f); // 죽음 애니메이션 위치
+
+        GameObject aura1 = Instantiate(spawnAuraPrefab, frontPosition, transform.rotation);
+        GameObject aura2 = Instantiate(spawnAuraPrefab, backLeftPosition, transform.rotation);
+        GameObject aura3 = Instantiate(spawnAuraPrefab, backRightPosition, transform.rotation);
+        Destroy(aura1, 3.5f);
+        Destroy(aura2, 3.5f);
+        Destroy(aura3, 3.5f);
+
+        yield return new WaitForSeconds(3f);
+       
+
+
         GameObject newSkeletone1 = Instantiate(skeletonePrefab, frontPosition, transform.rotation);
         GameObject newSkeletone2 = Instantiate(skeletonePrefab, backLeftPosition, transform.rotation);
         GameObject newSkeletone3 = Instantiate(skeletonePrefab, backRightPosition, transform.rotation);
+
+       
 
         isChase = true;
         isAttack = false;

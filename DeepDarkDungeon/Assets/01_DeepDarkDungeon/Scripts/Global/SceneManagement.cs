@@ -18,6 +18,8 @@ public class SceneManagement : MonoBehaviour
 
     public void ChangeDungeonScene()    // 던전씬으로 이동
     {
+        AudioManager.instance.PlaySFX("GameStart");
+
         fadeAnimation.SetTrigger("FadeOut");
         sceneName = "DungeonScene";
         StartCoroutine("LoadScene");
@@ -31,12 +33,14 @@ public class SceneManagement : MonoBehaviour
     }
     public void ExitGame()  // 게임 종료
     {
+        AudioManager.instance.PlaySFX("ButtonClick");
         StartCoroutine("FadeOut");
         Application.Quit();
     }
     public void ChangeGameTitleScene()  // 타이틀 씬으로 이동
     {
         Time.timeScale = 1;
+        AudioManager.instance.PlaySFX("ButtonClick");
         fadeAnimation.SetTrigger("FadeOut");
         ResetData();
         sceneName = "TitleScene";

@@ -210,12 +210,12 @@ public class EnemyTest : MonoBehaviour                     //중요! navmesh는 sta
         if (other.tag.Equals("Melee"))
         {
             Weapon weapon = other.GetComponent<Weapon>();
-            curHealth -= weapon.damage;
-            if(curHealth <= 0)
-            {
-                Die(); // 죽으면 골드 드롭 실행
-            }
-            Vector3 reactVec = (transform.position - other.transform.position) / 3;   //넉백
+
+            float totalDamage = weapon.damage * GameManager.instance.power; // 데미지에 파워를 곱한 결과 (float)
+            int finalDamage = Mathf.FloorToInt(totalDamage); // 내림하여 int로 변환
+
+            curHealth -= finalDamage;
+            Vector3 reactVec = (transform.position - other.transform.position);   //넉백
 
             StartCoroutine(OnDamage(reactVec, false));
         }
@@ -243,7 +243,8 @@ public class EnemyTest : MonoBehaviour                     //중요! navmesh는 sta
     IEnumerator OnDamage(Vector3 reactVec, bool isGrenade)
     {
         boxCollider.enabled = false; //콜라이더 활성화
-        //Debug.Log("적 한대 맞았다. 히트박스 비활성화");
+                                     //Debug.Log("적 한대 맞았다. 히트박스 비활성화");
+        AudioManager.instance.PlaySFX("SwingSword");
 
 
         foreach (MeshRenderer mesh in meshs)
@@ -260,38 +261,26 @@ public class EnemyTest : MonoBehaviour                     //중요! navmesh는 sta
             }
         }
 
+        // 몬스터 죽음 시
         else
         {
             foreach (MeshRenderer mesh in meshs)
             {
                 mesh.material.color = Color.gray;
             }
-            gameObject.layer = 14;
             isChase = false;
+            target = null;
 
-            nav.enabled = false;      //사망 리액션 유지하기 위해서
+            //nav.enabled = false;      //사망 리액션 유지하기 위해서
+            
+            reactVec = reactVec.normalized;
+            reactVec += Vector3.up;                             //백터 반대방향으로 설정
+            rigid.AddForce(reactVec * 1.2f, ForceMode.Impulse);    //반대방향으로 힘이 가해진다
+            yield return new WaitForSeconds(0.5f);
 
-            anim.SetTrigger("doDie");
+            Destroy(gameObject);
+            Die();
 
-            if (isGrenade)
-            {
-                reactVec = reactVec.normalized;
-                reactVec += Vector3.up * 3;
-
-                rigid.freezeRotation = false;     //freeze rotation x,y체크 해놔서 false로
-                rigid.AddForce(reactVec * 5, ForceMode.Impulse);    //반대방향으로 힘이 가해진다
-                rigid.AddTorque(reactVec * 15, ForceMode.Impulse);
-
-            }
-            else
-            {
-                reactVec = reactVec.normalized;
-                reactVec += Vector3.up;                             //백터 반대방향으로 설정
-                rigid.AddForce(reactVec * 5, ForceMode.Impulse);    //반대방향으로 힘이 가해진다
-            }
-
-            if (enemyType != Type.D)
-                Destroy(gameObject, 0.5f);
         }
         yield return new WaitForSeconds(0.5f);
         boxCollider.enabled = true; //콜라이더 활성화
@@ -303,7 +292,12 @@ public class EnemyTest : MonoBehaviour                     //중요! navmesh는 sta
     // 몬스터 사망시 골드드롭
     public void Die()
     {
+        
+
+        anim.SetTrigger("doDie");
+
         Vector3 originalPosition = new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z); // 기존 박스의 위치 저장
+        Vector3 deathPosition = new Vector3(transform.position.x, transform.position.y, transform.position.z); // 기존 박스의 위치 저장
         Quaternion originalRotation = transform.rotation; // 기존 박스의 각도 저장
         int goldValue = Random.Range(0, goldMaxValue);
 
@@ -312,6 +306,9 @@ public class EnemyTest : MonoBehaviour                     //중요! navmesh는 sta
             for (int i = 0; i <= goldValue; i++)
             {
                 GameObject newGold = Instantiate(goldPrefab, originalPosition, originalRotation);
+                GameObject death = Instantiate(deathPrefab, deathPosition, originalRotation);
+                death.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f); // 스케일 조절
+
                 newGold.tag = "Item";
             }
         }

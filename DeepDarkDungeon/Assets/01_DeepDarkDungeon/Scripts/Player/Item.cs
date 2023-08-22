@@ -12,7 +12,7 @@ public class Item : MonoBehaviour
     [SerializeField]
     private ItemDB itemDB;
 
-    public enum Type { Coin, Grenade, Heart, Weapon, Exit, Key}
+    public enum Type { Coin, Grenade, Heart, Weapon, Exit, Key, Shield, Speed, Power }
     public Type type;       //저장할 변수 지정
     public enum WeaponType { Sword, ChainSaw, TwohandSword };
     public WeaponType weaponType;       //저장할 변수 지정

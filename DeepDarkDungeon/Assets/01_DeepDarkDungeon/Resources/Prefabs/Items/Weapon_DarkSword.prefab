@@ -10249,7 +10249,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4087958d72123c48a21c9bd2e86bd1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemNo: 6
+  itemNo: 13
   itemDB: {fileID: 11400000, guid: bb063523e9de6a848965741264ec9d99, type: 2}
   type: 3
   weaponType: 0

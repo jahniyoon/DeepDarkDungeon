@@ -3,7 +3,7 @@ using System;
 [System.Serializable]
 public class ItemDBEntity
 {
-    public enum Type { Coin, Grenade, Heart, Weapon, Exit, Key}
+    public enum Type { Coin, Grenade, Heart, Weapon, Exit, Key, Shield, Speed, Power}
     public enum WeaponType { Sword, ChainSaw, TwohandSword };
 
     public int itemNum;
