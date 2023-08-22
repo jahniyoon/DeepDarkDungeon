@@ -50,32 +50,6 @@ AnimatorStateTransition:
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
---- !u!1102 &-8146220556921900495
-AnimatorState:
-  serializedVersion: 6
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: VoxDragon_FireBreath
-  m_Speed: 1
-  m_CycleOffset: 0
-  m_Transitions: []
-  m_StateMachineBehaviours: []
-  m_Position: {x: 50, y: 50, z: 0}
-  m_IKOnFeet: 0
-  m_WriteDefaultValues: 1
-  m_Mirror: 0
-  m_SpeedParameterActive: 0
-  m_MirrorParameterActive: 0
-  m_CycleOffsetParameterActive: 0
-  m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 8894738838b53bb498b8080df1ab6835, type: 2}
-  m_Tag: 
-  m_SpeedParameter: 
-  m_MirrorParameter: 
-  m_CycleOffsetParameter: 
-  m_TimeParameter: 
 --- !u!1102 &-3149775584864722098
 AnimatorState:
   serializedVersion: 6
@@ -276,7 +250,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Vox_Dragon_Breath_Fs
+  m_Name: Vox_Dragon_Tornado
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -427,13 +401,10 @@ AnimatorStateMachine:
     m_Position: {x: 240, y: -40, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 800994482536388003}
-    m_Position: {x: 190, y: -230, z: 0}
+    m_Position: {x: 220, y: -250, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 929954527360132180}
     m_Position: {x: 216.79895, y: -364.63086, z: 0}
-  - serializedVersion: 1
-    m_State: {fileID: -8146220556921900495}
-    m_Position: {x: 251.79895, y: -299.63086, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 8467088324288249511}
     m_Position: {x: 130, y: 60, z: 0}
@@ -531,7 +502,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Vox_Dragon_Breath_Gw
+  m_Name: Vox_Dragon_Breath
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
