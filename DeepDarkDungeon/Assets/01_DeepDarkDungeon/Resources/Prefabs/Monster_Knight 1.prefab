@@ -218,9 +218,11 @@ MonoBehaviour:
   meshs: []
   playerTarget: {fileID: 0}
   bullet: {fileID: 0}
+  maxHp: 100
   hp: 100
+  name: 
   isDamage: 0
-  damage: 0
+  damage: 10
 --- !u!1 &3637474195605087403
 GameObject:
   m_ObjectHideFlags: 0

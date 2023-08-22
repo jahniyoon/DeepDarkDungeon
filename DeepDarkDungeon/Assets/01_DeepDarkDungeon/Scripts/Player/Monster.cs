@@ -77,12 +77,12 @@ public class Monster : MonoBehaviour
 
         meshs = GetComponentsInChildren<MeshRenderer>();
 
-<<<<<<< HEAD
+
         transform.LookAt(playerTr.position);
-=======
+
         GameManager.instance.SetBossMaxHealth(maxHp, name); // 보스 맥스 체력 셋팅
         GameManager.instance.SetBossHealth(hp);              // 보스 현재 체력 셋팅
->>>>>>> origin/feature/Jihwan
+
 
         //몬스터의 상태를 체크하는 코루틴 함수 호출
         StartCoroutine(CheckMonsterState());
@@ -199,7 +199,7 @@ public class Monster : MonoBehaviour
                         //사망 애니메이션 실행
                         anim.SetTrigger(hashDie);
                         //몬스터의 Collider 컴포넌트 비활성화
-                        GetComponent<CapsuleCollider>().enabled = false;
+                        GetComponent<BoxCollider>().enabled = false;
                         break;
                 }
                 yield return new WaitForSeconds(0.3f);
@@ -253,8 +253,9 @@ public class Monster : MonoBehaviour
         foreach (MeshRenderer mesh in meshs)         //반복문을 사용하여 모든 재질의 색상 변경
         {
             //mesh.material.color = Color.red;
+
             Material mat = mesh.material;
-            mat.SetColor("_EmissionColor", Color.gray * 0.5f);
+            mat.SetColor("_EmissionColor", Color.red * 1f);              //메쉬 설정에서 realtime 으로 해야 적용
         }
         yield return new WaitForSeconds(0.5f);  //무적 타임
 
@@ -264,8 +265,16 @@ public class Monster : MonoBehaviour
             Material mat = mesh.material;
             mat.SetColor("_EmissionColor", Color.black);
         }
-    }
 
+        if (hp <= 0)
+        {
+            foreach (MeshRenderer mesh in meshs)         //반복문을 사용하여 모든 재질의 색상 변경
+            {
+                mesh.material.color = Color.gray;
+            }
+
+        }
+    }
     // Update is called once per frame
     void Update()
     {
