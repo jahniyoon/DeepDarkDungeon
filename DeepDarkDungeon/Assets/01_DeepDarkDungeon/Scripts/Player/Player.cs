@@ -87,7 +87,7 @@ public class Player : MonoBehaviour
     GameObject sellItem;        // 판매 아이템
     GameObject sellItemUI;      // 판매 아이템 UI
 
-    Audio audio;
+
 
     // Start is called before the first frame update
     void Start()
@@ -109,7 +109,6 @@ public class Player : MonoBehaviour
         GameManager.instance.SetGold(curGold);
         GameManager.instance.SetFloor();
         SetWeapon();
-        audio = FindObjectOfType<Audio>();
 
     }
 
@@ -189,7 +188,8 @@ public class Player : MonoBehaviour
     IEnumerator PlayerStepSound()  // 공격 딜레이
     {
         isStep = true;
-        audio.PlayerStepSound();
+        //Audio audio = FindObjectOfType<Audio>();
+        //audio.PlayerStepSound();
         yield return new WaitForSeconds(0.3f);
         isStep = false;
 
@@ -220,7 +220,7 @@ public class Player : MonoBehaviour
 
             isAttack = true;
 
-            Debug.Log("공격을 했다. 공격중");
+            //Debug.Log("공격을 했다. 공격중");
 
             switch (equipWeapon.weaponType)  // 무기 타입에 따라 스위치로 다른 애니메이션 트리거 실행
             {
@@ -314,7 +314,8 @@ public class Player : MonoBehaviour
 
         if((sDown1 || sDown2 || sDown3) && !isDodge)
         {
-            audio.ItemEquipSound();
+            //Audio audio = FindObjectOfType<Audio>();
+            //audio.ItemEquipSound();
 
             if (equipWeapon != null)
             {
@@ -426,7 +427,7 @@ public class Player : MonoBehaviour
                 {
                     case Item.Type.Coin:
                         AddGold(item.value);
-                        audio.CoinSound();
+
 
                         break;
 
@@ -502,7 +503,7 @@ public class Player : MonoBehaviour
                 {
                     targetPosition.target = transform;
                     targetPosition.scanCollider.enabled = false;    // !적 만나면 스캔 콜라이더 없애줘야함
-                    Debug.Log("적 : 플레이어를 감지했다.");
+                    //Debug.Log("적 : 플레이어를 감지했다.");
 
 
                 }
@@ -729,7 +730,8 @@ public class Player : MonoBehaviour
         curHealth -= damage;
         GameManager.instance.SetHealth(curHealth);
         animator.SetTrigger("isDamage");
-        audio.PlayerDamageSound();
+        AudioManager.instance.PlaySFX("PlayerHurt");
+        
 
 
         if (0 >= curHealth && !isDie)
@@ -751,6 +753,8 @@ public class Player : MonoBehaviour
             curGold = maxGold;
         }
         GameManager.instance.SetGold(curGold);
+        AudioManager.instance.PlaySFX("GetCoin");
+
 
     }
     // 골드 소비
@@ -779,5 +783,5 @@ public class Player : MonoBehaviour
         hasWeapon3 = data.hasWeapon3;
 
     }
-   
+    
 }

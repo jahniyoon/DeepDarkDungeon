@@ -89,6 +89,8 @@ public class DungeonCreator : MonoBehaviour
     {
         //Random.InitState(System.DateTime.Now.Millisecond); // 현재 시간의 밀리초를 랜덤 시드로 사용
         //StartCoroutine(CheckFloorOverlapAndGenerateDungeon());
+        AudioManager.instance.PlayMusic("DungeonBGM");
+
         CreateDungeon();
     }
 
@@ -537,6 +539,7 @@ public class DungeonCreator : MonoBehaviour
         if (trap != null)
         {
             trap.transform.position = trapPosition;
+            Debug.Log(trapPosition.x + trapPosition.z);
             GameObject dungeonTrap = Instantiate(trap, trap.transform.position, Quaternion.identity);
             dungeonTrap.transform.parent = transform;
         }
