@@ -177,7 +177,7 @@ Transform:
   - {fileID: 4578571176463175102}
   m_Father: {fileID: 3946057185382790499}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -7.9026017, y: 0, z: 0}
 --- !u!1 &804881077048546191
 GameObject:
   m_ObjectHideFlags: 0
@@ -441,7 +441,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 3.5
+  m_Speed: 5
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 360
@@ -479,6 +479,7 @@ MonoBehaviour:
   meshs: []
   playerTarget: {fileID: 0}
   bullet: {fileID: 0}
+  monsterPrefab: {fileID: 0}
   exitKeyPrefab: {fileID: 0}
   bossDeadPrefab: {fileID: 0}
   isBoss: 0
@@ -1082,4 +1083,4 @@ Transform:
   - {fileID: 8656059816163298335}
   m_Father: {fileID: 2575122085030243387}
   m_RootOrder: 6
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -14, y: 0, z: 0}

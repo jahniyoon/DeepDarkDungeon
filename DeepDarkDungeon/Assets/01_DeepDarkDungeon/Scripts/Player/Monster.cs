@@ -39,6 +39,7 @@ public class Monster : MonoBehaviour
     public MeshRenderer[] meshs;
     public Transform playerTarget;
     public GameObject bullet;
+    public GameObject monsterPrefab;
 
     [Header("Drop Item")]
     public GameObject exitKeyPrefab;
@@ -50,6 +51,7 @@ public class Monster : MonoBehaviour
     public readonly int hashAttack = Animator.StringToHash("IsAttack");
     public readonly int hashHit = Animator.StringToHash("Hit");
     public readonly int hashDie = Animator.StringToHash("Die");
+    public readonly int hashSpawn = Animator.StringToHash("doSpawn");
 
     public bool isBoss;
     public int maxHp = 100;
@@ -183,17 +185,38 @@ public class Monster : MonoBehaviour
                                 Rigidbody rigidLeftBullet = leftInstantBullet.GetComponent<Rigidbody>();
                                 rigidLeftBullet.velocity = leftInstantBullet.transform.forward * 3;
 
-                                // 오른쪽 불렛 발사
+                                
                                 GameObject rightInstantBullet = Instantiate(bullet, transform.position, Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(0, 15, 0)));
                                 Rigidbody rigidRightBullet = rightInstantBullet.GetComponent<Rigidbody>();
                                 rigidRightBullet.velocity = rightInstantBullet.transform.forward * 3;
 
                                 yield return new WaitForSeconds(2f);
                             break;
-                            
-                            
-                                
-                        }
+
+                        case Type.C:    //기사 패턴
+                            break;
+                            //int attackPattern = Random.Range(1, 3);
+
+
+                            //// 선택한 패턴에 따라 동작 실행
+                            //switch (attackPattern)
+                            //{
+                            //    case 1:
+                            //        anim.SetBool(hashAttack, true);
+                            //        yield return new WaitForSeconds(2.5f);
+                            //        anim.SetBool(hashAttack, false);
+                            //        break;
+
+                            //    case 2:
+                            //        anim.SetBool(hashSpawn, true);
+                            //        GameObject instantMonsterPrefab = Instantiate(monsterPrefab, transform.position, transform.rotation);
+                            //        GameObject instantMonsterPrefab1 = Instantiate(monsterPrefab, transform.position, Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(0, -15, 0)));
+                            //        GameObject instantMonsterPrefab2 = Instantiate(monsterPrefab, transform.position, Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(0, 15, 0)));
+
+                            //        anim.SetBool(hashSpawn, false);
+                            //        yield return new WaitForSeconds(0.1f);
+                            //        break;
+                            }
 
                         break;
 

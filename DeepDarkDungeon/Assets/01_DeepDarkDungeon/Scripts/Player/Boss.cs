@@ -82,20 +82,30 @@ public class Boss : Monster
                     {
                         case 1:
                             anim.SetBool(hashAttack1, true);
+                            yield return new WaitForSeconds(1.0f);
+                            anim.SetBool(hashAttack1, false);
                             break;
                         case 2:
                             anim.SetBool(hashAttack2, true);
+                            yield return new WaitForSeconds(1.0f);
+                            anim.SetBool(hashAttack2, false);
                             break;
                         case 3:
                             anim.SetBool(hashAttack3, true);
+                            yield return new WaitForSeconds(1.0f);
+                            anim.SetBool(hashAttack3, false);
                             break;
-                        case 4:
+                        case 4:                               
                             anim.SetBool(hashAttack4, true);
-
+                       
                             yield return new WaitForSeconds(0.5f);     //애니메이션 60프레임 1초니까 0.5 30프레임
                             GameObject instantTornado = Instantiate(tornado, tornadoA.position, tornadoA.rotation);
-                            BossBullet bulletTornadoA = instantTornado.GetComponent<BossBullet>();     //미사일 스크립트까지 접근하여 목표물 설정(유도)
+                            BossBullet bulletTornadoA = instantTornado.GetComponent<BossBullet>();     
                             bulletTornadoA.target = playerTarget;
+                            yield return new WaitForSeconds(0.5f);
+
+                            anim.SetBool(hashAttack4, false);
+                            yield return new WaitForSeconds(1.0f);
                             break;
                            
 
