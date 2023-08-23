@@ -16,7 +16,6 @@ public class Boss : Monster
     public bool isLook;
 
     Vector3 lookVec;
-    Vector3 tauntVec;
 
     
     public readonly int hashAttack1 = Animator.StringToHash("AttackPattern1");
@@ -36,9 +35,8 @@ public class Boss : Monster
         boxCollider = GetComponent<BoxCollider>();
         agent = GetComponent<NavMeshAgent>();
         anim = GetComponent<Animator>();
-        meshs = GetComponentsInChildren<MeshRenderer>();
+        meshs = GetComponents<MeshRenderer>();
 
-        
     }
 
     public override IEnumerator MonsterAction()
@@ -75,12 +73,12 @@ public class Boss : Monster
                 case State.ATTACK:
 
                     int attackPattern = Random.Range(1, 5);
-                    
+
 
                     // 선택한 패턴에 따라 동작 실행
                     switch (attackPattern)
                     {
-                        case 1:
+                        case 1:                     
                             anim.SetBool(hashAttack1, true);
                             yield return new WaitForSeconds(1.0f);
                             anim.SetBool(hashAttack1, false);
@@ -90,12 +88,12 @@ public class Boss : Monster
                             yield return new WaitForSeconds(1.0f);
                             anim.SetBool(hashAttack2, false);
                             break;
-                        case 3:
+                        case 3:                     // 브레스
                             anim.SetBool(hashAttack3, true);
-                            yield return new WaitForSeconds(1.0f);
+                            yield return new WaitForSeconds(3.5f);
                             anim.SetBool(hashAttack3, false);
                             break;
-                        case 4:                               
+                        case 4:                     // 토네이도                
                             anim.SetBool(hashAttack4, true);
                        
                             yield return new WaitForSeconds(0.5f);     //애니메이션 60프레임 1초니까 0.5 30프레임
@@ -122,7 +120,28 @@ public class Boss : Monster
                     //anim.SetTrigger(hashDie);
                     //몬스터의 Collider 컴포넌트 비활성화
                     GetComponent<BoxCollider>().enabled = false;
-                    Destroy(gameObject);
+
+                    GameManager.instance.BossDead();
+
+
+                    //foreach (MeshRenderer mesh in meshs)
+                    //{
+                    //    mesh.material.color = Color.gray;
+                    //}
+               
+                    anim.SetTrigger("Die");
+
+
+
+                    Material firstMaterial = bossMesh.materials[0];
+                    Material secondMaterial = bossMesh.materials[1];
+                    firstMaterial.color = new Color (0.1f,0.1f,0.1f,0.5f);
+                    secondMaterial.color = new Color(0.1f, 0.1f, 0.1f, 0.5f);
+                    agent.speed = 0;
+
+                    Invoke("Die", 3.5f);
+
+                    //Destroy(gameObject);
                     break;
             }
             yield return new WaitForSeconds(0.3f);
@@ -134,23 +153,36 @@ public class Boss : Monster
     {
         if(isDie)
         {
-
             StopAllCoroutines();
             return;
         }
-        if(isLook && playerTarget != null)
+        if (isLook && playerTarget != null)
         {
             float h = Input.GetAxisRaw("Horizontal");
             float v = Input.GetAxisRaw("Vertical");
-            lookVec = new Vector3(h, 0, v) * 0.5f;
-            transform.LookAt(playerTarget.position + lookVec);
+            lookVec = new Vector3(h, 0, v) * 0.25f;
+            transform.LookAt(playerTr.position + lookVec);
         }
         else
         {
-            agent.SetDestination(tauntVec);
+            //agent.SetDestination(tauntVec);
+           
+            transform.LookAt(playerTr.position );
         }
-       
+
 
     }
-   
+    void Die()
+    {
+        Vector3 keyPosition = new Vector3(transform.position.x, transform.position.y + 1f, transform.position.z); // 열쇠 드롭 위치
+        Vector3 originalPosition = new Vector3(transform.position.x, transform.position.y, transform.position.z); // 죽음 애니메이션 위치
+        Quaternion originalRotation = new Quaternion(transform.rotation.x, transform.rotation.y, transform.rotation.z - 90f, 1); // 열쇠 드롭 시 각도 보정
+        if (exitKeyPrefab != null)
+        {
+            GameObject key = Instantiate(exitKeyPrefab, keyPosition, originalRotation);
+            GameObject deathEffect = Instantiate(bossDeadPrefab, originalPosition, originalRotation);   // 보스 죽음 이펙트
+            key.tag = "Item";
+        }
+        Destroy(gameObject);
+    }
 }

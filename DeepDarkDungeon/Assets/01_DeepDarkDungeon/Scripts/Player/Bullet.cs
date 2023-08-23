@@ -8,7 +8,7 @@ public class Bullet : MonoBehaviour
     public bool isMelee;
     public bool isRock;
     public bool isDestroy;
-
+    int hp = 0;
     void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.tag.Equals("Floor"))  //탄피  //!isRock 게임상에서 isRock체크해서 사라지지 않게
@@ -28,7 +28,13 @@ public class Bullet : MonoBehaviour
         }
         else if(other.gameObject.tag.Equals("Player") && isDestroy)
         {
+            hp++;
+        }
+
+        if (hp == 2)
+        {
             Destroy(gameObject);
+
         }
     }
 

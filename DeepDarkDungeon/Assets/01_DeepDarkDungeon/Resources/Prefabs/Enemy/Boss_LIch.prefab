@@ -49959,7 +49959,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bossMaxHealth: 200
   bossCurHealth: 200
-  bossName: "\uB4A4\uD2C0\uB9B0 \uD669\uCC9C\uC758 \uB9AC\uCE58\uD0B9"
+  bossName: "\uB4A4\uD2C0\uB9B0 \uD669\uCC9C\uC758 \uD504\uB85C\uADF8\uB798\uBA38"
   scanCollider: {fileID: 706607668885565530}
   target: {fileID: 0}
   nav: {fileID: 1403942531}
