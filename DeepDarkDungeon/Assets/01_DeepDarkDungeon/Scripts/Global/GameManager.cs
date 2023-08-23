@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Cinemachine;
 
 public class GameManager : MonoBehaviour
 {
@@ -36,6 +37,11 @@ public class GameManager : MonoBehaviour
     public Image[] itemSlot2;
     public Image[] itemSlot3;
 
+    [Header("Camera")]
+    public CinemachineVirtualCamera primaryCamera;
+    public CinemachineVirtualCamera[] virtualCameras;
+
+
 
     public float power = 1f;
     // 초기화
@@ -63,8 +69,18 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        SwitchToCamera(primaryCamera);
         Initialization();   // 초기화
     }    // } Start()
+
+    // 카메라 전환
+    public void SwitchToCamera(CinemachineVirtualCamera targetCamera)
+    {
+        foreach (CinemachineVirtualCamera camera in virtualCameras)
+        {
+            camera.enabled = camera == targetCamera;
+        }
+    }
 
     // 체력바 UI 플레이어의 체력으로 설정
     public void SetHealth(int health)
@@ -121,6 +137,9 @@ public class GameManager : MonoBehaviour
     {
         isBoss = true;
         bossUI.SetActive(true);
+
+        SwitchToCamera(primaryCamera);
+
     }
     public void SetBossMaxHealth(int bossMaxHealth, string name)
     {

@@ -71,7 +71,8 @@ public class DungeonCreator : MonoBehaviour
     Vector3Int bossRoomCenterPosition; // 보스 방의 중앙 위치
     Vector3Int exitRoomCenterPosition; // 출구 방의 중앙 위치
     Vector3Int shopPosition; 
-    Vector3Int trapPosition; 
+    Vector3Int trapPosition;
+    bool isTrapRoom;
     
     List<Vector3Int> enemyPositions;
     List<Vector3> torchPositions;
@@ -194,23 +195,23 @@ public class DungeonCreator : MonoBehaviour
        ((bossRoom.BottomLeftAreaCorner.y + bossRoom.TopRightAreaCorner.y) / 2)+1);
 
         // 생성된 방중에 하나
-        int shopRoomNum = Random.Range(0, spawnRoomNum); // 상점을 제외한 방
+        int shopRoomNum = Random.Range(1, spawnRoomNum); // 상점을 제외한 방
         RoomNode shopRoom = generator.CreatedRooms[shopRoomNum];
         shopPosition = new Vector3Int(
         ((shopRoom.BottomLeftAreaCorner.x + shopRoom.TopRightAreaCorner.x) / 2),
         0,
         (shopRoom.BottomLeftAreaCorner.y + shopRoom.TopRightAreaCorner.y) / 2);
 
-        int trapRoomNum = Random.Range(0, spawnRoomNum);
-        if (trapRoomNum != shopRoomNum)
-        {
-            Debug.Log("트랩룸 생성X");
-            RoomNode trapRoom = generator.CreatedRooms[trapRoomNum];
+        // 트랩룸과 겹치는 경우
+        //int trapRoomNum = Random.Range(0, spawnRoomNum);
+      
+            isTrapRoom = true;
+            RoomNode trapRoom = generator.CreatedRooms[0];
             trapPosition = new Vector3Int(
             ((trapRoom.BottomLeftAreaCorner.x + trapRoom.TopRightAreaCorner.x) / 2),
              0,
             (trapRoom.BottomLeftAreaCorner.y + trapRoom.TopRightAreaCorner.y) / 2);
-        }
+       
 
         // 방 리스트 선언
         List<RoomNode> dungeonRooms = generator.CreatedRooms;
@@ -226,7 +227,7 @@ public class DungeonCreator : MonoBehaviour
             {
                 CreateRoomChest(dungeonRoom);
                 CreateRoomRandom(dungeonRoom);
-                if (i != shopRoomNum && i!= trapRoomNum)
+                if (i != shopRoomNum && i!= 0)
                 {
                     CreateRoomCenter(dungeonRoom);
                 }

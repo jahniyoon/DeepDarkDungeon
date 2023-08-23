@@ -174,7 +174,7 @@ public class Boss : Monster
     }
     void Die()
     {
-        Vector3 keyPosition = new Vector3(transform.position.x, transform.position.y + 1f, transform.position.z); // 열쇠 드롭 위치
+        Vector3 keyPosition = new Vector3(transform.position.x, transform.position.y + 2f, transform.position.z); // 열쇠 드롭 위치
         Vector3 originalPosition = new Vector3(transform.position.x, transform.position.y, transform.position.z); // 죽음 애니메이션 위치
         Quaternion originalRotation = new Quaternion(transform.rotation.x, transform.rotation.y, transform.rotation.z - 90f, 1); // 열쇠 드롭 시 각도 보정
         if (exitKeyPrefab != null)
