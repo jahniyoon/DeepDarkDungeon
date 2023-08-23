@@ -12,7 +12,7 @@ public class Elite_dog : Monster
 
     
     public readonly int hashJumpAttack = Animator.StringToHash("doJumpAttack");
-    public readonly int hashJumpAttack1 = Animator.StringToHash("doJumpAttack1");
+    
 
 
     // Start is called before the first frame update
@@ -64,7 +64,7 @@ public class Elite_dog : Monster
 
                 
 
-                    int attackPattern = Random.Range(1, 5);
+                    int attackPattern = Random.Range(1, 3);
 
 
                     // 선택한 패턴에 따라 동작 실행
@@ -82,20 +82,8 @@ public class Elite_dog : Monster
                             anim.SetBool(hashJumpAttack, false);
 
                             yield return new WaitForSeconds(0.1f);
-                            anim.SetBool(hashJumpAttack1, true);
-                            anim.SetBool(hashJumpAttack1, false);
-
-                            yield return new WaitForSeconds(0.1f);
                             break;
-                        case 3:
-                          
-                            break;
-                        case 4:
-                            
-                            break;
-
-
-
+                      
                     }
                     break;
 
@@ -118,6 +106,8 @@ public class Elite_dog : Monster
     // Update is called once per frame
     void Update()
     {
+        transform.LookAt(playerTr.position);
+
         //if (isDie)
         //{
         //    StopAllCoroutines();           //죽었을 때 패턴  코루틴 완전 정지

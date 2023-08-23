@@ -193,7 +193,8 @@ public class Monster : MonoBehaviour
                                 yield return new WaitForSeconds(2f);
                             break;
 
-                        //case Type.C:    //기사 패턴
+                        case Type.C:    //기사 패턴
+                            break;
                             //int attackPattern = Random.Range(1, 3);
 
 

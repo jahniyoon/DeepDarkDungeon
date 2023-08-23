@@ -98,13 +98,14 @@ public class Boss : Monster
                         case 4:                               
                             anim.SetBool(hashAttack4, true);
                        
-                            yield return new WaitForSeconds(0.7f);     //애니메이션 60프레임 1초니까 0.5 30프레임
+                            yield return new WaitForSeconds(0.5f);     //애니메이션 60프레임 1초니까 0.5 30프레임
                             GameObject instantTornado = Instantiate(tornado, tornadoA.position, tornadoA.rotation);
                             BossBullet bulletTornadoA = instantTornado.GetComponent<BossBullet>();     
                             bulletTornadoA.target = playerTarget;
+                            yield return new WaitForSeconds(0.5f);
 
                             anim.SetBool(hashAttack4, false);
-                            yield return new WaitForSeconds(0.1f);
+                            yield return new WaitForSeconds(1.0f);
                             break;
                            
 
