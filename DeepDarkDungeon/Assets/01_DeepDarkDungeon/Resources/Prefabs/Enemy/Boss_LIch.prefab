@@ -49965,10 +49965,10 @@ MonoBehaviour:
   nav: {fileID: 1403942531}
   meleeArea: {fileID: 5061266269040309595}
   poisonArea: {fileID: 5061266269040309595}
-  skeletonePrefab: {fileID: 2080217274309318718, guid: e478c730fc9cf94479496401eb94402d, type: 3}
-  spawnAuraPrefab: {fileID: 7930411311034983411, guid: 1aa56d77606fec742b1c258ba54ab0e9, type: 3}
+  skeletonePrefab: {fileID: 2080217274309318718, guid: d30351e76e4bb404db5ab6f4c1415581, type: 3}
+  spawnAuraPrefab: {fileID: 7930411311034983411, guid: 86e778859cf23574fa8603511e021bda, type: 3}
   exitKeyPrefab: {fileID: 245546409976378223, guid: da1b82863383d4f4da6171aebdabc5a8, type: 3}
-  bossDeadPrefab: {fileID: 2381112161245072353, guid: e5a9843c7ca695745879dc382de87202, type: 3}
+  bossDeadPrefab: {fileID: 2381112161245072353, guid: 5876d6a5eec720847a125748b77ad442, type: 3}
 --- !u!54 &5650079503284307580
 Rigidbody:
   m_ObjectHideFlags: 0

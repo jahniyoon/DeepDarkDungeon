@@ -47,7 +47,7 @@ MonoBehaviour:
     rate: 0
   - itemNum: 4
     type: 6
-    name: Armor
+    name: Shield
     value: 0
     price: 400
     weaponType: 0

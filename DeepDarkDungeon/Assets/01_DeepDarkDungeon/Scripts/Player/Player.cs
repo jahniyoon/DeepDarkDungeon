@@ -753,14 +753,21 @@ public class Player : MonoBehaviour
     // 플레이어 데미지
     public void PlayerDamage(int damage, float shield)
     {
-        float totalDamage = damage * shield; // 데미지에 쉴드를 곱한 결과 (float)
-        int finalDamage = Mathf.FloorToInt(totalDamage); // 내림하여 int로 변환
+        if (shield == 1)
+        {
+            curHealth -= damage;
+        }
+        else
+        {
+            float totalDamage = damage * shield; // 데미지에 쉴드를 곱한 결과 (float)
+            int finalDamage = Mathf.FloorToInt(totalDamage); // 내림하여 int로 변환
 
-        curHealth -= finalDamage;
+            curHealth -= finalDamage;
+        }
 
         GameManager.instance.SetHealth(curHealth);
         animator.SetTrigger("isDamage");
-        AudioManager.instance.PlaySFX("PlayerHurt");
+        AudioManager.instance.PlaySFX("Hit");
         
 
 

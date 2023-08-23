@@ -19,7 +19,9 @@ public class EnemyTest : MonoBehaviour                     //중요! navmesh는 sta
     public bool isChase;
     public bool isAttack;
     public bool isDead;
+    public bool isDummy;
     bool startChase = false;
+    
 
     public Rigidbody rigid;
     public BoxCollider boxCollider;
@@ -69,7 +71,7 @@ public class EnemyTest : MonoBehaviour                     //중요! navmesh는 sta
     {
         //transform.LookAt(player.transform);
 
-        if (target != null && !startChase) //  플레이어를 감지하면 ChaseStart              //플레이어 타켓 관련 
+        if (target != null && !startChase && !isDummy) //  플레이어를 감지하면 ChaseStart              //플레이어 타켓 관련 
         {
             startChase = true;
             ChaseStart();
@@ -200,9 +202,11 @@ public class EnemyTest : MonoBehaviour                     //중요! navmesh는 sta
 
     void FixedUpdate()
     {
-        Targeting();
-        FreezeVelocity();
-
+        if (!isDummy)
+        {
+            Targeting();
+            FreezeVelocity();
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -244,7 +248,7 @@ public class EnemyTest : MonoBehaviour                     //중요! navmesh는 sta
     {
         boxCollider.enabled = false; //콜라이더 활성화
                                      //Debug.Log("적 한대 맞았다. 히트박스 비활성화");
-        AudioManager.instance.PlaySFX("SwingSword");
+        AudioManager.instance.PlaySFX("Hit");
 
 
         foreach (MeshRenderer mesh in meshs)
@@ -294,7 +298,7 @@ public class EnemyTest : MonoBehaviour                     //중요! navmesh는 sta
     {
         
 
-        anim.SetTrigger("doDie");
+        //anim.SetTrigger("doDie");
 
         Vector3 originalPosition = new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z); // 기존 박스의 위치 저장
         Vector3 deathPosition = new Vector3(transform.position.x, transform.position.y, transform.position.z); // 기존 박스의 위치 저장

@@ -539,7 +539,7 @@ public class DungeonCreator : MonoBehaviour
         if (trap != null)
         {
             trap.transform.position = trapPosition;
-            Debug.Log(trapPosition.x + trapPosition.z);
+            //Debug.Log(trapPosition.x + trapPosition.z);
             GameObject dungeonTrap = Instantiate(trap, trap.transform.position, Quaternion.identity);
             dungeonTrap.transform.parent = transform;
         }
