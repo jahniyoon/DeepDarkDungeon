@@ -471,13 +471,13 @@ MonoBehaviour:
   attackDist: 1
   isDie: 0
   monsterTr: {fileID: 2021807858074713807}
-  playerTr: {fileID: 0}
+  playerTr: {fileID: 9042242847765596113, guid: de97b84b2851b4e4080ed3bc534f6e4c, type: 3}
   rigid: {fileID: 1501242817131786500}
   boxCollider: {fileID: 1566961170610572900}
   agent: {fileID: 5808378538917735815}
   anim: {fileID: 6748303578827045358}
   meshs: []
-  playerTarget: {fileID: 0}
+  playerTarget: {fileID: 9042242847765596113, guid: de97b84b2851b4e4080ed3bc534f6e4c, type: 3}
   bullet: {fileID: 0}
   monsterPrefab: {fileID: 0}
   exitKeyPrefab: {fileID: 0}

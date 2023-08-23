@@ -93,6 +93,7 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        shield = 1f;
 
         PlayerRigid = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();     //자식 오브젝트에 애니메이션 넣어서 
@@ -473,8 +474,10 @@ public class Player : MonoBehaviour
             }
             if(other.tag.Equals("Punch"))
             {
-                Boss boss = other.GetComponent<Boss>();
-                PlayerDamage(boss.damage, shield);
+                //Boss boss = other.GetComponent<Boss>();
+                Bullet bossBullet = other.GetComponent<Bullet>();
+
+                PlayerDamage(bossBullet.damage, shield);
 
                 StartCoroutine(OnDamage());
             }
