@@ -730,7 +730,7 @@ public class Player : MonoBehaviour
         curHealth -= damage;
         GameManager.instance.SetHealth(curHealth);
         animator.SetTrigger("isDamage");
-        AudioManager.instance.PlaySFX("PlayerHurt");
+        //AudioManager.instance.PlaySFX("PlayerHurt");
         
 
 
