@@ -176,3 +176,4 @@ MonoBehaviour:
   damage: 25
   isMelee: 0
   isRock: 1
+  isDestroy: 1

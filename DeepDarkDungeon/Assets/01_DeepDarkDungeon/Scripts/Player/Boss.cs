@@ -74,8 +74,8 @@ public class Boss : Monster
                 //공격 상태
                 case State.ATTACK:
 
-                    int attackPattern = Random.Range(1, 5);
-                    
+                    //int attackPattern = Random.Range(1, 5);
+                    int attackPattern = 3;
 
                     // 선택한 패턴에 따라 동작 실행
                     switch (attackPattern)
@@ -92,7 +92,7 @@ public class Boss : Monster
                             break;
                         case 3:
                             anim.SetBool(hashAttack3, true);
-                            yield return new WaitForSeconds(1.0f);
+                            yield return new WaitForSeconds(3.5f);
                             anim.SetBool(hashAttack3, false);
                             break;
                         case 4:                               
@@ -134,21 +134,17 @@ public class Boss : Monster
     {
         if(isDie)
         {
-
             StopAllCoroutines();
             return;
         }
-        if(isLook && playerTarget != null)
-        {
-            float h = Input.GetAxisRaw("Horizontal");
-            float v = Input.GetAxisRaw("Vertical");
-            lookVec = new Vector3(h, 0, v) * 0.5f;
-            transform.LookAt(playerTarget.position + lookVec);
-        }
-        else
-        {
-            agent.SetDestination(tauntVec);
-        }
+        //if(isLook && playerTarget != null)
+        //{
+        //    float h = Input.GetAxisRaw("Horizontal");
+        //    float v = Input.GetAxisRaw("Vertical");
+        //    lookVec = new Vector3(h, 0, v) * 0.2f;
+        //    transform.LookAt(playerTarget.position + lookVec);
+        //}
+       
        
 
     }

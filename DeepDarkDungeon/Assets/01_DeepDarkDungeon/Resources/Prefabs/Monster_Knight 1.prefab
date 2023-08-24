@@ -96,7 +96,7 @@ GameObject:
   - component: {fileID: 2994415644325209702}
   - component: {fileID: 2994415644325209703}
   - component: {fileID: 2994415643320959902}
-  - component: {fileID: 1534791007873511878}
+  - component: {fileID: 95667714769951807}
   m_Layer: 0
   m_Name: Monster_Knight 1
   m_TagString: Untagged
@@ -192,7 +192,7 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &1534791007873511878
+--- !u!114 &95667714769951807
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -201,13 +201,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 2163835476051749757}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e2954117c9ed10647beaa2a3e272fe49, type: 3}
+  m_Script: {fileID: 11500000, guid: 33e6a0d271c6d614fab19c75d11bb636, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  monsterType: 0
+  monsterType: 2
   state: 0
-  traceDist: 3
-  attackDist: 0.8
+  traceDist: 10
+  attackDist: 1
   isDie: 0
   monsterTr: {fileID: 1534791007873511879}
   playerTr: {fileID: 0}
@@ -220,11 +220,16 @@ MonoBehaviour:
   bullet: {fileID: 0}
   exitKeyPrefab: {fileID: 0}
   bossDeadPrefab: {fileID: 0}
-  maxHp: 50
-  hp: 50
+  isBoss: 0
+  maxHp: 100
+  hp: 100
   name: 
   isDamage: 0
   damage: 0
+  monsterPrefab: {fileID: 0}
+  spawn: {fileID: 0}
+  spawn1: {fileID: 0}
+  spawn2: {fileID: 0}
 --- !u!1 &3637474195605087403
 GameObject:
   m_ObjectHideFlags: 0

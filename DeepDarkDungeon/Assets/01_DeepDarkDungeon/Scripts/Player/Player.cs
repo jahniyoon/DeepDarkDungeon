@@ -473,11 +473,16 @@ public class Player : MonoBehaviour
             }
             if(other.tag.Equals("Punch"))
             {
-                Boss boss = other.GetComponent<Boss>();
-                PlayerDamage(boss.damage, shield);
+                Boss boss = GetComponent<Boss>();
+                if(boss != null)
+                {
+                    PlayerDamage(boss.damage, shield);
+                }
 
                 StartCoroutine(OnDamage());
             }
+
+            
 
             if (other.tag.Equals("Tornado"))
             {

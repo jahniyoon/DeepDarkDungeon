@@ -20,6 +20,9 @@ TagManager:
   - Punch
   - Tornado
   - WolfAttack
+  - BossRoom
+  - BossLich
+  - Head
   layers:
   - Default
   - TransparentFX
