@@ -10,7 +10,7 @@ public class Shop : MonoBehaviour
     
     private void OnEnable() // TODO : 아이템 판매 출현확률 조정 필요
     {
-        SellItem1[Random.Range(0, 3)].SetActive(true);
+        SellItem1[Random.Range(0, 5)].SetActive(true);
         SellItem2[Random.Range(0, 3)].SetActive(true);
     }
 
