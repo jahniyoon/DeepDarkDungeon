@@ -51,10 +51,12 @@ public class Monster : MonoBehaviour
     [Header("Drop Item")]
     public GameObject exitKeyPrefab;
     public GameObject bossDeadPrefab;
-    
+    public GameObject goldPrefab;
+    public int goldMaxValue;
 
 
-    
+
+
 
     // Animator 파라미터의 해시값 추출
     public readonly int hashTrace = Animator.StringToHash("IsTrace");
@@ -191,20 +193,22 @@ public class Monster : MonoBehaviour
 
                             anim.SetBool(hashAttack, true);
                             yield return new WaitForSeconds(0.65f);
-                                 GameObject instantBullet = Instantiate(bullet, transform.position, transform.rotation);
+
+                            Vector3 fireBallTransform = new Vector3(transform.position.x, transform.position.y + 0.25f, transform.position.z);
+                                 GameObject instantBullet = Instantiate(bullet, fireBallTransform, transform.rotation);
                                  Rigidbody rigidBullet = instantBullet.GetComponent<Rigidbody>();
                                  rigidBullet.velocity = transform.forward * 3;
 
-                                GameObject leftInstantBullet = Instantiate(bullet, transform.position, Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(0, -15, 0)));
+                                GameObject leftInstantBullet = Instantiate(bullet, fireBallTransform, Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(0, -15, 0)));
                                 Rigidbody rigidLeftBullet = leftInstantBullet.GetComponent<Rigidbody>();
                                 rigidLeftBullet.velocity = leftInstantBullet.transform.forward * 3;
 
                                 
-                                GameObject rightInstantBullet = Instantiate(bullet, transform.position, Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(0, 15, 0)));
+                                GameObject rightInstantBullet = Instantiate(bullet, fireBallTransform, Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(0, 15, 0)));
                                 Rigidbody rigidRightBullet = rightInstantBullet.GetComponent<Rigidbody>();
                                 rigidRightBullet.velocity = rightInstantBullet.transform.forward * 3;
 
-                                yield return new WaitForSeconds(0.15f);                           
+                                yield return new WaitForSeconds(0.5f);                           
                             break;
 
                         case Type.C:        
@@ -287,8 +291,8 @@ public class Monster : MonoBehaviour
                         anim.SetTrigger(hashDie);
                         //몬스터의 Collider 컴포넌트 비활성화
                         GetComponent<BoxCollider>().enabled = false;
-                    Destroy(gameObject);
-                        break;
+
+                    break;
                 }
                 yield return new WaitForSeconds(0.3f);
             }
@@ -302,7 +306,7 @@ public class Monster : MonoBehaviour
             {
                 Weapon weapon = other.GetComponent<Weapon>();
                 hp -= weapon.damage;
-                anim.SetTrigger(hashHit);
+                //anim.SetTrigger(hashHit);
 
                 if (isBoss)
                 { GameManager.instance.SetBossHealth(hp); }            // 보스 현재 체력 셋팅
@@ -336,42 +340,105 @@ public class Monster : MonoBehaviour
 
     IEnumerator OnDamage()
     {
-        isDamage = true;
-        foreach (MeshRenderer mesh in meshs)         //반복문을 사용하여 모든 재질의 색상 변경
+        if (!isBoss)    // 기존 스크립트
         {
-            //mesh.material.color = Color.red;
-
-            Material mat = mesh.material;
-            mat.SetColor("_EmissionColor", Color.red * 0.5f);
-        }
-        Material firstMaterial = bossMesh.materials[0];
-        Material secondMaterial = bossMesh.materials[1];
-
-        Color originalColor1 = firstMaterial.color;
-        Color originalColor2 = secondMaterial.color;
-
-        firstMaterial.color = Color.red;
-        secondMaterial.color = Color.red;
-
-
-        yield return new WaitForSeconds(0.5f);  //무적 타임
-
-        isDamage = false;
-        foreach (MeshRenderer mesh in meshs)
-        {
-            Material mat = mesh.material;
-            mat.SetColor("_EmissionColor", Color.black);
-        }
-        firstMaterial.color = originalColor1;
-        secondMaterial.color = originalColor2;
-
-        if (hp <= 0)
-        {
+            isDamage = true;
             foreach (MeshRenderer mesh in meshs)         //반복문을 사용하여 모든 재질의 색상 변경
             {
-                mesh.material.color = Color.gray;
+                mesh.material.color = Color.red;
+
+                Material mat = mesh.material;
+                mat.SetColor("_EmissionColor", Color.red * 0.5f);
             }
 
+            yield return new WaitForSeconds(0.5f);  //무적 타임
+
+            isDamage = false;
+            foreach (MeshRenderer mesh in meshs)
+            {
+                Material mat = mesh.material;
+                mat.SetColor("_EmissionColor", Color.black);
+            }
+        
+            if (hp <= 0)
+            {
+                foreach (MeshRenderer mesh in meshs)         //반복문을 사용하여 모든 재질의 색상 변경
+                {
+                    mesh.material.color = Color.gray;
+
+                 
+                }
+                yield return new WaitForSeconds(0.5f);
+
+                Destroy(gameObject);
+                Die();
+            }
+        }
+        else if (isBoss)    // 보스일 경우 용용이의 렌더 색 변경을 위한 스크립트
+        {
+            isDamage = true;
+            foreach (MeshRenderer mesh in meshs)         //반복문을 사용하여 모든 재질의 색상 변경
+            {
+                //mesh.material.color = Color.red;
+
+                Material mat = mesh.material;
+                mat.SetColor("_EmissionColor", Color.red * 0.5f);
+            }
+
+            Material firstMaterial = bossMesh.materials[0];
+            Material secondMaterial = bossMesh.materials[1];
+
+            Color originalColor1 = firstMaterial.color;
+            Color originalColor2 = secondMaterial.color;
+
+            firstMaterial.color = Color.red;
+            secondMaterial.color = Color.red;
+
+
+            yield return new WaitForSeconds(0.5f);  //무적 타임
+
+            isDamage = false;
+            foreach (MeshRenderer mesh in meshs)
+            {
+                Material mat = mesh.material;
+                mat.SetColor("_EmissionColor", Color.black);
+            }
+            firstMaterial.color = originalColor1;
+            secondMaterial.color = originalColor2;
+
+            if (hp <= 0)
+            {
+                foreach (MeshRenderer mesh in meshs)         //반복문을 사용하여 모든 재질의 색상 변경
+                {
+                    mesh.material.color = Color.gray;
+                }
+
+            }
+        }
+    }
+
+    // 몬스터 사망시 골드드롭
+    public void Die()
+    {
+
+
+        //anim.SetTrigger("doDie");
+
+        Vector3 originalPosition = new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z); // 기존 박스의 위치 저장
+        Vector3 deathPosition = new Vector3(transform.position.x, transform.position.y, transform.position.z); // 기존 박스의 위치 저장
+        Quaternion originalRotation = transform.rotation; // 기존 박스의 각도 저장
+        int goldValue = Random.Range(0, goldMaxValue);
+
+        if (goldPrefab != null) // 골드 프리팹 있는 경우
+        {
+            for (int i = 0; i <= goldValue; i++)
+            {
+                GameObject newGold = Instantiate(goldPrefab, originalPosition, originalRotation);
+                GameObject death = Instantiate(bossDeadPrefab, deathPosition, originalRotation);
+                death.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f); // 스케일 조절
+
+                newGold.tag = "Item";
+            }
         }
     }
 
