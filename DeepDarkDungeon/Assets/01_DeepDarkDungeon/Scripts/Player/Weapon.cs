@@ -1,17 +1,38 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class Weapon : MonoBehaviour
 {
+    [SerializeField]
+    private ItemDB itemDB;
+    [SerializeField]
+    private int itemNo;
     public int value;
-    public enum WeaponType { Sword, ChainSaw, TwohandSword };
+    public enum WeaponType { Sword, ChainSaw, TwohandSword, ShortSword, Mace };
     public WeaponType weaponType;
     public int damage;
     public float rate;
 
     public BoxCollider meleeArea;
 
+    private void Awake()
+    {
+        if (itemNo != 0)    // 아이템의 값이 있을 때만 변경
+        {
+            for (int i = 1; i < itemDB.Entities.Count; i++)
+            {
+                if (itemDB.Entities[i].itemNum == itemNo)
+                {
+                    this.weaponType = (WeaponType)itemDB.Entities[i].weaponType;
+                    this.damage = itemDB.Entities[i].damage;
+                    this.rate = itemDB.Entities[i].rate;
+                }
+            }
+        }
+    }
     public void Use()
     {
         if(weaponType == WeaponType.Sword || weaponType == WeaponType.TwohandSword)

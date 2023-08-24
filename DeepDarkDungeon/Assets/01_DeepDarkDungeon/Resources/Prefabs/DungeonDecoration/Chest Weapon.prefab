@@ -568,15 +568,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce9f4cece16dc6d45a3ec337d14600f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  type: 2
   health: 0
   brokePrefab: {fileID: 0}
+  goldMaxValue: 0
   goldPrefab: {fileID: 0}
+  heartPrefab: {fileID: 0}
   weaponPrefab:
+  - {fileID: 7871455205559898098, guid: fa2fff849906f864f8088678b1f5826d, type: 3}
+  - {fileID: 7871455205559898098, guid: 7b4e3c0faf39bed43af3cfd065d9f9f3, type: 3}
   - {fileID: 7871455205559898098, guid: deb88f7856f21784a83829bf2725c840, type: 3}
   - {fileID: 9081003247888838726, guid: aca264a30d9c2fe45ace75cbb1f3f650, type: 3}
-  - {fileID: 7871455205559898098, guid: 77842199cc6502a47b9745a4a4a1f11a, type: 3}
-  goldValue: 0
-  type: 2
+  - {fileID: 7871455205559898098, guid: 4b0c60341ea7fcd4f8c9a145cde5745f, type: 3}
 --- !u!95 &6663004875808225570
 Animator:
   serializedVersion: 5

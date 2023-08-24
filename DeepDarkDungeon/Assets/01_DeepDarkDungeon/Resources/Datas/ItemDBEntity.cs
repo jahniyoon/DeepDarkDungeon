@@ -4,7 +4,7 @@ using System;
 public class ItemDBEntity
 {
     public enum Type { Coin, Grenade, Heart, Weapon, Exit, Key, Shield, Speed, Power}
-    public enum WeaponType { Sword, ChainSaw, TwohandSword };
+    public enum WeaponType { Sword, ChainSaw, TwohandSword, ShortSword, Mace };
 
     public int itemNum;
     public Type type;

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Cinemachine;
 
 public class GameManager : MonoBehaviour
 {
@@ -19,6 +20,7 @@ public class GameManager : MonoBehaviour
     public GameObject gameoverUI;   // 게임 오버 UI
     public GameObject gamePauseUI;   // 게임 포즈 UI
     public GameObject keyUI;
+    public GameObject playerHUD;
 
     [Header("Boss UI instance")]
 
@@ -35,6 +37,7 @@ public class GameManager : MonoBehaviour
     public Image[] itemSlot1;
     public Image[] itemSlot2;
     public Image[] itemSlot3;
+
 
 
     public float power = 1f;
@@ -65,6 +68,8 @@ public class GameManager : MonoBehaviour
     {
         Initialization();   // 초기화
     }    // } Start()
+
+  
 
     // 체력바 UI 플레이어의 체력으로 설정
     public void SetHealth(int health)
@@ -120,8 +125,24 @@ public class GameManager : MonoBehaviour
     public void OnBossRoom()
     {
         isBoss = true;
+        playerHUD.SetActive(false);
         bossUI.SetActive(true);
+        //CameraManager.instance.OnBossRoom();
+
+        StartCoroutine("BossRoomCutScene");
+
     }
+    IEnumerator BossRoomCutScene()
+    {
+        CameraManager.instance.SwitchToBossRoomCamera();
+        yield return new WaitForSeconds(1f);
+        Time.timeScale = 0.2f;
+        yield return new WaitForSeconds(0.4f);
+        Time.timeScale = 1f;
+        CameraManager.instance.SwitchToPlayerCamera();
+        playerHUD.SetActive(true);
+    }
+
     public void SetBossMaxHealth(int bossMaxHealth, string name)
     {
         bossName.text = string.Format(name);

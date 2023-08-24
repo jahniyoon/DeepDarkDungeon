@@ -21,6 +21,7 @@ public class DungeonObject : MonoBehaviour
     public GameObject heartPrefab;      // 체력 프리팹
     public GameObject[] weaponPrefab;   // 상자에서 나올 아이템 프리팹
 
+    int weaponNum;
 
    
 
@@ -117,11 +118,30 @@ public class DungeonObject : MonoBehaviour
     {
         yield return new WaitForSeconds(0.8f);
 
-        int randomNum = Random.Range(0, 3);
-
+        int randomNum = Random.Range(0, 11);
+        if (randomNum == 0) // 10% 확률로 서리한
+        {
+            weaponNum = 0;
+        }
+        else if (randomNum == 1) // 10% 확률로 다크스워드
+        {
+            weaponNum = 1;
+        }
+        else if (2 <= randomNum && randomNum <= 4)
+        {
+            weaponNum = 2;
+        }
+        else if (5 <= randomNum && randomNum <= 7)
+        {
+            weaponNum = 3;
+        }
+        else if (8 <= randomNum && randomNum <= 10)
+        {
+            weaponNum = 4;
+        }
         Vector3 weaponPosition = new Vector3(position.x, position.y - 0.2f, position.z);
 
-        GameObject newWeapon = Instantiate(weaponPrefab[randomNum], weaponPosition, rotation);
+        GameObject newWeapon = Instantiate(weaponPrefab[weaponNum], weaponPosition, rotation);
         newWeapon.tag = "Weapon";
         
     }

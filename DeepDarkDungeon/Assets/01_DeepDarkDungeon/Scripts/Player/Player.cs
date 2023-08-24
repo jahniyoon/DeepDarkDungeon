@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -31,13 +32,11 @@ public class Player : MonoBehaviour
 
     public GameObject[] weapons;  //플레이어 무기 관련 함수 - 무기 연결하는 
 
-    public bool hasWeapon1;     //플레이어 무기 관련 함수 - 무기 인벤토리 비슷한
-    public bool hasWeapon2;     
-    public bool hasWeapon3;  
-    // 습득한 아이템 슬롯에 저장
-    public int slot1;
-    public int slot2;
-    public int slot3;
+    // 저장할 무기
+    public bool[] hasWeapon; // 무기 유무
+    public int[] itemSlot;   // 아이템 슬롯
+    public Weapon[] weaponSlot;     // 아이템 슬롯에 연결될 무기 정보
+
 
     int equipWeaponIndex = -1; //무기 중복 교체, 없는 무기 확인을 위한 조건
     Weapon equipWeapon;         //기존에 장착된 무기를 저장하는 변수를 선언
@@ -93,6 +92,10 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        shield = 1f;
+        hasWeapon = new bool[3];
+        itemSlot = new int[3]; // 배열 초기화
+        weaponSlot = new Weapon[3]; // 배열 초기화
 
         PlayerRigid = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();     //자식 오브젝트에 애니메이션 넣어서 
@@ -103,13 +106,12 @@ public class Player : MonoBehaviour
         {
             LoadData();
         }
-        //GameManager.instance.SaveData(maxHealth, curHealth, maxGold, curGold);  // 플레이어 데이터 저장
         GameManager.instance.Initialization();                                  // 상태 초기화
         GameManager.instance.SetMaxHealth(maxHealth); // 체력 초기화
         GameManager.instance.SetHealth(curHealth); // 체력 초기화
         GameManager.instance.SetGold(curGold);
         GameManager.instance.SetFloor();
-        SetWeapon();
+        SetWeaponUI();
 
     }
 
@@ -237,6 +239,9 @@ public class Player : MonoBehaviour
                     AudioManager.instance.PlaySFX("SwingSword");
                     animator.SetTrigger("doAttackTwohandSword");
                     break;
+                case Weapon.WeaponType.Mace:
+                    animator.SetTrigger("doAttackMace");
+                    break;
             }
             //animator.SetTrigger(equipWeapon.weaponType == Weapon.WeaponType.Melee ? "doSwing" : "doShot");   //무기 타입에 따라 다른 트리거 실행 
 
@@ -298,19 +303,19 @@ public class Player : MonoBehaviour
 
     void Swap()
     {
-        if (sDown1 && (!hasWeapon1 || equipWeaponIndex == slot1))
+        if (sDown1 && (!hasWeapon[0] || equipWeaponIndex == itemSlot[0]))
         {
             Debug.Log("1 스왑 불가");
 
             return;
         }
-        if (sDown2 && (!hasWeapon2 || equipWeaponIndex == slot2))
+        if (sDown2 && (!hasWeapon[1] || equipWeaponIndex == itemSlot[1]))
         {
             Debug.Log("2 스왑 불가");
 
             return;
         }
-        if (sDown3 && (!hasWeapon3 || equipWeaponIndex == slot3))
+        if (sDown3 && (!hasWeapon[2] || equipWeaponIndex == itemSlot[2]))
         {
             Debug.Log("3 스왑 불가");
 
@@ -318,9 +323,9 @@ public class Player : MonoBehaviour
         }
 
         int weaponIndex = -1;
-        if (sDown1) weaponIndex = slot1;
-        if (sDown2) weaponIndex = slot2;
-        if (sDown3) weaponIndex = slot3;
+        if (sDown1) weaponIndex = itemSlot[0];
+        if (sDown2) weaponIndex = itemSlot[1];
+        if (sDown3) weaponIndex = itemSlot[2];
 
         if((sDown1 || sDown2 || sDown3) && !isDodge)
         {
@@ -355,7 +360,7 @@ public class Player : MonoBehaviour
         if(iDown && nearObject != null && !isDodge)   // e키를 했을때 nearobject 비어있지 않고 jump dodge false일때
         {
 
-            if(nearObject.tag.Equals("Weapon") && !hasWeapon3) // 아이템 획득
+            if(nearObject.tag.Equals("Weapon") && !hasWeapon[2]) // 아이템 획득
             {
                 AudioManager.instance.PlaySFX("ItemGet");
 
@@ -473,18 +478,15 @@ public class Player : MonoBehaviour
             }
             if(other.tag.Equals("Punch"))
             {
-                Boss boss = GetComponent<Boss>();
-                if(boss != null)
-                {
-                    PlayerDamage(boss.damage, shield);
-                }
+                //Boss boss = other.GetComponent<Boss>();
+                Bullet bossBullet = other.GetComponent<Bullet>();
+
+                PlayerDamage(bossBullet.damage, shield);
 
                 StartCoroutine(OnDamage());
             }
 
-            
-
-            if (other.tag.Equals("Tornado"))
+            if (other.tag.Equals("Tornado") && !isDodge)
             {
                 BossBullet bossBullet = other.GetComponent<BossBullet>();
                 PlayerDamage(bossBullet.damage , shield);
@@ -495,7 +497,7 @@ public class Player : MonoBehaviour
 
             if (other.tag.Equals("MonsterMelee"))
             {
-                if(!isDamage)
+                if(!isDamage && !isDodge)
                 {
                     Weapon weapon = other.GetComponent<Weapon>();
                     PlayerDamage(weapon.damage, shield);
@@ -506,7 +508,7 @@ public class Player : MonoBehaviour
 
             if (other.tag.Equals("EnemyBullet"))
             {
-                if (!isDamage)
+                if (!isDamage && !isDodge)
                 {
                     Bullet enemyBullet = other.GetComponent<Bullet>();
                     PlayerDamage(enemyBullet.damage, shield);
@@ -659,89 +661,61 @@ public class Player : MonoBehaviour
     {
         Item item = nearWeapon.GetComponent<Item>();
 
-       
-
-        if (!hasWeapon1)
+        if (!hasWeapon[0])
         {
-
-            hasWeapon1 = true;
-            slot1 = item.value;
-
-            Weapon weaponSlot1 = weapons[item.value].GetComponent<Weapon>();
-            weaponSlot1.damage = item.damage;
-            weaponSlot1.rate = item.rate;
-            switch (item.weaponType)
-            {
-                case Item.WeaponType.Sword:
-                    weaponSlot1.weaponType = Weapon.WeaponType.Sword;
-                    break;
-                case Item.WeaponType.ChainSaw:
-                    weaponSlot1.weaponType = Weapon.WeaponType.ChainSaw;
-                    break;
-                case Item.WeaponType.TwohandSword:
-                    weaponSlot1.weaponType = Weapon.WeaponType.TwohandSword;
-                    break;
-            }
+            hasWeapon[0] = true;
+            SetWeapon(0, item);
         }
-        else if (!hasWeapon2)
+        else if (!hasWeapon[1])
         {
-            hasWeapon2 = true;
-            slot2 = item.value;
-
-            Weapon weaponSlot2 = weapons[item.value].GetComponent<Weapon>();
-            weaponSlot2.damage = item.damage;
-            weaponSlot2.rate = item.rate;
-            switch (item.weaponType)
-            {
-                case Item.WeaponType.Sword:
-                    weaponSlot2.weaponType = Weapon.WeaponType.Sword;
-                    break;
-                case Item.WeaponType.ChainSaw:
-                    weaponSlot2.weaponType = Weapon.WeaponType.ChainSaw;
-                    break; 
-                case Item.WeaponType.TwohandSword:
-                    weaponSlot2.weaponType = Weapon.WeaponType.TwohandSword;
-                    break;
-            }
+            hasWeapon[1] = true;
+            SetWeapon(1, item);
         }
-        else if (!hasWeapon3)
+        else if (!hasWeapon[2])
         {
-            hasWeapon3 = true;
-            slot3 = item.value;
-
-            Weapon weaponSlot3 = weapons[item.value].GetComponent<Weapon>();
-            weaponSlot3.damage = item.damage;
-            weaponSlot3.rate = item.rate;
-            switch (item.weaponType)
-            {
-                case Item.WeaponType.Sword:
-                    weaponSlot3.weaponType = Weapon.WeaponType.Sword;
-                    break;
-                case Item.WeaponType.ChainSaw:
-                    weaponSlot3.weaponType = Weapon.WeaponType.ChainSaw;
-                    break; 
-                case Item.WeaponType.TwohandSword:
-                    weaponSlot3.weaponType = Weapon.WeaponType.TwohandSword;
-                    break;
-            }
+            hasWeapon[2] = true;
+            SetWeapon(2, item);
         }
-        SetWeapon();
+
+        SetWeaponUI();
        
     }
-    public void SetWeapon()
+    public void SetWeapon(int i, Item item)
     {
-        //Debug.Log(item.value + "번호의 아이템을 먹었다.");
-        Image itemSlot1 = GameManager.instance.itemSlot1[slot1].GetComponent<Image>();  // 아이템 슬롯 
-        Image itemSlot2 = GameManager.instance.itemSlot2[slot2].GetComponent<Image>();  // 아이템 슬롯 
-        Image itemSlot3 = GameManager.instance.itemSlot3[slot3].GetComponent<Image>();  // 아이템 슬롯 
+        itemSlot[i] = item.value;
+        weaponSlot[i] = weapons[item.value].GetComponent<Weapon>();
+        weaponSlot[i].damage = item.damage;
+        weaponSlot[i].rate = item.rate;
+        switch (item.weaponType)
+        {
+            case Item.WeaponType.Sword:
+                weaponSlot[i].weaponType = Weapon.WeaponType.Sword;
+                break;
+            case Item.WeaponType.ChainSaw:
+                weaponSlot[i].weaponType = Weapon.WeaponType.ChainSaw;
+                break;
+            case Item.WeaponType.TwohandSword:
+                weaponSlot[i].weaponType = Weapon.WeaponType.TwohandSword;
+                break;
+        }
+    }
 
+    public void SetWeaponUI()   // 웨폰 유무에 따라 UI에 표시
+    {
         Color newColor = new Color(255, 255, 255, 255);
-        if (hasWeapon1)
-        { itemSlot1.color = newColor; }
-        if (hasWeapon2)
-        { itemSlot2.color = newColor; }
-        if (hasWeapon3)
-        { itemSlot3.color = newColor; }
+
+        if (hasWeapon[0])
+        {
+            GameManager.instance.itemSlot1[itemSlot[0]].GetComponent<Image>().color = newColor;
+        }
+        if (hasWeapon[1])
+        {
+            GameManager.instance.itemSlot2[itemSlot[1]].GetComponent<Image>().color = newColor;
+        }
+        if (hasWeapon[2])
+        {
+            GameManager.instance.itemSlot3[itemSlot[2]].GetComponent<Image>().color = newColor;
+        }
     }
 
     // 플레이어 체력 회복
@@ -807,6 +781,8 @@ public class Player : MonoBehaviour
         item.tag = "Untagged";
     }
 
+
+  
     public void LoadData()
     {
         GameData data = SaveSystem.LoadData();
@@ -816,13 +792,11 @@ public class Player : MonoBehaviour
         maxGold = data.maxGold;
         curGold = data.curGold;
 
-        slot1 = data.slot1;
-        slot2 = data.slot2;
-        slot3 = data.slot3;
-
-        hasWeapon1 = data.hasWeapon1;
-        hasWeapon2 = data.hasWeapon2;
-        hasWeapon3 = data.hasWeapon3;
+        for (int i = 0; i < 3; i++)
+        {
+            hasWeapon[i] = data.hasWeapon[i];
+            itemSlot[i] = data.itemSlot[i];
+        }
 
     }
     

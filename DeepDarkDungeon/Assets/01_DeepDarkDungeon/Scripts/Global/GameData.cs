@@ -14,14 +14,9 @@ public class GameData
     public int maxGold;
     public int curGold;
 
-    public int slot1;
-    public int slot2;
-    public int slot3;
-
-    public bool hasWeapon1;     //플레이어 무기 관련 함수 - 무기 인벤토리 비슷한
-    public bool hasWeapon2;
-    public bool hasWeapon3;
-
+    // 저장할 무기
+    public bool[] hasWeapon; // 무기 유무
+    public int[] itemSlot;   // 아이템 슬롯
 
     public static bool loadEnable = false;
     public static int floor;
@@ -33,13 +28,14 @@ public class GameData
         maxGold = player.maxGold;
         curGold = player.curGold;
 
-        slot1 = player.slot1;
-        slot2 = player.slot2;
-        slot3 = player.slot3;
 
-        hasWeapon1 = player.hasWeapon1;
-        hasWeapon2 = player.hasWeapon2;
-        hasWeapon3 = player.hasWeapon3;
+        hasWeapon = new bool[3];
+        itemSlot = new int[3]; // 배열 초기화
 
+        for (int i = 0; i < 3; i++)
+        {
+            hasWeapon[i] = player.hasWeapon[i];
+            itemSlot[i] = player.itemSlot[i];
+        }
     }
 }

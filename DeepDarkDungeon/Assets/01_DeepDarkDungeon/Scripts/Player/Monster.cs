@@ -37,6 +37,8 @@ public class Monster : MonoBehaviour
     public Animator anim;
 
     public MeshRenderer[] meshs;
+    public SkinnedMeshRenderer bossMesh;
+
     public Transform playerTarget;
     public GameObject monsterPrefab;
     public Transform spawnA;
@@ -71,6 +73,7 @@ public class Monster : MonoBehaviour
     public bool isDamage;
 
     public int damage;
+    bool traceStart; // 추적 시작기능. 
 
 
 
@@ -93,7 +96,7 @@ public class Monster : MonoBehaviour
         //Animator 컴포넌트 할당
         anim = GetComponent<Animator>();
 
-        meshs = GetComponentsInChildren<MeshRenderer>();
+        bossMesh = GetComponent<SkinnedMeshRenderer>();
 
         transform.LookAt(playerTr.position);
 
@@ -134,9 +137,10 @@ public class Monster : MonoBehaviour
             //}
             else if (distance <= traceDist)     //추적 사정거리 내부에서 추적 시작
             {
+                traceStart = true;              // 지환 : 추적 사정거리에 들어오면 계속 플레이어를 추적
                 state = State.TRACE;
             }
-            else
+            else if (!traceStart)               // 지환 : 추적 사정거리에 들어오면 계속 플레이어를 추적
             {
                 state = State.IDLE;
             }
@@ -300,22 +304,12 @@ public class Monster : MonoBehaviour
                 hp -= weapon.damage;
                 anim.SetTrigger(hashHit);
 
-                GameManager.instance.SetBossHealth(hp);              // 보스 현재 체력 셋팅
+                if (isBoss)
+                { GameManager.instance.SetBossHealth(hp); }            // 보스 현재 체력 셋팅
 
                 if (hp <= 0)
                 {
                     state = State.DIE;
-                    Vector3 keyPosition = new Vector3(transform.position.x, transform.position.y + 1f, transform.position.z); // 열쇠 드롭 위치
-                    Vector3 originalPosition = new Vector3(transform.position.x, transform.position.y, transform.position.z); // 죽음 애니메이션 위치
-                    Quaternion originalRotation = new Quaternion(transform.rotation.x, transform.rotation.y, transform.rotation.z - 90f, 1); // 열쇠 드롭 시 각도 보정
-                    if (exitKeyPrefab != null)
-                    {
-                        GameObject key = Instantiate(exitKeyPrefab, keyPosition, originalRotation);
-                        GameObject deathEffect = Instantiate(bossDeadPrefab, originalPosition, originalRotation);   // 보스 죽음 이펙트
-                        key.tag = "Item";
-                    }
-                    GameManager.instance.BossDead();
-
                 }
 
                 StartCoroutine(OnDamage());
@@ -350,6 +344,16 @@ public class Monster : MonoBehaviour
             Material mat = mesh.material;
             mat.SetColor("_EmissionColor", Color.red * 0.5f);
         }
+        Material firstMaterial = bossMesh.materials[0];
+        Material secondMaterial = bossMesh.materials[1];
+
+        Color originalColor1 = firstMaterial.color;
+        Color originalColor2 = secondMaterial.color;
+
+        firstMaterial.color = Color.red;
+        secondMaterial.color = Color.red;
+
+
         yield return new WaitForSeconds(0.5f);  //무적 타임
 
         isDamage = false;
@@ -358,6 +362,8 @@ public class Monster : MonoBehaviour
             Material mat = mesh.material;
             mat.SetColor("_EmissionColor", Color.black);
         }
+        firstMaterial.color = originalColor1;
+        secondMaterial.color = originalColor2;
 
         if (hp <= 0)
         {
