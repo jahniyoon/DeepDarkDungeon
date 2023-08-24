@@ -69,7 +69,7 @@ public class DungeonObject : MonoBehaviour
                             newGold.tag = "Item";
                         }
 
-                        if (goldValue == 0 && heartPrefab != null) // °ñµå¹ë·ùÀÇ 1 È®·ü·Î ÇÏÆ® »ý¼º
+                        if (goldValue <= 2 && heartPrefab != null) // °ñµå¹ë·ùÀÇ 1 È®·ü·Î ÇÏÆ® »ý¼º
                         {
                             GameObject newHeart = Instantiate(heartPrefab, goldPosition, originalRotation);
                             newHeart.tag = "Item";

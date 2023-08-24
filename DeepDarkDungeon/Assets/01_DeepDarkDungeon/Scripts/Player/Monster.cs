@@ -98,6 +98,7 @@ public class Monster : MonoBehaviour
         //Animator 컴포넌트 할당
         anim = GetComponent<Animator>();
 
+        meshs = GetComponentsInChildren<MeshRenderer>();
         bossMesh = GetComponent<SkinnedMeshRenderer>();
 
         transform.LookAt(playerTr.position);
@@ -183,6 +184,7 @@ public class Monster : MonoBehaviour
                         // Animator의 IsAttack 변수를 true로 설정
                         //anim.SetBool(hashAttack, true);
 
+
                         switch(monsterType)
                         {
                             case Type.A:
@@ -208,7 +210,7 @@ public class Monster : MonoBehaviour
                                 Rigidbody rigidRightBullet = rightInstantBullet.GetComponent<Rigidbody>();
                                 rigidRightBullet.velocity = rightInstantBullet.transform.forward * 3;
 
-                                yield return new WaitForSeconds(0.5f);                           
+                                yield return new WaitForSeconds(1.5f);                           
                             break;
 
                         case Type.C:        
@@ -368,9 +370,10 @@ public class Monster : MonoBehaviour
 
                  
                 }
-                yield return new WaitForSeconds(0.5f);
+                yield return new WaitForSeconds(2f);
 
                 Destroy(gameObject);
+
                 Die();
             }
         }
@@ -445,6 +448,7 @@ public class Monster : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.LookAt(playerTr.position);
+        if (!isDie)
+        { transform.LookAt(playerTr.position); }
     }
 }

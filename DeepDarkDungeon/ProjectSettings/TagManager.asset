@@ -23,6 +23,7 @@ TagManager:
   - BossRoom
   - BossLich
   - Head
+  - Sign
   layers:
   - Default
   - TransparentFX

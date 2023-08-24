@@ -11,6 +11,7 @@ public class EnemyHpBarController : MonoBehaviour
     public Slider hpSlider;
     public TMP_Text hpText;
     public EnemyTest enemy;
+    public Monster enemyHealth;
 
     private Transform cam;
 
@@ -34,16 +35,33 @@ public class EnemyHpBarController : MonoBehaviour
             cam.rotation * Vector3.forward,
             cam.rotation * Vector3.up);
 
-            hpSlider.maxValue = enemy.maxHealth;
-            hpSlider.value = enemy.curHealth;
-            hpText.text = (enemy.curHealth.ToString() + "/" + enemy.maxHealth.ToString());
-
-            if (hpSlider.value == 0)
+            if (enemy != null)
             {
-                gameObject.SetActive(false);
+                hpSlider.maxValue = enemy.maxHealth;
+                hpSlider.value = enemy.curHealth;
+                hpText.text = (enemy.curHealth.ToString() + "/" + enemy.maxHealth.ToString());
 
+                if (hpSlider.value == 0)
+                {
+                    gameObject.SetActive(false);
+                }
             }
+            else if(enemyHealth != null)
+            {
+                hpSlider.maxValue = enemyHealth.maxHp;
+                hpSlider.value = enemyHealth.hp;
+                hpText.text = (enemyHealth.hp.ToString() + "/" + enemyHealth.maxHp.ToString());
+
+                if (hpSlider.value == 0)
+                {
+                    gameObject.SetActive(false);
+                }
+            }
+            
         }
+
+
+        
 
     }
 }
