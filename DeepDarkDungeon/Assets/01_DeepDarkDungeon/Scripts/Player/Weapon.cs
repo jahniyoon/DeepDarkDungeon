@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.Progress;
 
 
 public class Weapon : MonoBehaviour
@@ -12,7 +11,7 @@ public class Weapon : MonoBehaviour
     [SerializeField]
     private int itemNo;
     public int value;
-    public enum WeaponType { Sword, ChainSaw, TwohandSword };
+    public enum WeaponType { Sword, ChainSaw, TwohandSword, ShortSword, Mace };
     public WeaponType weaponType;
     public int damage;
     public float rate;

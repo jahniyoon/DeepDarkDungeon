@@ -5,7 +5,6 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
-using static UnityEditor.Progress;
 
 public class Player : MonoBehaviour
 {
@@ -239,6 +238,9 @@ public class Player : MonoBehaviour
                 case Weapon.WeaponType.TwohandSword:
                     AudioManager.instance.PlaySFX("SwingSword");
                     animator.SetTrigger("doAttackTwohandSword");
+                    break;
+                case Weapon.WeaponType.Mace:
+                    animator.SetTrigger("doAttackMace");
                     break;
             }
             //animator.SetTrigger(equipWeapon.weaponType == Weapon.WeaponType.Melee ? "doSwing" : "doShot");   //무기 타입에 따라 다른 트리거 실행 
@@ -484,7 +486,7 @@ public class Player : MonoBehaviour
                 StartCoroutine(OnDamage());
             }
 
-            if (other.tag.Equals("Tornado"))
+            if (other.tag.Equals("Tornado") && !isDodge)
             {
                 BossBullet bossBullet = other.GetComponent<BossBullet>();
                 PlayerDamage(bossBullet.damage , shield);
@@ -495,7 +497,7 @@ public class Player : MonoBehaviour
 
             if (other.tag.Equals("MonsterMelee"))
             {
-                if(!isDamage)
+                if(!isDamage && !isDodge)
                 {
                     Weapon weapon = other.GetComponent<Weapon>();
                     PlayerDamage(weapon.damage, shield);
@@ -506,7 +508,7 @@ public class Player : MonoBehaviour
 
             if (other.tag.Equals("EnemyBullet"))
             {
-                if (!isDamage)
+                if (!isDamage && !isDodge)
                 {
                     Bullet enemyBullet = other.GetComponent<Bullet>();
                     PlayerDamage(enemyBullet.damage, shield);

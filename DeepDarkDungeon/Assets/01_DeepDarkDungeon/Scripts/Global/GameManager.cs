@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour
     public GameObject gameoverUI;   // 게임 오버 UI
     public GameObject gamePauseUI;   // 게임 포즈 UI
     public GameObject keyUI;
+    public GameObject playerHUD;
 
     [Header("Boss UI instance")]
 
@@ -36,10 +37,6 @@ public class GameManager : MonoBehaviour
     public Image[] itemSlot1;
     public Image[] itemSlot2;
     public Image[] itemSlot3;
-
-    [Header("Camera")]
-    public CinemachineVirtualCamera primaryCamera;
-    public CinemachineVirtualCamera[] virtualCameras;
 
 
 
@@ -69,18 +66,10 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        SwitchToCamera(primaryCamera);
         Initialization();   // 초기화
     }    // } Start()
 
-    // 카메라 전환
-    public void SwitchToCamera(CinemachineVirtualCamera targetCamera)
-    {
-        foreach (CinemachineVirtualCamera camera in virtualCameras)
-        {
-            camera.enabled = camera == targetCamera;
-        }
-    }
+  
 
     // 체력바 UI 플레이어의 체력으로 설정
     public void SetHealth(int health)
@@ -136,11 +125,24 @@ public class GameManager : MonoBehaviour
     public void OnBossRoom()
     {
         isBoss = true;
+        playerHUD.SetActive(false);
         bossUI.SetActive(true);
+        //CameraManager.instance.OnBossRoom();
 
-        SwitchToCamera(primaryCamera);
+        StartCoroutine("BossRoomCutScene");
 
     }
+    IEnumerator BossRoomCutScene()
+    {
+        CameraManager.instance.SwitchToBossRoomCamera();
+        yield return new WaitForSeconds(1f);
+        Time.timeScale = 0.2f;
+        yield return new WaitForSeconds(0.4f);
+        Time.timeScale = 1f;
+        CameraManager.instance.SwitchToPlayerCamera();
+        playerHUD.SetActive(true);
+    }
+
     public void SetBossMaxHealth(int bossMaxHealth, string name)
     {
         bossName.text = string.Format(name);

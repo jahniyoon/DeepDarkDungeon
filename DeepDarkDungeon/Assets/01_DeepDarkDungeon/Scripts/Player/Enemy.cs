@@ -28,7 +28,6 @@ public class Enemy : MonoBehaviour                     //Áß¿ä! navmesh´Â static¿
 
     public Animator anim;
 
-    bool findPlayer = false;
 
    
 

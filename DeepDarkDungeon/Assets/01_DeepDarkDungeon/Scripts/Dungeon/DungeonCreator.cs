@@ -65,6 +65,7 @@ public class DungeonCreator : MonoBehaviour
     public GameObject chestPrefabs;
     public GameObject tablePrefabs;
     public GameObject jarPrefabs;
+    public Transform bossCutSceneCamera;
 
     // 룸 데코레이션 리스트
     Vector3Int spawnRoomCenterPosition; // 스폰 방의 중앙 위치
@@ -73,6 +74,7 @@ public class DungeonCreator : MonoBehaviour
     Vector3Int shopPosition; 
     Vector3Int trapPosition;
     bool isTrapRoom;
+    bool setCamera;
     
     List<Vector3Int> enemyPositions;
     List<Vector3> torchPositions;
@@ -91,9 +93,9 @@ public class DungeonCreator : MonoBehaviour
         //Random.InitState(System.DateTime.Now.Millisecond); // 현재 시간의 밀리초를 랜덤 시드로 사용
         //StartCoroutine(CheckFloorOverlapAndGenerateDungeon());
         AudioManager.instance.PlayMusic("DungeonBGM");
-
         CreateDungeon();
     }
+  
 
     // 던전 생성 메소드 호출
     public void CreateDungeon()
@@ -161,7 +163,6 @@ public class DungeonCreator : MonoBehaviour
 
         CreateEnemies(enemyParent);     // 적 생성
         CreatePlayer();                 // 플레이어 생성
-
 
     }
     // } CreateDungeon()

@@ -22,9 +22,6 @@ public class Boss : Monster
     public readonly int hashAttack2 = Animator.StringToHash("AttackPattern2");
     public readonly int hashAttack3 = Animator.StringToHash("AttackPattern3");
     public readonly int hashAttack4 = Animator.StringToHash("AttackPattern4");
-    
-
-
 
     // Start is called before the first frame update
     void Awake()
@@ -38,6 +35,7 @@ public class Boss : Monster
         meshs = GetComponents<MeshRenderer>();
 
     }
+ 
 
     public override IEnumerator MonsterAction()
     {
@@ -151,7 +149,9 @@ public class Boss : Monster
     // Update is called once per frame
     void Update()
     {
-        if(isDie)
+       
+
+        if (isDie)
         {
             StopAllCoroutines();
             return;
