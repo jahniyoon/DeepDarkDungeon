@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;    //random 모호하다고 에러 나올때
 
 
 public class Spawner : MonoBehaviour
@@ -8,6 +10,9 @@ public class Spawner : MonoBehaviour
     public Transform playerTr;
 
     public GameObject shuriken;
+    
+    public Transform spawnA;
+    
     public float spawnRateMin = default;
     public float spawnRateMax = default;
 
@@ -39,14 +44,13 @@ public class Spawner : MonoBehaviour
             timeAfterSpawn = 0f;
 
             Vector3 arrowPosition = transform.position;
-            arrowPosition.y = 4.0f;
+            //arrowPosition.y = 4.0f;
 
-            GameObject arrow
-                = Instantiate(shuriken, arrowPosition, transform.rotation);
+            GameObject instantSpawnA = Instantiate(shuriken, spawnA.position, spawnA.rotation);
+            
 
-            arrow.transform.LookAt(playerTr.position);
-
-
+            instantSpawnA.transform.LookAt(playerTr.position);
+            
             spawnRate = Random.Range(spawnRateMin, spawnRateMax);
         }
     }
