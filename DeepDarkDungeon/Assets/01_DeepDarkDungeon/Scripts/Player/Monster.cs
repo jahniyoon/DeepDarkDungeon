@@ -16,7 +16,7 @@ public class Monster : MonoBehaviour
         DIE
     }
 
-    public enum Type { A, B, C }
+    public enum Type { A, B, C, D, E }
     public Type monsterType;
 
     //몬스터의 현재 상태
@@ -40,20 +40,30 @@ public class Monster : MonoBehaviour
     public SkinnedMeshRenderer bossMesh;
 
     public Transform playerTarget;
-    public GameObject bullet;
     public GameObject monsterPrefab;
+    public Transform spawnA;
+    public Transform spawnB;
+    public Transform spawnC;
+    public GameObject bullet;
+    public GameObject rock;
+    //public GameObject monsterPrefab;
 
     [Header("Drop Item")]
     public GameObject exitKeyPrefab;
     public GameObject bossDeadPrefab;
+    
 
+
+    
 
     // Animator 파라미터의 해시값 추출
     public readonly int hashTrace = Animator.StringToHash("IsTrace");
     public readonly int hashAttack = Animator.StringToHash("IsAttack");
     public readonly int hashHit = Animator.StringToHash("Hit");
     public readonly int hashDie = Animator.StringToHash("Die");
+    public readonly int hashAttack1 = Animator.StringToHash("IsAttack1");
     public readonly int hashSpawn = Animator.StringToHash("doSpawn");
+    public readonly int hashRock = Animator.StringToHash("doRock");
 
     public bool isBoss;
     public int maxHp = 100;
@@ -175,12 +185,12 @@ public class Monster : MonoBehaviour
                         {
                             case Type.A:
                                 anim.SetBool(hashAttack, true);
-
                                 break;
 
                             case Type.B:
-                              
-                                 yield return new WaitForSeconds(0.5f);
+
+                            anim.SetBool(hashAttack, true);
+                            yield return new WaitForSeconds(0.65f);
                                  GameObject instantBullet = Instantiate(bullet, transform.position, transform.rotation);
                                  Rigidbody rigidBullet = instantBullet.GetComponent<Rigidbody>();
                                  rigidBullet.velocity = transform.forward * 3;
@@ -194,34 +204,78 @@ public class Monster : MonoBehaviour
                                 Rigidbody rigidRightBullet = rightInstantBullet.GetComponent<Rigidbody>();
                                 rigidRightBullet.velocity = rightInstantBullet.transform.forward * 3;
 
-                                yield return new WaitForSeconds(2f);
+                                yield return new WaitForSeconds(0.15f);                           
                             break;
 
-                        case Type.C:    //기사 패턴
-                            break;
-                            //int attackPattern = Random.Range(1, 3);
+                        case Type.C:        
+                            
+                            int knight = Random.Range(0, 3);
+                            
+                            switch (knight)
+                            {
+                                case 0:
+                                    anim.SetBool(hashAttack, true);
+                                    yield return new WaitForSeconds(2.0f);
+                                    anim.SetBool(hashAttack, false);
+                                    yield return new WaitForSeconds(0.1f);
+                                    break;
 
+                                case 1:
+                                    anim.SetBool(hashAttack1, true);
+                                    yield return new WaitForSeconds(2.0f);
+                                    anim.SetBool(hashAttack1, false);
+                                    yield return new WaitForSeconds(0.1f);
+                                    break;
 
-                            //// 선택한 패턴에 따라 동작 실행
-                            //switch (attackPattern)
-                            //{
-                            //    case 1:
-                            //        anim.SetBool(hashAttack, true);
-                            //        yield return new WaitForSeconds(2.5f);
-                            //        anim.SetBool(hashAttack, false);
-                            //        break;
+                                case 2:
+                                    anim.SetBool(hashSpawn, true);
+                                    yield return new WaitForSeconds(1.5f);
 
-                            //    case 2:
-                            //        anim.SetBool(hashSpawn, true);
-                            //        GameObject instantMonsterPrefab = Instantiate(monsterPrefab, transform.position, transform.rotation);
-                            //        GameObject instantMonsterPrefab1 = Instantiate(monsterPrefab, transform.position, Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(0, -15, 0)));
-                            //        GameObject instantMonsterPrefab2 = Instantiate(monsterPrefab, transform.position, Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(0, 15, 0)));
+                                    GameObject instantSpawnA = Instantiate(monsterPrefab, spawnA.position, spawnA.rotation);
+                                    GameObject instantSpawnB = Instantiate(monsterPrefab, spawnB.position, spawnB.rotation);
+                                    GameObject instantSpawnC = Instantiate(monsterPrefab, spawnC.position, spawnC.rotation);
+                                    anim.SetBool(hashSpawn, false);
 
-                            //        anim.SetBool(hashSpawn, false);
-                            //        yield return new WaitForSeconds(0.1f);
-                            //        break;
+                                    yield return new WaitForSeconds(1.0f);
+                                    break;
                             }
+                            break;
 
+                            case Type.D:    
+
+                            int dog = Random.Range(0, 2);
+
+                            switch(dog)
+                            {
+                                case 0:
+                                    anim.SetBool(hashAttack, true);
+                                    yield return new WaitForSeconds(2.5f);
+                                    anim.SetBool(hashAttack, false);
+                                    yield return new WaitForSeconds(0.1f);
+                                    break;
+                                case 1:
+                                    anim.SetBool(hashRock, true);
+                                    yield return new WaitForSeconds(0.76f);
+                                    
+                                    GameObject instantRock = Instantiate(rock, transform.position, transform.rotation);
+                                    Rigidbody rigidRock = instantRock.GetComponent<Rigidbody>();
+                                    rigidRock.velocity = transform.forward * 3;
+
+                                    GameObject leftInstantRock = Instantiate(rock, transform.position, Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(0, -30, 0)));
+                                    Rigidbody rigidLeftrock = leftInstantRock.GetComponent<Rigidbody>();
+                                    rigidLeftrock.velocity = leftInstantRock.transform.forward * 3;
+
+
+                                    GameObject rightInstantRock = Instantiate(rock, transform.position, Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(0, 30, 0)));
+                                    Rigidbody rigidRightRock = rightInstantRock.GetComponent<Rigidbody>();
+                                    rigidRightRock.velocity = rigidRightRock.transform.forward * 3;
+
+                                    anim.SetBool(hashRock, false);
+                                    yield return new WaitForSeconds(1.0f);
+                                    break;
+                            }
+                            break;
+                        }
                         break;
 
                     //사망
@@ -232,7 +286,8 @@ public class Monster : MonoBehaviour
                         //사망 애니메이션 실행
                         anim.SetTrigger(hashDie);
                         //몬스터의 Collider 컴포넌트 비활성화
-                        GetComponent<CapsuleCollider>().enabled = false;
+                        GetComponent<BoxCollider>().enabled = false;
+                    Destroy(gameObject);
                         break;
                 }
                 yield return new WaitForSeconds(0.3f);
@@ -323,6 +378,6 @@ public class Monster : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-       
+        transform.LookAt(playerTr.position);
     }
 }

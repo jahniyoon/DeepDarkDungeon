@@ -21,7 +21,7 @@ public class BossRock : Bullet
 
     IEnumerator GainPowerTimer()
     {
-        yield return new WaitForSeconds(2.2f);   //기 모으는
+        yield return new WaitForSeconds(0.7f);   //기 모으는
         isShoot = true;  //쏜다
     }
 
@@ -32,13 +32,13 @@ public class BossRock : Bullet
 
             angularPower += 0.3f;
             
-            scaleValue += 0.03f;
+            scaleValue += 0.035f;
             
             transform.localScale = Vector3.one * scaleValue;
             rigid.AddTorque(transform.right * angularPower, ForceMode.Acceleration);  //계속 속도 올려야해서Acceleration
 
 
-            yield return null;   //꼭 써야한다
+            yield return null;   
         }
     }
 

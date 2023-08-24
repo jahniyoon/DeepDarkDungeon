@@ -315,7 +315,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1460583990500435406
 Transform:
   m_ObjectHideFlags: 0
@@ -408,7 +408,13 @@ MonoBehaviour:
   meshs: []
   playerTarget: {fileID: 0}
   bullet: {fileID: 3415127847821838345, guid: 7635ee39fe4648246a07790ef9f13ce4, type: 3}
+  monsterPrefab: {fileID: 0}
+  exitKeyPrefab: {fileID: 0}
+  bossDeadPrefab: {fileID: 0}
+  isBoss: 0
+  maxHp: 100
   hp: 100
+  name: 
   isDamage: 0
   damage: 15
 --- !u!195 &734715372
