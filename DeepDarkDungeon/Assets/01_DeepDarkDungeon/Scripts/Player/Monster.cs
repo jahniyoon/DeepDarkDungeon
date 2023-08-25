@@ -35,6 +35,7 @@ public class Monster : MonoBehaviour
     public BoxCollider boxCollider;
     public NavMeshAgent agent;
     public Animator anim;
+    public Transform target;
 
     public MeshRenderer[] meshs;
     public SkinnedMeshRenderer bossMesh;
@@ -51,10 +52,11 @@ public class Monster : MonoBehaviour
     [Header("Drop Item")]
     public GameObject exitKeyPrefab;
     public GameObject bossDeadPrefab;
-    
 
 
-    
+
+    public float intensityFactor = 2f;
+
 
     // Animator 파라미터의 해시값 추출
     public readonly int hashTrace = Animator.StringToHash("IsTrace");
@@ -99,6 +101,8 @@ public class Monster : MonoBehaviour
         bossMesh = GetComponent<SkinnedMeshRenderer>();
 
         transform.LookAt(playerTr.position);
+
+        meshs = GetComponentsInChildren<MeshRenderer>();
 
         if (isBoss)
         {
@@ -229,14 +233,14 @@ public class Monster : MonoBehaviour
 
                                 case 2:
                                     anim.SetBool(hashSpawn, true);
-                                    yield return new WaitForSeconds(1.5f);
+                                    yield return new WaitForSeconds(0.8f);
 
                                     GameObject instantSpawnA = Instantiate(monsterPrefab, spawnA.position, spawnA.rotation);
                                     GameObject instantSpawnB = Instantiate(monsterPrefab, spawnB.position, spawnB.rotation);
                                     GameObject instantSpawnC = Instantiate(monsterPrefab, spawnC.position, spawnC.rotation);
                                     anim.SetBool(hashSpawn, false);
 
-                                    yield return new WaitForSeconds(1.0f);
+                                    yield return new WaitForSeconds(0.1f);
                                     break;
                             }
                             break;
@@ -296,24 +300,24 @@ public class Monster : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.tag.Equals("Melee"))
+        if(other.tag.Equals("Melee"))
         {
-            if (!isDamage)
+
+            Weapon weapon = other.GetComponent<Weapon>();
+            hp -= weapon.damage;
+            //anim.SetTrigger(hashHit);
+
+            //Debug.Log("현재 hp: " + hp);
+
+            if (isBoss)
+            { GameManager.instance.SetBossHealth(hp); }            // 보스 현재 체력 셋팅
+
+            if (hp <= 0)
             {
-                Weapon weapon = other.GetComponent<Weapon>();
-                hp -= weapon.damage;
-                anim.SetTrigger(hashHit);
-
-                if (isBoss)
-                { GameManager.instance.SetBossHealth(hp); }            // 보스 현재 체력 셋팅
-
-                if (hp <= 0)
-                {
-                    state = State.DIE;
-                }
-
-                StartCoroutine(OnDamage());
+                state = State.DIE;
             }
+
+            StartCoroutine(OnDamage());
 
         }
     }
@@ -336,22 +340,62 @@ public class Monster : MonoBehaviour
 
     IEnumerator OnDamage()
     {
-        isDamage = true;
-        foreach (MeshRenderer mesh in meshs)         //반복문을 사용하여 모든 재질의 색상 변경
+        if(hp > 0)
         {
-            //mesh.material.color = Color.red;
+            //Debug.Log("색깔 변화");
 
-            Material mat = mesh.material;
-            mat.SetColor("_EmissionColor", Color.red * 0.5f);
+            foreach (MeshRenderer mesh in meshs)         //반복문을 사용하여 모든 재질의 색상 변경
+            {
+                //Material mat = mesh.material;
+
+                //// 기존 Emission intensity 값을 가져옴
+                //Color originalEmissionColor = mat.GetColor("_EmissionColor");
+                //float originalIntensity = (originalEmissionColor.r + originalEmissionColor.g + originalEmissionColor.b) / 3f;
+
+                //// Intensity를 2배로 증가시켜 새로운 Emission intensity 값을 만듦
+                //float newIntensity = originalIntensity * 2f;
+
+                //// 새로운 Emission intensity 값을 색상으로 설정하여 Emission 색상을 변경
+                //Color newEmissionColor = new Color(newIntensity, newIntensity, newIntensity);
+                //mat.SetColor("_EmissionColor", newEmissionColor);
+
+                //// Emission 활성화
+                //mat.EnableKeyword("_EMISSION");
+
+                //// 변경 사항 적용
+                //mesh.material = mat;
+
+
+                //Renderer renderer = mesh.GetComponent<Renderer>();
+                //Material mat = renderer.material;
+
+                //float emission = Mathf.PingPong(Time.time, 1.0f);
+                //Color baseColor = Color.yellow;
+                //Color finalColor = baseColor * Mathf.LinearToGammaSpace(emission);
+
+                //mat.SetColor("_EmissionColor", Color.red * 2.0f);
+
+                Material mat = mesh.material;                          //원래 코드
+                mat.SetColor("_EmissionColor", Color.red * 2f);
+
+                mat.EnableKeyword("_EMISSION");
+
+                mesh.material = mat;
+
+                //mat.GetComponent<Renderer>().material.SetColor("_EmissionColor", Color.red * 2f);
+            }
+          
         }
-        Material firstMaterial = bossMesh.materials[0];
-        Material secondMaterial = bossMesh.materials[1];
+        
+        //Material firstMaterial = bossMesh.materials[0];
+        //Material secondMaterial = bossMesh.materials[1];
 
-        Color originalColor1 = firstMaterial.color;
-        Color originalColor2 = secondMaterial.color;
+        //Color originalColor1 = firstMaterial.color;
+        //Color originalColor2 = secondMaterial.color;
 
-        firstMaterial.color = Color.red;
-        secondMaterial.color = Color.red;
+        //firstMaterial.color = Color.red;
+        //secondMaterial.color = Color.red;
+
 
 
         yield return new WaitForSeconds(0.5f);  //무적 타임
@@ -359,11 +403,12 @@ public class Monster : MonoBehaviour
         isDamage = false;
         foreach (MeshRenderer mesh in meshs)
         {
-            Material mat = mesh.material;
+
+            Material mat = mesh.material;                      //원래 사용하던
             mat.SetColor("_EmissionColor", Color.black);
         }
-        firstMaterial.color = originalColor1;
-        secondMaterial.color = originalColor2;
+        //firstMaterial.color = originalColor1;
+        //secondMaterial.color = originalColor2;
 
         if (hp <= 0)
         {

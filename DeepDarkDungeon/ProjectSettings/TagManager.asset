@@ -23,6 +23,7 @@ TagManager:
   - BossRoom
   - BossLich
   - Head
+  - Arrow
   layers:
   - Default
   - TransparentFX

@@ -1,3 +1,4 @@
+using Cinemachine.Utility;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ public class Spawner : MonoBehaviour
 {
     public Transform playerTr;
 
-    public GameObject shuriken;
+    public GameObject shurikenPrefab;
     
     public Transform spawnA;
     
@@ -43,11 +44,14 @@ public class Spawner : MonoBehaviour
         {
             timeAfterSpawn = 0f;
 
-            Vector3 arrowPosition = transform.position;
+            Vector3 Shuriken = new Vector3(transform.position.x, transform.position.y, transform.position.z);
+            //Shuriken.y = 1.0f;
             //arrowPosition.y = 4.0f;
 
-            GameObject instantSpawnA = Instantiate(shuriken, spawnA.position, spawnA.rotation);
-            
+            GameObject instantSpawnA = Instantiate(shurikenPrefab, spawnA.position, spawnA.rotation);
+            //GameObject shuriken = Instantiate(shurikenPrefab, Shuriken, transform.rotation);
+            Rigidbody rigidSpawnA = instantSpawnA.GetComponent<Rigidbody>();
+            rigidSpawnA.velocity = transform.forward * 3;
 
             instantSpawnA.transform.LookAt(playerTr.position);
             
