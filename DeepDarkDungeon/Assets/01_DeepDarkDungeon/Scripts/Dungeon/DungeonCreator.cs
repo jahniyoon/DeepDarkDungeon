@@ -308,7 +308,7 @@ public class DungeonCreator : MonoBehaviour
                 }
                 Vector3 randomArea = new Vector3(randomPosX, 0, randomPosY);
                 spikePositions.Add(randomArea);
-                Debug.Log("스파이크 생성되나?" + spikeNum);
+                //Debug.Log("스파이크 생성되나?" + spikeNum);
             }
         }
     }
