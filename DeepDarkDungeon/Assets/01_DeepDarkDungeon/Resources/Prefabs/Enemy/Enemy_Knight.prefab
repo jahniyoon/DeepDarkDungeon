@@ -230,7 +230,7 @@ MonoBehaviour:
   goldPrefab: {fileID: 82943549552955422, guid: d92c79644cd1a8e479a9ac764a15249d, type: 3}
   goldMaxValue: 8
   isBoss: 0
-  maxHp: 55
+  maxHp: 35
   hp: 55
   name: 
   isDamage: 0

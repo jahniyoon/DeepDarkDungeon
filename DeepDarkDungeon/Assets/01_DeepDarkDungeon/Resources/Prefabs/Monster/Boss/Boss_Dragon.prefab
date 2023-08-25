@@ -801,10 +801,12 @@ MonoBehaviour:
   rock: {fileID: 0}
   exitKeyPrefab: {fileID: 245546409976378223, guid: da1b82863383d4f4da6171aebdabc5a8, type: 3}
   bossDeadPrefab: {fileID: 2381112161245072353, guid: 5876d6a5eec720847a125748b77ad442, type: 3}
+  goldPrefab: {fileID: 0}
+  goldMaxValue: 0
   isBoss: 1
   maxHp: 100
   hp: 100
-  name: "\uB9CC\uB144\uAC04 \uAD76\uC8FC\uB9B0 \uC6A9\uC6A9\uC774"
+  bossName: "\uB9CC\uB144\uAC04 \uAD76\uC8FC\uB9B0 \uC6A9\uC6A9\uC774"
   isDamage: 0
   damage: 20
   tornado: {fileID: 8816445178758061963, guid: 64c44edfc8f6b3747acc1e9103b981b8, type: 3}
@@ -1067,6 +1069,7 @@ MonoBehaviour:
   isMelee: 0
   isRock: 0
   isDestroy: 0
+  particle: {fileID: 0}
 --- !u!1 &1600914050962190987
 GameObject:
   m_ObjectHideFlags: 0
@@ -1161,6 +1164,7 @@ MonoBehaviour:
   isMelee: 0
   isRock: 0
   isDestroy: 0
+  particle: {fileID: 0}
 --- !u!1 &1600981017686110507
 GameObject:
   m_ObjectHideFlags: 0
@@ -1379,6 +1383,7 @@ MonoBehaviour:
   isMelee: 0
   isRock: 0
   isDestroy: 0
+  particle: {fileID: 0}
 --- !u!4 &2826848202635606481 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 226886655881651891, guid: 6c21a8e1d91bf6442885c8303fecff94, type: 3}

@@ -281,6 +281,7 @@ public class EnemyTest : MonoBehaviour                     //중요! navmesh는 sta
             reactVec += Vector3.up;                             //백터 반대방향으로 설정
             rigid.AddForce(reactVec * 2f, ForceMode.Impulse);    //반대방향으로 힘이 가해진다
             yield return new WaitForSeconds(0.5f);
+            AudioManager.instance.PlaySFX("Puff");
 
             Destroy(gameObject);
             Die();
