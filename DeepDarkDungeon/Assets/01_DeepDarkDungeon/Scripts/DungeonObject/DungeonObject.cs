@@ -56,9 +56,10 @@ public class DungeonObject : MonoBehaviour
                     Vector3 originalPosition = transform.position; // 기존 박스의 위치 저장
                     Quaternion originalRotation = transform.rotation; // 기존 박스의 각도 저장
                     GameObject newObject = Instantiate(brokePrefab, originalPosition, originalRotation);
+                     AudioManager.instance.PlaySFX("BoxBroken");
 
-                    // 부서질 때 골드 드롭 타입이면 골드 드롭
-                    if (type == Type.GoldDrop)  
+            // 부서질 때 골드 드롭 타입이면 골드 드롭
+            if (type == Type.GoldDrop)  
                     {
                         int goldValue = Random.Range(0, goldMaxValue);    // 골드 밸류중 랜덤으로 골드 생성
                             Vector3 goldPosition = new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z); // 기존 박스의 위치 저장

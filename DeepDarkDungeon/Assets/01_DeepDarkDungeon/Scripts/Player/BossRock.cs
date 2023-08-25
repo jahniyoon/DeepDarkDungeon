@@ -32,7 +32,7 @@ public class BossRock : Bullet
 
             angularPower += 0.3f;
             
-            scaleValue += 0.035f;
+            scaleValue += 0.08f;
             
             transform.localScale = Vector3.one * scaleValue;
             rigid.AddTorque(transform.right * angularPower, ForceMode.Acceleration);  //계속 속도 올려야해서Acceleration

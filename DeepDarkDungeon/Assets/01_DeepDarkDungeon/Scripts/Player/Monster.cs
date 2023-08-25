@@ -70,7 +70,7 @@ public class Monster : MonoBehaviour
     public bool isBoss;
     public int maxHp = 100;
     public int hp = 100;
-    public string name;
+    public string bossName;
 
     public bool isDamage;
 
@@ -105,7 +105,7 @@ public class Monster : MonoBehaviour
 
         if (isBoss)
         {
-            GameManager.instance.SetBossMaxHealth(maxHp, name); // 보스 맥스 체력 셋팅
+            GameManager.instance.SetBossMaxHealth(maxHp, bossName); // 보스 맥스 체력 셋팅
             GameManager.instance.SetBossHealth(hp);              // 보스 현재 체력 셋팅
         }
         //몬스터의 상태를 체크하는 코루틴 함수 호출
@@ -265,6 +265,7 @@ public class Monster : MonoBehaviour
                                     
                                     GameObject instantRock = Instantiate(rock, transform.position, transform.rotation);
                                     Rigidbody rigidRock = instantRock.GetComponent<Rigidbody>();
+
                                     rigidRock.velocity = transform.forward * 3;
 
                                     GameObject leftInstantRock = Instantiate(rock, transform.position, Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(0, -30, 0)));
@@ -317,10 +318,44 @@ public class Monster : MonoBehaviour
                 {
                     state = State.DIE;
                 }
+                Vector3 reactVec = transform.position - other.transform.position;   //넉백
 
-                StartCoroutine(OnDamage());
+                StartCoroutine(OnDamage(reactVec));
+            }
+        }
+        else if (other.tag.Equals("Bullet"))
+        {
+            Bullet enemyBullet = other.GetComponent<Bullet>();
+            hp -= enemyBullet.damage;
+            //anim.SetTrigger(hashHit);
+
+            if (isBoss)
+            { GameManager.instance.SetBossHealth(hp); }            // 보스 현재 체력 셋팅
+
+            if (hp <= 0)
+            {
+                state = State.DIE;
             }
 
+            Vector3 reactVec = transform.position - other.transform.position;   //넉백
+            StartCoroutine(OnDamage(reactVec));
+        }
+        else if (other.tag.Equals("EnemyBullet"))
+        {
+            Bullet enemyBullet = other.GetComponent<Bullet>();
+            hp -= enemyBullet.damage;
+            //anim.SetTrigger(hashHit);
+
+            if (isBoss)
+            { GameManager.instance.SetBossHealth(hp); }            // 보스 현재 체력 셋팅
+
+            if (hp <= 0)
+            {
+                state = State.DIE;
+            }
+
+            Vector3 reactVec = transform.position - other.transform.position;   //넉백
+            StartCoroutine(OnDamage(reactVec));
         }
     }
 
@@ -340,8 +375,10 @@ public class Monster : MonoBehaviour
         }
     }
 
-    IEnumerator OnDamage()
+    IEnumerator OnDamage(Vector3 reactVec)
     {
+        AudioManager.instance.PlaySFX("Hit");
+
         if (!isBoss)    // 기존 스크립트
         {
             isDamage = true;
@@ -370,6 +407,10 @@ public class Monster : MonoBehaviour
 
                  
                 }
+
+                reactVec = reactVec.normalized;
+                reactVec += Vector3.up;                             //백터 반대방향으로 설정
+                rigid.AddForce(reactVec * 2f, ForceMode.Impulse);    //반대방향으로 힘이 가해진다
                 yield return new WaitForSeconds(2f);
 
                 Destroy(gameObject);
@@ -416,6 +457,14 @@ public class Monster : MonoBehaviour
                     mesh.material.color = Color.gray;
                 }
 
+                reactVec = reactVec.normalized;
+                reactVec += Vector3.up;                             //백터 반대방향으로 설정
+                rigid.AddForce(reactVec * 2f, ForceMode.Impulse);    //반대방향으로 힘이 가해진다
+                yield return new WaitForSeconds(2f);
+
+                Destroy(gameObject);
+
+                Die();
             }
         }
     }
@@ -437,11 +486,12 @@ public class Monster : MonoBehaviour
             for (int i = 0; i <= goldValue; i++)
             {
                 GameObject newGold = Instantiate(goldPrefab, originalPosition, originalRotation);
-                GameObject death = Instantiate(bossDeadPrefab, deathPosition, originalRotation);
-                death.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f); // 스케일 조절
 
                 newGold.tag = "Item";
             }
+            AudioManager.instance.PlaySFX("Puff");
+            GameObject death = Instantiate(bossDeadPrefab, deathPosition, originalRotation);
+            death.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f); // 스케일 조절
         }
     }
 

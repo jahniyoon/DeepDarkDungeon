@@ -1232,8 +1232,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyType: 0
-  maxHealth: 55
-  curHealth: 55
+  maxHealth: 35
+  curHealth: 35
   target: {fileID: 0}
   meleeArea: {fileID: 7754978843876545805}
   bullet: {fileID: 0}
