@@ -8,7 +8,7 @@ public class ItemDBEntity
 
     public int itemNum;
     public Type type;
-    public string name;
+    public string itemName;
     public int value;
     public int price;
     public WeaponType weaponType;

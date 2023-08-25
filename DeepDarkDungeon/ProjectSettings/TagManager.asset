@@ -23,7 +23,11 @@ TagManager:
   - BossRoom
   - BossLich
   - Head
+<<<<<<< HEAD
   - Arrow
+=======
+  - Sign
+>>>>>>> origin/feature/Jihwan
   layers:
   - Default
   - TransparentFX

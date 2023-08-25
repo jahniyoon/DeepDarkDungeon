@@ -779,7 +779,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 231f3723610490b4c888727c5235e570, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  monsterType: 2
+  monsterType: 4
   state: 0
   traceDist: 3.5
   attackDist: 1.9
@@ -793,8 +793,12 @@ MonoBehaviour:
   meshs: []
   bossMesh: {fileID: 0}
   playerTarget: {fileID: 9042242847765596113, guid: de97b84b2851b4e4080ed3bc534f6e4c, type: 3}
-  bullet: {fileID: 0}
   monsterPrefab: {fileID: 0}
+  spawnA: {fileID: 0}
+  spawnB: {fileID: 0}
+  spawnC: {fileID: 0}
+  bullet: {fileID: 0}
+  rock: {fileID: 0}
   exitKeyPrefab: {fileID: 245546409976378223, guid: da1b82863383d4f4da6171aebdabc5a8, type: 3}
   bossDeadPrefab: {fileID: 2381112161245072353, guid: 5876d6a5eec720847a125748b77ad442, type: 3}
   isBoss: 1
@@ -806,7 +810,6 @@ MonoBehaviour:
   tornado: {fileID: 8816445178758061963, guid: 64c44edfc8f6b3747acc1e9103b981b8, type: 3}
   tornadoA: {fileID: 266719715}
   isLook: 1
-  bossCamera: {fileID: 0}
 --- !u!1 &1599457897788085995
 GameObject:
   m_ObjectHideFlags: 0

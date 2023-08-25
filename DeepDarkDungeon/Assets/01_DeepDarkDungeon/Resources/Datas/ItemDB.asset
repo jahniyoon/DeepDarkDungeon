@@ -15,7 +15,11 @@ MonoBehaviour:
   Entities:
   - itemNum: 0
     type: 0
+<<<<<<< .merge_file_3bP47e
     name: 
+=======
+    itemName: 
+>>>>>>> .merge_file_4tuNY0
     value: 0
     price: 0
     weaponType: 0
@@ -23,7 +27,11 @@ MonoBehaviour:
     rate: 0
   - itemNum: 1
     type: 0
+<<<<<<< .merge_file_3bP47e
     name: Gold
+=======
+    itemName: Gold
+>>>>>>> .merge_file_4tuNY0
     value: 10
     price: 0
     weaponType: 0
@@ -31,7 +39,11 @@ MonoBehaviour:
     rate: 0
   - itemNum: 2
     type: 2
+<<<<<<< .merge_file_3bP47e
     name: Heart
+=======
+    itemName: "\uD558\uD2B8 | HP 50+"
+>>>>>>> .merge_file_4tuNY0
     value: 50
     price: 200
     weaponType: 0
@@ -39,7 +51,11 @@ MonoBehaviour:
     rate: 0
   - itemNum: 3
     type: 7
+<<<<<<< .merge_file_3bP47e
     name: Speed
+=======
+    itemName: "\uC774\uB3D9\uC18D\uB3C4 +"
+>>>>>>> .merge_file_4tuNY0
     value: 0
     price: 300
     weaponType: 0
@@ -47,7 +63,11 @@ MonoBehaviour:
     rate: 0
   - itemNum: 4
     type: 6
+<<<<<<< .merge_file_3bP47e
     name: Shield
+=======
+    itemName: "\uC2E4\uB4DC |  \uBC29\uC5B4\uB825+"
+>>>>>>> .merge_file_4tuNY0
     value: 0
     price: 400
     weaponType: 0
@@ -55,7 +75,11 @@ MonoBehaviour:
     rate: 0
   - itemNum: 5
     type: 8
+<<<<<<< .merge_file_3bP47e
     name: Power
+=======
+    itemName: "\uD30C\uC6CC +"
+>>>>>>> .merge_file_4tuNY0
     value: 0
     price: 500
     weaponType: 1
@@ -63,7 +87,11 @@ MonoBehaviour:
     rate: 2
   - itemNum: 6
     type: 0
+<<<<<<< .merge_file_3bP47e
     name: 
+=======
+    itemName: 
+>>>>>>> .merge_file_4tuNY0
     value: 0
     price: 0
     weaponType: 0
@@ -71,7 +99,11 @@ MonoBehaviour:
     rate: 0
   - itemNum: 7
     type: 0
+<<<<<<< .merge_file_3bP47e
     name: 
+=======
+    itemName: 
+>>>>>>> .merge_file_4tuNY0
     value: 0
     price: 0
     weaponType: 0
@@ -79,7 +111,11 @@ MonoBehaviour:
     rate: 0
   - itemNum: 8
     type: 0
+<<<<<<< .merge_file_3bP47e
     name: 
+=======
+    itemName: 
+>>>>>>> .merge_file_4tuNY0
     value: 0
     price: 0
     weaponType: 0
@@ -87,7 +123,11 @@ MonoBehaviour:
     rate: 0
   - itemNum: 9
     type: 0
+<<<<<<< .merge_file_3bP47e
     name: 
+=======
+    itemName: 
+>>>>>>> .merge_file_4tuNY0
     value: 0
     price: 0
     weaponType: 0
@@ -95,7 +135,11 @@ MonoBehaviour:
     rate: 0
   - itemNum: 10
     type: 3
+<<<<<<< .merge_file_3bP47e
     name: Hammer
+=======
+    itemName: "\uBFC5\uB9DD\uCE58"
+>>>>>>> .merge_file_4tuNY0
     value: 0
     price: 300
     weaponType: 2
@@ -103,7 +147,11 @@ MonoBehaviour:
     rate: 1.3
   - itemNum: 11
     type: 3
+<<<<<<< .merge_file_3bP47e
     name: Sword
+=======
+    itemName: "\uB0A1\uC740 \uAC80"
+>>>>>>> .merge_file_4tuNY0
     value: 1
     price: 500
     weaponType: 0
@@ -111,7 +159,11 @@ MonoBehaviour:
     rate: 0.8
   - itemNum: 12
     type: 3
+<<<<<<< .merge_file_3bP47e
     name: ChainSaw
+=======
+    itemName: "\uCCB4\uC778-\uC3D8\uC6B0"
+>>>>>>> .merge_file_4tuNY0
     value: 2
     price: 800
     weaponType: 1
@@ -119,7 +171,11 @@ MonoBehaviour:
     rate: 2
   - itemNum: 13
     type: 3
+<<<<<<< .merge_file_3bP47e
     name: DarkSword
+=======
+    itemName: "\uB2E4\uD06C \uC18C\uB4DC"
+>>>>>>> .merge_file_4tuNY0
     value: 3
     price: 1000
     weaponType: 0
@@ -127,7 +183,11 @@ MonoBehaviour:
     rate: 0.4
   - itemNum: 14
     type: 3
+<<<<<<< .merge_file_3bP47e
     name: ForestMourn
+=======
+    itemName: "\uC11C\uB9AC\uD55C"
+>>>>>>> .merge_file_4tuNY0
     value: 4
     price: 2000
     weaponType: 2
@@ -135,15 +195,25 @@ MonoBehaviour:
     rate: 1.5
   - itemNum: 15
     type: 3
+<<<<<<< .merge_file_3bP47e
     name: Mace
     value: 5
     price: 300
+=======
+    itemName: "\uCCA0\uD1F4"
+    value: 5
+    price: 600
+>>>>>>> .merge_file_4tuNY0
     weaponType: 4
     damage: 15
     rate: 0.4
   - itemNum: 16
     type: 3
+<<<<<<< .merge_file_3bP47e
     name: 
+=======
+    itemName: 
+>>>>>>> .merge_file_4tuNY0
     value: 0
     price: 0
     weaponType: 0
@@ -151,7 +221,11 @@ MonoBehaviour:
     rate: 0
   - itemNum: 17
     type: 3
+<<<<<<< .merge_file_3bP47e
     name: 
+=======
+    itemName: 
+>>>>>>> .merge_file_4tuNY0
     value: 0
     price: 0
     weaponType: 0
@@ -159,7 +233,11 @@ MonoBehaviour:
     rate: 0
   - itemNum: 18
     type: 3
+<<<<<<< .merge_file_3bP47e
     name: 
+=======
+    itemName: 
+>>>>>>> .merge_file_4tuNY0
     value: 0
     price: 0
     weaponType: 0

@@ -20,11 +20,14 @@ public class Item : MonoBehaviour
     public int damage;       //아이템의 데미지를 저장할 변수
     public float rate;       //아이템 공격  속도를 저장할 변수
     public bool sellItem;   // 상점 판매 아이템 체크
+    public string itemName;
 
     [HideInInspector] public int price;
     [Header("UI Setting")]
-    public TMP_Text priceUI; 
-    public GameObject UI;
+    public TMP_Text nameText; 
+    public GameObject nameUI;
+    public TMP_Text priceText; 
+    public GameObject priceUI;
 
     Rigidbody rigid;
     SphereCollider sphereCollider;
@@ -48,6 +51,7 @@ public class Item : MonoBehaviour
                                 this.weaponType = (WeaponType)itemDB.Entities[i].weaponType;
                                 this.damage = itemDB.Entities[i].damage;
                                 this.rate = itemDB.Entities[i].rate;
+                                this.itemName = itemDB.Entities[i].itemName;
                                 break;
 
                             case Type.Coin:
@@ -55,16 +59,21 @@ public class Item : MonoBehaviour
                                 break;
                             case Type.Heart:
                                 this.tag = "Item";
+
                                 break;
                         }
                     }
                     else
                     {
                         this.tag = "Sell";  // 상점 판매 아이템 체크했을 경우 
+                        this.itemName = itemDB.Entities[i].itemName;
+
                     }
                     this.value = itemDB.Entities[i].value;
                     this.price = itemDB.Entities[i].price;
-                    //Debug.Log("아이템 넘버는 :" + itemNo  + "아이템 값은 :" + value);
+                    //Debug.Log(itemDB.Entities[i].itemName + "이름은?");
+
+                    //Debug.Log("아이템 넘버는 :" + itemNo + "아이템 값은 :" + value);
                 }
             }
         }
@@ -77,9 +86,14 @@ public class Item : MonoBehaviour
     {
         transform.Rotate(Vector3.up * 50 * Time.deltaTime);
 
-        if (priceUI != null)    // 상점 판매 아이템일 경우 가격 UI 변경
+        if (priceText != null)    // 상점 판매 아이템일 경우 가격 UI 변경
         {
-            priceUI.text = string.Format("{0} Gold", price);
+            priceText.text = string.Format("{0} Gold", price);
+        }
+
+        if (nameText != null)
+        { 
+            nameText.text = string.Format(itemName);
         }
         else
         { return; }

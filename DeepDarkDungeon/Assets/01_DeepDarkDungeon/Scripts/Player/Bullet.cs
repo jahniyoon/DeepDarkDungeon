@@ -8,6 +8,7 @@ public class Bullet : MonoBehaviour
     public bool isMelee;
     public bool isRock;
     public bool isDestroy;
+    public GameObject particle;
     int hp = 0;
 
     void OnCollisionEnter(Collision collision)
@@ -22,8 +23,10 @@ public class Bullet : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (isMelee && other.gameObject.layer == LayerMask.NameToLayer("Wall"))
+        if (isMelee && other.gameObject.layer == LayerMask.NameToLayer("Wall") || other.tag.Equals("Player"))
         {
+
+            GameObject fireParticle = Instantiate(particle, transform.position, transform.rotation);
             Destroy(gameObject);
 
         }

@@ -82,6 +82,7 @@ public class DungeonCreator : MonoBehaviour
     List<Vector3> chestPositions;
     List<Vector3> tablePositions;
     List<Vector3> jarPositions;
+    List<Vector3> spikePositions;
 
     private void Awake()
     {
@@ -141,6 +142,7 @@ public class DungeonCreator : MonoBehaviour
         chestPositions = new List<Vector3>();
         tablePositions = new List<Vector3>();
         jarPositions = new List<Vector3>();
+        spikePositions = new List<Vector3>();
 
         RoomData(generator);
 
@@ -166,6 +168,9 @@ public class DungeonCreator : MonoBehaviour
 
     }
     // } CreateDungeon()
+
+
+    //던전 데이터 생성 ==============================================================================
 
     #region 방 구성 관리 메서드
     public void RoomData(DugeonGenerator generator)
@@ -288,6 +293,24 @@ public class DungeonCreator : MonoBehaviour
             Vector3 randomArea = new Vector3(randomPosX, 0, randomPosY);
             jarPositions.Add(randomArea);
         }
+
+        int spikeNum = Random.Range(0, 10);
+        if (spikeNum <= 1)
+        {
+            // 방의 랜덤한 위치에 생성
+            for (int i = 0; i <= spikeNum; i++)
+            {
+                int randomPosX = Random.Range(dungeonRoom.BottomLeftAreaCorner.x + 1, dungeonRoom.TopRightAreaCorner.x - 1);
+                int randomPosY = Random.Range(dungeonRoom.BottomLeftAreaCorner.y + 1, dungeonRoom.TopRightAreaCorner.y - 1);
+                if (randomPosX > dungeonRoomCenterXMin && randomPosX < dungeonRoomCenterXMax && randomPosY > dungeonRoomCenterYMin && randomPosY < dungeonRoomCenterYMax)
+                {
+                    continue;
+                }
+                Vector3 randomArea = new Vector3(randomPosX, 0, randomPosY);
+                spikePositions.Add(randomArea);
+                Debug.Log("스파이크 생성되나?" + spikeNum);
+            }
+        }
     }
     private void CreateRoomChest(RoomNode dungeonRoom)
     {
@@ -405,6 +428,8 @@ public class DungeonCreator : MonoBehaviour
 
     }
 
+    //오브젝트 생성 ==============================================================================
+
     // 바닥 생성
     private void CreateFloor(Vector3 bottomLeft, Vector3 topRight, GameObject floorParent)
     {
@@ -503,6 +528,7 @@ public class DungeonCreator : MonoBehaviour
             player.SetActive(true); // 플레이어 오브젝트 활성화
         }
     }
+    // 스폰 룸 생성
     public void CreateSpawnRoom()
     {
         GameObject spawnRoom = spawnRoomPrefab;
@@ -524,7 +550,7 @@ public class DungeonCreator : MonoBehaviour
             dungeonExit.transform.parent = transform;
         }
     }
-  
+    // 상점 방 생성
     public void CreateShopRoom()
     {
         GameObject shop = shopRoomPrefab;
@@ -535,13 +561,13 @@ public class DungeonCreator : MonoBehaviour
             dungeonShop.transform.parent = transform;
         }
     }
+    // 함정 방 생성
     public void CreateTrapRoom()
     {
         GameObject trap = trapRoomPrefab;
         if (trap != null)
         {
             trap.transform.position = trapPosition;
-            //Debug.Log(trapPosition.x + trapPosition.z);
             GameObject dungeonTrap = Instantiate(trap, trap.transform.position, Quaternion.identity);
             dungeonTrap.transform.parent = transform;
         }
@@ -550,75 +576,47 @@ public class DungeonCreator : MonoBehaviour
     // 적 리스트 생성
     public void CreateEnemies(GameObject enemyParent)
     {
-        CreateBoss(enemyParent, bossRoomCenterPosition, bossRoomPrefab);
+        CreatePrefab(enemyParent, bossRoomCenterPosition, bossRoomPrefab);
         foreach (var enemyPosition in enemyPositions)
         {
-            CreateEnemy(enemyParent, enemyPosition, enemyPrefabs);
+            CreatePrefab(enemyParent, enemyPosition, enemyPrefabs);
         }
     }
-    // 적 생성
-    public void CreateEnemy(GameObject enemyParent, Vector3Int enemyPosition, GameObject enemyPrefabs)
-    {
-        GameObject newEnemy = Instantiate(enemyPrefabs, enemyPosition, Quaternion.identity, enemyParent.transform);
-    }
-    // 보스 생성
-    public void CreateBoss(GameObject enemyParent, Vector3Int bossPosition, GameObject bossRoomPrefab)
-    {
-        GameObject boss = Instantiate(bossRoomPrefab, bossPosition, Quaternion.identity, enemyParent.transform);
-    }
-
+   
     // 던전 데코레이션 생성
     public void CreateDungeonDecorations(GameObject dungeonDecorationParent)
     {
         foreach (var torchPosition in torchPositions)
         {
-            CreateTorch(dungeonDecorationParent, torchPosition, torchPrefabs);
+            CreatePrefab(dungeonDecorationParent, torchPosition, torchPrefabs);
         }
         foreach (var boxPosition in boxPositions)
         {
-            CreateBox(dungeonDecorationParent, boxPosition, boxPrefabs);
+            CreatePrefab(dungeonDecorationParent, boxPosition, boxPrefabs);
         }
         foreach (var tablePosition in tablePositions)
         {
-            CreateTable(dungeonDecorationParent, tablePosition, tablePrefabs);
+            CreatePrefab(dungeonDecorationParent, tablePosition, tablePrefabs);
         }
         foreach (var chestPosition in chestPositions)
         {
-            CreateChest(dungeonDecorationParent, chestPosition, chestPrefabs);
+            CreatePrefab(dungeonDecorationParent, chestPosition, chestPrefabs);
         }
         foreach (var jarPosition in jarPositions)
         {
-            CreateChest(dungeonDecorationParent, jarPosition, jarPrefabs);
+            CreatePrefab(dungeonDecorationParent, jarPosition, jarPrefabs);
+        }
+        foreach (var spikePosition in spikePositions)
+        {
+            CreatePrefab(dungeonDecorationParent, spikePosition, spikePrefab);
         }
 
     }
-
-    // 토치 생성
-    public void CreateTorch(GameObject dungeonDecorationParent, Vector3 torchPosition, GameObject torchPrefabs)
+    // 오브젝트 생성
+    public void CreatePrefab(GameObject dungeonDecorationParent, Vector3 objectPosition, GameObject objectPrefabs)
     {
-        GameObject newTorch = Instantiate(torchPrefabs, torchPosition, Quaternion.identity, dungeonDecorationParent.transform);
+        GameObject newObject = Instantiate(objectPrefabs, objectPosition, Quaternion.identity, dungeonDecorationParent.transform);
     }
-    // 박스 생성
-    public void CreateBox(GameObject dungeonDecorationParent, Vector3 boxPosition, GameObject boxPrefabs)
-    {
-        GameObject newBox = Instantiate(boxPrefabs, boxPosition, Quaternion.identity, dungeonDecorationParent.transform);
-    }
-    // 테이블 생성
-    public void CreateTable(GameObject dungeonDecorationParent, Vector3 tablePosition, GameObject tablePrefabs)
-    {
-        GameObject newBox = Instantiate(tablePrefabs, tablePosition, Quaternion.identity, dungeonDecorationParent.transform);
-    }
-    // 병 생성
-    public void CreateJar(GameObject dungeonDecorationParent, Vector3 jarPosition, GameObject jarPrefabs)
-    {
-        GameObject newJar = Instantiate(jarPrefabs, jarPosition, Quaternion.identity, dungeonDecorationParent.transform);
-    }
-    // 보물상자 생성
-    public void CreateChest(GameObject dungeonDecorationParent, Vector3 chestPosition, GameObject chestPrefabs)
-    {
-        GameObject newChest = Instantiate(chestPrefabs, chestPosition, Quaternion.identity, dungeonDecorationParent.transform);
-    }
-
 
     #region 던전 생성 초기화 메서드
     // 던전 생성기 초기화

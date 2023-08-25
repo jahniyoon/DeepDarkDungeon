@@ -5,6 +5,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
+using static UnityEditor.Progress;
 
 public class Player : MonoBehaviour
 {
@@ -86,6 +87,9 @@ public class Player : MonoBehaviour
     GameObject chestUI;         // 보물상자 UI
     GameObject sellItem;        // 판매 아이템
     GameObject sellItemUI;      // 판매 아이템 UI
+    GameObject itemUI;      // 주변 아이템 UI
+    GameObject signObject;      // 간판 UI
+    GameObject signUI;      // 간판 UI
 
 
 
@@ -160,7 +164,7 @@ public class Player : MonoBehaviour
 
         pauseDown = Input.GetButtonDown("Cancel");
     }
-
+    
     void Move()     //캐릭터 움직임
     {
         moveVec = new Vector3(hAxis, 0, vAxis);
@@ -220,8 +224,10 @@ public class Player : MonoBehaviour
         {
             equipWeapon.Use();                   //public 선언해서 다른 스크립트에 있는 거 가져올수있다
 
-            isAttack = true;
-
+            if (equipWeapon.weaponType != Weapon.WeaponType.Mace)
+            {
+                isAttack = true;
+            }
             //Debug.Log("공격을 했다. 공격중");
 
             switch (equipWeapon.weaponType)  // 무기 타입에 따라 스위치로 다른 애니메이션 트리거 실행
@@ -365,7 +371,9 @@ public class Player : MonoBehaviour
                 AudioManager.instance.PlaySFX("ItemGet");
 
                 GetWeapon(nearObject);
+                itemUI.gameObject.SetActive(false);
                 Destroy(nearObject);
+
             }
             else
             { Debug.Log("아이템이 꽉찼다.");}
@@ -427,6 +435,8 @@ public class Player : MonoBehaviour
                 Destroy(sellItem);
                 sellItem = null;
                 sellItemUI.gameObject.SetActive(false);
+                itemUI.gameObject.SetActive(false);
+
             }
         }
     }
@@ -574,10 +584,13 @@ public class Player : MonoBehaviour
         if(other.tag.Equals("Weapon"))
         {
             nearObject = other.gameObject;
+            Item item = nearObject.GetComponent<Item>();
+            itemUI = item.nameUI;
+            itemUI.gameObject.SetActive(true);
 
             //Debug.Log(nearObject.name);
         }
-        if(other.tag.Equals("Finish"))
+        if (other.tag.Equals("Finish"))
         {
             exit = other.gameObject;
 
@@ -598,17 +611,27 @@ public class Player : MonoBehaviour
 
             Item item = sellItem.GetComponent<Item>();
 
-            sellItemUI = item.UI;
+            sellItemUI = item.priceUI;
             sellItemUI.gameObject.SetActive(true);
+            itemUI = item.nameUI;
+            itemUI.gameObject.SetActive(true);
         }
-
+        if (other.tag.Equals("Sign"))
+        {
+            signObject = other.gameObject;
+            Sign sign = signObject.GetComponent<Sign>();
+            signUI = sign.signUI;
+            signUI.gameObject.SetActive(true);
+        }
+         
     }
 
     void OnTriggerExit(Collider other)
     {
         if(other.tag.Equals("Weapon"))
         {
-            nearObject = null; 
+            itemUI.gameObject.SetActive(false);
+            nearObject = null;
         }
         if (other.tag.Equals("Finish"))
         {
@@ -624,6 +647,12 @@ public class Player : MonoBehaviour
         {
             sellItem = null;
             sellItemUI.gameObject.SetActive(false);
+            itemUI.gameObject.SetActive(false);
+        }
+        if (other.tag.Equals("Sign"))
+        {
+            signObject = null;
+            signUI.gameObject.SetActive(false);
         }
     }
 
