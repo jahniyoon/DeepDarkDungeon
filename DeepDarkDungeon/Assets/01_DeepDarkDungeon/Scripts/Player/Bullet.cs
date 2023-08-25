@@ -21,7 +21,7 @@ public class Bullet : MonoBehaviour
         
     }
 
-    void OnTriggerEnter(Collider other)
+    public virtual void OnTriggerEnter(Collider other)
     {
         if (isMelee && other.gameObject.layer == LayerMask.NameToLayer("Wall") || other.tag.Equals("Player"))
         {
@@ -41,10 +41,8 @@ public class Bullet : MonoBehaviour
 
         }
 
-        else if(other.gameObject.tag.Equals("Player"))
-        {
-            Destroy(this.gameObject);
-        }
+        
+        
         
         
 

@@ -315,7 +315,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1460583990500435406
 Transform:
   m_ObjectHideFlags: 0
@@ -412,6 +412,9 @@ MonoBehaviour:
   spawnA: {fileID: 0}
   spawnB: {fileID: 0}
   spawnC: {fileID: 0}
+  rockSpawnA: {fileID: 0}
+  rockSpawnB: {fileID: 0}
+  rockSpawnC: {fileID: 0}
   bullet: {fileID: 3415127847821838345, guid: 7635ee39fe4648246a07790ef9f13ce4, type: 3}
   rock: {fileID: 0}
   exitKeyPrefab: {fileID: 0}
@@ -421,7 +424,7 @@ MonoBehaviour:
   isBoss: 0
   maxHp: 15
   hp: 15
-  name: 
+  bossName: 
   isDamage: 0
   damage: 15
 --- !u!195 &734715372
@@ -1091,8 +1094,12 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6717721792050314657, guid: d650c44ed0bd7e940b7f627089939cf7, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0.0525
+      objectReference: {fileID: 0}
+    - target: {fileID: 6717721792050314657, guid: d650c44ed0bd7e940b7f627089939cf7, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d650c44ed0bd7e940b7f627089939cf7, type: 3}

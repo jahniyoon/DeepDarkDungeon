@@ -191,12 +191,12 @@ GameObject:
   - component: {fileID: 2994415643320959902}
   - component: {fileID: 362778624}
   m_Layer: 0
-  m_Name: Monster_Knight 1
+  m_Name: Enemy_Knight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1534791007873511879
 Transform:
   m_ObjectHideFlags: 0
@@ -311,7 +311,6 @@ MonoBehaviour:
   boxCollider: {fileID: 2994415644325209703}
   agent: {fileID: 2994415643320959902}
   anim: {fileID: 2994415643320959896}
-  target: {fileID: 0}
   meshs: []
   bossMesh: {fileID: 0}
   playerTarget: {fileID: 0}
@@ -319,15 +318,19 @@ MonoBehaviour:
   spawnA: {fileID: 1637867699}
   spawnB: {fileID: 513052572}
   spawnC: {fileID: 212974737}
+  rockSpawnA: {fileID: 0}
+  rockSpawnB: {fileID: 0}
+  rockSpawnC: {fileID: 0}
   bullet: {fileID: 0}
   rock: {fileID: 0}
   exitKeyPrefab: {fileID: 0}
-  bossDeadPrefab: {fileID: 0}
-  intensityFactor: 2
+  bossDeadPrefab: {fileID: 2381112161245072353, guid: 5876d6a5eec720847a125748b77ad442, type: 3}
+  goldPrefab: {fileID: 82943549552955422, guid: d92c79644cd1a8e479a9ac764a15249d, type: 3}
+  goldMaxValue: 0
   isBoss: 0
   maxHp: 100
   hp: 100
-  name: 
+  bossName: 
   isDamage: 0
   damage: 0
 --- !u!1 &3637474195605087403

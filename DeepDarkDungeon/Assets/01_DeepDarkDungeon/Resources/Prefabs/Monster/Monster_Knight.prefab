@@ -255,7 +255,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &3084257333853482812
 Transform:
   m_ObjectHideFlags: 0
@@ -370,7 +370,6 @@ MonoBehaviour:
   boxCollider: {fileID: 1589659445268920476}
   agent: {fileID: 1589659444294032741}
   anim: {fileID: 1589659444294032739}
-  target: {fileID: 0}
   meshs: []
   bossMesh: {fileID: 0}
   playerTarget: {fileID: 0}
@@ -378,15 +377,19 @@ MonoBehaviour:
   spawnA: {fileID: 4576176183940922952}
   spawnB: {fileID: 4576176182817313127}
   spawnC: {fileID: 4576176182512902762}
+  rockSpawnA: {fileID: 0}
+  rockSpawnB: {fileID: 0}
+  rockSpawnC: {fileID: 0}
   bullet: {fileID: 0}
   rock: {fileID: 0}
   exitKeyPrefab: {fileID: 0}
   bossDeadPrefab: {fileID: 0}
-  intensityFactor: 2
+  goldPrefab: {fileID: 0}
+  goldMaxValue: 0
   isBoss: 0
   maxHp: 100
   hp: 100
-  name: 
+  bossName: 
   isDamage: 0
   damage: 0
 --- !u!1 &2717946989193172239

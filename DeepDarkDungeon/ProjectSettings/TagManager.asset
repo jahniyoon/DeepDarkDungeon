@@ -5,43 +5,34 @@ TagManager:
   serializedVersion: 2
   tags:
   - Floor
-  - Weapon
-  - Item
-  - EnemyBullet
-  - Melee
   - Enemy
-  - PLAYER
   - Chest
-  - Sell
   - Destroy
-  - Missile
-  - Effect
-  - MonsterMelee
-  - Punch
-  - Tornado
-  - WolfAttack
-  - BossRoom
+  - EnemyBullet
+  - Sell
   - BossLich
-  - Head
-<<<<<<< HEAD
-  - Arrow
-=======
+  - BossRoom
+  - Item
+  - Tornado
+  - Weapon
+  - Melee
   - Sign
->>>>>>> origin/feature/Jihwan
+  - MonsterMelee
+  - Arrow
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Player
   - Water
   - UI
   - 
   - 
-  - Floor
-  - Player
-  - Enemy
-  - EnemyBullet
-  - Wall
+  - 
+  - 
+  - 
+  - 
+  - 
   - 
   - 
   - 
@@ -64,7 +55,4 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
-    locked: 0
-  - name: UI
-    uniqueID: 2509818263
     locked: 0

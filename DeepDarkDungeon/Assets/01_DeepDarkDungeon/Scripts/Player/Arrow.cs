@@ -19,7 +19,7 @@ public class Arrow : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-       
+        Destroy(this.gameObject, 3.0f);
     }
 
     void OnTriggerEnter(Collider other)
@@ -28,5 +28,7 @@ public class Arrow : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
+
+        
     }
 }

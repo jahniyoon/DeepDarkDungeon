@@ -5,7 +5,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
-using static UnityEditor.Progress;
+//using static UnityEditor.Progress;
 
 public class Player : MonoBehaviour
 {
@@ -500,6 +500,15 @@ public class Player : MonoBehaviour
             {
                 BossBullet bossBullet = other.GetComponent<BossBullet>();
                 PlayerDamage(bossBullet.damage , shield);
+
+                StartCoroutine(OnDamage());
+            }
+
+            if(other.tag.Equals("Arrow"))
+            {
+                Arrow arrow = other.GetComponent<Arrow>();
+
+                PlayerDamage(arrow.damage, shield);
 
                 StartCoroutine(OnDamage());
             }
