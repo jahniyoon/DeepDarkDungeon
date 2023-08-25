@@ -15,7 +15,7 @@ public class EnemySquad : MonoBehaviour
         int eliteNum = Random.Range(0, eliteEnemies.Length);
         eliteEnemies[eliteNum].SetActive(true);
 
-        int enemyNum = Random.Range(0, 2);
+        int enemyNum = Random.Range(0, 3);
         enemies[enemyNum].SetActive(true);
     }
 
