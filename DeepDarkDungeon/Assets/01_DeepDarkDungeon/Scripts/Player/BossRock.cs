@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class BossRock : Bullet
@@ -32,7 +33,7 @@ public class BossRock : Bullet
 
             angularPower += 0.3f;
             
-            scaleValue += 0.08f;
+            scaleValue += 0.05f;
             
             transform.localScale = Vector3.one * scaleValue;
             rigid.AddTorque(transform.right * angularPower, ForceMode.Acceleration);  //계속 속도 올려야해서Acceleration
@@ -42,7 +43,15 @@ public class BossRock : Bullet
         }
     }
 
-    
+    public override void OnTriggerEnter(Collider other)
+    {
+        
+        if(other.gameObject.layer == LayerMask.NameToLayer("Player"))
+        {
+            Destroy(gameObject);
+        }
+
+    }
 
 }
 

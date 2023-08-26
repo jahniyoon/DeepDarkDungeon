@@ -18,7 +18,7 @@ public class Boss : Monster
     Vector3 lookVec;
 
     
-    public readonly int hashAttack1 = Animator.StringToHash("AttackPattern1");
+    public readonly new int hashAttack1 = Animator.StringToHash("AttackPattern1");
     public readonly int hashAttack2 = Animator.StringToHash("AttackPattern2");
     public readonly int hashAttack3 = Animator.StringToHash("AttackPattern3");
     public readonly int hashAttack4 = Animator.StringToHash("AttackPattern4");

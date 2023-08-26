@@ -44,6 +44,9 @@ public class Monster : MonoBehaviour
     public Transform spawnA;
     public Transform spawnB;
     public Transform spawnC;
+    public Transform rockSpawnA;
+    public Transform rockSpawnB;
+    public Transform rockSpawnC;
     public GameObject bullet;
     public GameObject rock;
     //public GameObject monsterPrefab;
@@ -262,20 +265,32 @@ public class Monster : MonoBehaviour
                                 case 1:
                                     anim.SetBool(hashRock, true);
                                     yield return new WaitForSeconds(0.76f);
-                                    
-                                    GameObject instantRock = Instantiate(rock, transform.position, transform.rotation);
-                                    Rigidbody rigidRock = instantRock.GetComponent<Rigidbody>();
 
-                                    rigidRock.velocity = transform.forward * 3;
+                                    GameObject instantSpawnA = Instantiate(rock, rockSpawnA.position, rockSpawnA.rotation);
+                                    Rigidbody rigidRock = instantSpawnA.GetComponent<Rigidbody>();
+                                    rigidRock.velocity = transform.forward * 4;
 
-                                    GameObject leftInstantRock = Instantiate(rock, transform.position, Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(0, -30, 0)));
-                                    Rigidbody rigidLeftrock = leftInstantRock.GetComponent<Rigidbody>();
-                                    rigidLeftrock.velocity = leftInstantRock.transform.forward * 3;
+                                    GameObject leftInstantSpawnB = Instantiate(rock, rockSpawnB.position, Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(0, -30, 0)));
+                                    Rigidbody rigidLeftrock = leftInstantSpawnB.GetComponent<Rigidbody>();
+                                    rigidRock.velocity = leftInstantSpawnB.transform.forward * 4;
+
+                                    GameObject rightInstantSpawnC = Instantiate(rock, rockSpawnC.position, Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(0, 30, 0)));
+                                    Rigidbody rigidRightrock = rightInstantSpawnC.GetComponent<Rigidbody>();
+                                    rigidRock.velocity = rightInstantSpawnC.transform.forward * 4;
 
 
-                                    GameObject rightInstantRock = Instantiate(rock, transform.position, Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(0, 30, 0)));
-                                    Rigidbody rigidRightRock = rightInstantRock.GetComponent<Rigidbody>();
-                                    rigidRightRock.velocity = rigidRightRock.transform.forward * 3;
+                                    //GameObject instantRock = Instantiate(rock, transform.position, transform.rotation);
+                                    // Rigidbody rigidRock = instantRock.GetComponent<Rigidbody>();
+                                    //rigidRock.velocity = transform.forward * 10;
+
+                                    //GameObject leftInstantRock = Instantiate(rock, transform.position, Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(0, -30, 0)));
+                                    //Rigidbody rigidLeftrock = leftInstantRock.GetComponent<Rigidbody>();
+                                    //rigidLeftrock.velocity = leftInstantRock.transform.forward * 10;
+
+
+                                    //GameObject rightInstantRock = Instantiate(rock, transform.position, Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(0, 30, 0)));
+                                    //Rigidbody rigidRightRock = rightInstantRock.GetComponent<Rigidbody>();
+                                    //rigidRightRock.velocity = rigidRightRock.transform.forward * 10;
 
                                     anim.SetBool(hashRock, false);
                                     yield return new WaitForSeconds(1.0f);

@@ -10,6 +10,7 @@ public class Bullet : MonoBehaviour
     public bool isDestroy;
     public GameObject particle;
     int hp = 0;
+
     void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.tag.Equals("Floor"))  //탄피  //!isRock 게임상에서 isRock체크해서 사라지지 않게
@@ -20,7 +21,7 @@ public class Bullet : MonoBehaviour
         
     }
 
-    void OnTriggerEnter(Collider other)
+    public virtual void OnTriggerEnter(Collider other)
     {
         if (isMelee && other.gameObject.layer == LayerMask.NameToLayer("Wall") || other.tag.Equals("Player"))
         {
@@ -39,6 +40,13 @@ public class Bullet : MonoBehaviour
             Destroy(gameObject);
 
         }
+
+        
+        
+        
+        
+
+       
     }
 
 
