@@ -1,12 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.ParticleSystem;
 
 public class Arrow : MonoBehaviour
 {
     private Rigidbody rigid;
     public float speed = 2.0f;
     public int damage = 5;
+    public GameObject particle;
+
 
     // Start is called before the first frame update
     void Start()
@@ -24,11 +27,13 @@ public class Arrow : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.tag.Equals("Player"))
+        if (other.gameObject.layer == LayerMask.NameToLayer("Wall") || other.tag.Equals("Player"))
         {
-            Destroy(this.gameObject);
+
+            GameObject fireParticle = Instantiate(particle, transform.position, transform.rotation);
+            Destroy(gameObject);
+
         }
 
-        
     }
 }

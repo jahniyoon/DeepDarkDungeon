@@ -14,6 +14,7 @@ public class BossCamera : MonoBehaviour
     {
         if (!findCamera)
         {
+            findCamera = true;
             target = GameObject.FindWithTag("BossLich").GetComponent<Transform>();
 
             bossCamera.m_LookAt = target;

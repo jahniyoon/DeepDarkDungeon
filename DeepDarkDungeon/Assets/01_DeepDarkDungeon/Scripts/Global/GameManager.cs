@@ -12,7 +12,8 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public bool isGameOver = false; // 게임오버 확인
     [HideInInspector] public bool isPause = false; // 포즈 확인
     [HideInInspector] public bool isDoorOpen = false; // 문 열림 확인
-    [HideInInspector] public bool isBoss = false; // 문 열림 확인
+    [HideInInspector] public bool isBoss = false; // 보스방인지 체크
+    [HideInInspector] public bool isBossDie = false; // 보스 해치웠는지 체크
     public int floor = 1;
 
     [Header("UI instance")]
@@ -98,6 +99,8 @@ public class GameManager : MonoBehaviour
     {
         isGameOver = true;
         gameoverUI.SetActive(true);
+        AudioManager.instance.PlayMusic("GameOverBGM");
+
         GameData.floor = 0;
         
         //Audio audio = FindObjectOfType<Audio>();
@@ -128,6 +131,7 @@ public class GameManager : MonoBehaviour
         playerHUD.SetActive(false);
         bossUI.SetActive(true);
         //CameraManager.instance.OnBossRoom();
+        AudioManager.instance.PlayMusic("BossBGM");
 
         StartCoroutine("BossRoomCutScene");
 
@@ -156,6 +160,8 @@ public class GameManager : MonoBehaviour
     public void BossDead()
     {
         bossUI.SetActive(false);
+        AudioManager.instance.PlayMusic("BossClearBGM");
+
     }
 
     // 보스처치시 열쇠 먹었을 경우

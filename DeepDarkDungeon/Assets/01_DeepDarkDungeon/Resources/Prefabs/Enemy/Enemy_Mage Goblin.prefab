@@ -311,11 +311,11 @@ GameObject:
   - component: {fileID: 734715372}
   m_Layer: 0
   m_Name: Enemy_Mage Goblin
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1460583990500435406
 Transform:
   m_ObjectHideFlags: 0
@@ -1095,11 +1095,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6717721792050314657, guid: d650c44ed0bd7e940b7f627089939cf7, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0.0525
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6717721792050314657, guid: d650c44ed0bd7e940b7f627089939cf7, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d650c44ed0bd7e940b7f627089939cf7, type: 3}

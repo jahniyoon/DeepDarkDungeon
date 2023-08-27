@@ -21,6 +21,8 @@ public class Spawner : MonoBehaviour
     private float spawnRate;
     private float timeAfterSpawn;
 
+    bool isAttack;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -36,26 +38,45 @@ public class Spawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.LookAt(playerTr.position);
-
-        timeAfterSpawn += Time.deltaTime;
-
-        if (timeAfterSpawn > spawnRate)
+        if (isAttack)
         {
-            timeAfterSpawn = 0f;
+            transform.LookAt(playerTr.position);
 
-            Vector3 Shuriken = new Vector3(transform.position.x, transform.position.y, transform.position.z);
-            //Shuriken.y = 1.0f;
-            //arrowPosition.y = 4.0f;
+            timeAfterSpawn += Time.deltaTime;
 
-            GameObject instantSpawnA = Instantiate(shurikenPrefab, spawnA.position, spawnA.rotation);
-            //GameObject shuriken = Instantiate(shurikenPrefab, Shuriken, transform.rotation);
-            Rigidbody rigidSpawnA = instantSpawnA.GetComponent<Rigidbody>();
-            rigidSpawnA.velocity = transform.forward * 3;
+            if (timeAfterSpawn > spawnRate)
+            {
+                timeAfterSpawn = 0f;
 
-            instantSpawnA.transform.LookAt(playerTr.position);
-            
-            spawnRate = Random.Range(spawnRateMin, spawnRateMax);
+                Vector3 Shuriken = new Vector3(transform.position.x, transform.position.y, transform.position.z);
+                //Shuriken.y = 1.0f;
+                //arrowPosition.y = 4.0f;
+
+                GameObject instantSpawnA = Instantiate(shurikenPrefab, spawnA.position, spawnA.rotation);
+                //GameObject shuriken = Instantiate(shurikenPrefab, Shuriken, transform.rotation);
+                Rigidbody rigidSpawnA = instantSpawnA.GetComponent<Rigidbody>();
+                rigidSpawnA.velocity = transform.forward * 3;
+
+                instantSpawnA.transform.LookAt(playerTr.position);
+
+                spawnRate = Random.Range(spawnRateMin, spawnRateMax);
+            }
+        }
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.tag.Equals("Player"))
+        {
+            isAttack = true;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.tag.Equals("Player"))
+        {
+            isAttack = false;
         }
     }
 }

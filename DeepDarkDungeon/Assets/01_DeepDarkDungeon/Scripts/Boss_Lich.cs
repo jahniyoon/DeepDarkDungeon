@@ -306,6 +306,8 @@ public class Boss_Lich : MonoBehaviour
         animator.SetTrigger("BossDead");
         animator.SetBool("isDie", true);
 
+        GameManager.instance.isBossDie = true;
+
         yield return new WaitForSeconds(2f);
 
         Vector3 keyPosition = new Vector3(transform.position.x, transform.position.y + 1f, transform.position.z); // 열쇠 드롭 위치
