@@ -31,7 +31,7 @@ public class BossRock : Bullet
         while (!isShoot)
         {
 
-            angularPower += 0.3f;
+            angularPower += 0.5f;
             
             scaleValue += 0.05f;
             
@@ -46,11 +46,12 @@ public class BossRock : Bullet
     public override void OnTriggerEnter(Collider other)
     {
         
-        if(other.gameObject.layer == LayerMask.NameToLayer("Player"))
+        if(other.gameObject.layer == LayerMask.NameToLayer("Player") && other.gameObject.layer == LayerMask.NameToLayer("Wall"))
         {
-            Destroy(gameObject);
+            Destroy(this.gameObject);
         }
 
+        
     }
 
 }

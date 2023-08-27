@@ -30,7 +30,7 @@ public class Arrow : MonoBehaviour
         if (other.gameObject.layer == LayerMask.NameToLayer("Wall") || other.tag.Equals("Player"))
         {
 
-            GameObject fireParticle = Instantiate(particle, transform.position, transform.rotation);
+            
             Destroy(gameObject);
 
         }

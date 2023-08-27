@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 562883271987995954}
   - component: {fileID: 640168028228720526}
   - component: {fileID: 8506824860216625381}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: dirt (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 1351068654664364629}
   - component: {fileID: 4958575796209253906}
   - component: {fileID: 8717020316812803917}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Wall Vertical
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -334,7 +334,7 @@ GameObject:
   - component: {fileID: 8524177291698135412}
   - component: {fileID: 5312078963678984012}
   - component: {fileID: 7618852632835085208}
-  m_Layer: 12
+  m_Layer: 6
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -430,7 +430,7 @@ GameObject:
   - component: {fileID: 7960910924389310179}
   - component: {fileID: 3608276166811146636}
   - component: {fileID: 6789523528603685327}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: dirt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
