@@ -29,9 +29,14 @@ public class BossBullet : Bullet
         if(isDestroy)
         {
             nav.SetDestination(playerTr.position);
+
+            Destroy(this.gameObject, 5.0f);
         }
       
 
 
     }
+
+    
+
 }

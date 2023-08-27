@@ -11,7 +11,7 @@ public class Bullet : MonoBehaviour
     public GameObject particle;
     int hp = 0;
 
-    void OnCollisionEnter(Collision collision)
+    public virtual void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.tag.Equals("Floor"))  //탄피  //!isRock 게임상에서 isRock체크해서 사라지지 않게
         {

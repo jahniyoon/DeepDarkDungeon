@@ -701,14 +701,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 328650748610424696}
     m_Modifications:
-    - target: {fileID: 362778624, guid: ea1a2066ab30049448184c33e28fac58, type: 3}
-      propertyPath: hp
-      value: 70
-      objectReference: {fileID: 0}
-    - target: {fileID: 362778624, guid: ea1a2066ab30049448184c33e28fac58, type: 3}
-      propertyPath: maxHp
-      value: 70
-      objectReference: {fileID: 0}
     - target: {fileID: 1534791007873511879, guid: ea1a2066ab30049448184c33e28fac58, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -756,18 +748,6 @@ PrefabInstance:
     - target: {fileID: 2163835476051749757, guid: ea1a2066ab30049448184c33e28fac58, type: 3}
       propertyPath: m_Name
       value: Monster_Knight 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2163835476051749757, guid: ea1a2066ab30049448184c33e28fac58, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4827115002806430800, guid: ea1a2066ab30049448184c33e28fac58, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0.0525
-      objectReference: {fileID: 0}
-    - target: {fileID: 4827115002806430800, guid: ea1a2066ab30049448184c33e28fac58, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ea1a2066ab30049448184c33e28fac58, type: 3}

@@ -773,7 +773,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   monsterType: 3
   state: 0
-  traceDist: 10
+  traceDist: 4
   attackDist: 1
   isDie: 0
   monsterTr: {fileID: 3781092130774222491}

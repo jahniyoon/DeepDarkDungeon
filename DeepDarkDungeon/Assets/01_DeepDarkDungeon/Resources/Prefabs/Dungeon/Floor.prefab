@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1088555692061157040}
   - component: {fileID: 4452160672307102947}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: default_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -57,7 +57,7 @@ GameObject:
   - component: {fileID: 6782636996584472847}
   - component: {fileID: 348279610570038561}
   - component: {fileID: 3916470281256480660}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Floor
   m_TagString: Floor
   m_Icon: {fileID: 0}
@@ -141,9 +141,9 @@ GameObject:
   - component: {fileID: 6703513591221870809}
   - component: {fileID: 5644700923794389899}
   - component: {fileID: 3648563017890675870}
-  m_Layer: 8
+  m_Layer: 7
   m_Name: Cube
-  m_TagString: Untagged
+  m_TagString: Floor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -235,7 +235,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1458011744207804391, guid: 5ed4b8c33fe1f4d4a9efe1a1da662967, type: 3}
       propertyPath: m_Layer
-      value: 0
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 1458011744207804391, guid: 5ed4b8c33fe1f4d4a9efe1a1da662967, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -291,11 +291,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2901976647230440167, guid: 5ed4b8c33fe1f4d4a9efe1a1da662967, type: 3}
       propertyPath: m_Layer
-      value: 0
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 2901976647230440167, guid: 5ed4b8c33fe1f4d4a9efe1a1da662967, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2901976647230440167, guid: 5ed4b8c33fe1f4d4a9efe1a1da662967, type: 3}
+      propertyPath: m_TagString
+      value: Floor
       objectReference: {fileID: 0}
     - target: {fileID: 2901976647230440167, guid: 5ed4b8c33fe1f4d4a9efe1a1da662967, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -324,6 +328,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6782636996584472846}
     m_Modifications:
+    - target: {fileID: 2069633969658957184, guid: f9e5037d8ad22ff439783a0aac4e618c, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 2526014501410969693, guid: f9e5037d8ad22ff439783a0aac4e618c, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -373,8 +381,16 @@ PrefabInstance:
       value: FloorObs3
       objectReference: {fileID: 0}
     - target: {fileID: 2901976647230440167, guid: f9e5037d8ad22ff439783a0aac4e618c, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 2901976647230440167, guid: f9e5037d8ad22ff439783a0aac4e618c, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2901976647230440167, guid: f9e5037d8ad22ff439783a0aac4e618c, type: 3}
+      propertyPath: m_TagString
+      value: Floor
       objectReference: {fileID: 0}
     - target: {fileID: 7630324732771053163, guid: f9e5037d8ad22ff439783a0aac4e618c, type: 3}
       propertyPath: m_Enabled
@@ -449,11 +465,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5744873654628243213, guid: e1c13e03a217c4748a713fb33226e61b, type: 3}
       propertyPath: m_Layer
-      value: 0
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 5744873654628243213, guid: e1c13e03a217c4748a713fb33226e61b, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5744873654628243213, guid: e1c13e03a217c4748a713fb33226e61b, type: 3}
+      propertyPath: m_TagString
+      value: Floor
       objectReference: {fileID: 0}
     - target: {fileID: 5744873654628243213, guid: e1c13e03a217c4748a713fb33226e61b, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -461,7 +481,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8342889382174327309, guid: e1c13e03a217c4748a713fb33226e61b, type: 3}
       propertyPath: m_Layer
-      value: 0
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 8342889382174327309, guid: e1c13e03a217c4748a713fb33226e61b, type: 3}
       propertyPath: m_StaticEditorFlags
