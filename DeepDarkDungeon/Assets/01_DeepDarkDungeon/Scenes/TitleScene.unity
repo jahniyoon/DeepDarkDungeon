@@ -20581,8 +20581,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6ebde5fe09c72d4d8ca4c9444498f61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  renderFeatures: []
   pipelineAsset: {fileID: 11400000, guid: f3e10393423578f4c805a999a95e703a, type: 2}
+  rendererFeatures:
+  - feature: {fileID: -4288963634240907166, guid: e5940b13f453f614a8c13633277a3889, type: 2}
+    isEnabled: 0
+  - feature: {fileID: 1076573607752886137, guid: e5940b13f453f614a8c13633277a3889, type: 2}
+    isEnabled: 1
+  - feature: {fileID: -8386967325742774856, guid: e5940b13f453f614a8c13633277a3889, type: 2}
+    isEnabled: 0
+  defaultRendererSettings:
+  - PixelizeFeature
+  - Outline
 --- !u!4 &1212388524
 Transform:
   m_ObjectHideFlags: 0
